@@ -2,36 +2,18 @@ name: API and tenant isolation
 
 on:
   pull_request:
-    paths:
-      - "apps/api/**"
-      - "api/**"
-      - "db/**"
-      - "tests/**"
-      - "tools/export_api_artifacts.py"
-      - "requirements*.txt"
-      - "alembic.ini"
-      - "docker-compose.yml"
-      - ".github/workflows/api.yml"
   push:
     branches: [main]
-    paths:
-      - "apps/api/**"
-      - "api/**"
-      - "db/**"
-      - "tests/**"
-      - "tools/export_api_artifacts.py"
-      - "requirements*.txt"
-      - "alembic.ini"
-      - "docker-compose.yml"
-      - ".github/workflows/api.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  tenant-isolation:
-    runs-on: ubuntu-latest
+  api-tests:
+    name: api-tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Build and migrate the development stack

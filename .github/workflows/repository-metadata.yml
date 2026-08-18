@@ -4,9 +4,6 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths-ignore:
-      - "badges/**"
-      - "sbom/**"
   workflow_dispatch:
 
 concurrency:
@@ -17,8 +14,10 @@ permissions:
   contents: read
 
 jobs:
-  generate:
-    runs-on: ubuntu-latest
+  repository-metadata:
+    name: repository-metadata
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
@@ -38,12 +37,13 @@ jobs:
           upload-release-assets: false
       - name: Normalize CycloneDX SBOM
         run: python tools/normalize_sbom.py sbom/watchtower.cdx.json --source-root "$GITHUB_WORKSPACE"
-      - name: Show pull-request metadata changes
-        if: github.event_name == 'pull_request'
+      - name: Verify committed metadata is current
         run: |
-          git status --short -- badges sbom
-          git diff -- badges sbom
+          git status --short -- README.md badges sbom
+          git diff -- README.md badges sbom
+          git diff --exit-code -- README.md badges sbom
       - name: Upload generated metadata
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: repository-metadata-files
@@ -52,28 +52,3 @@ jobs:
             sbom
           if-no-files-found: error
           retention-days: 5
-
-  commit:
-    if: github.event_name != 'pull_request'
-    needs: [generate]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-      - name: Download generated metadata
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: repository-metadata-files
-          path: .
-      - name: Commit refreshed metadata
-        run: |
-          git add badges sbom
-          if git diff --cached --quiet; then
-            echo "Repository metadata is already current."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: refresh repository metadata [skip ci]"
-          git push

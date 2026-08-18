@@ -25,6 +25,12 @@ def normalize(document: dict[str, Any], source_root: Path) -> dict[str, Any]:
     metadata = document.get("metadata")
     if isinstance(metadata, dict):
         metadata.pop("timestamp", None)
+        root_component = metadata.get("component")
+        if isinstance(root_component, dict):
+            root_type = root_component.get("type", "component")
+            root_name = root_component.get("name", "unknown")
+            root_version = root_component.get("version", "unknown")
+            root_component["bom-ref"] = f"{root_type}:{root_name}@{root_version}"
 
     components = document.get("components")
     if isinstance(components, list):
