@@ -1,12 +1,12 @@
 # Watchtower GRC
 
-[![Lint](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml)
+[![Lint](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml)
 [![API and tenant isolation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api.yml)
-[![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
+[![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
-[![SLSA workflow](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml)
-![Languages](badges/languages.svg)
-![Lines of code](badges/lines-of-code.svg)
+[![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
+![Languages](badges/languages.svg?v=0fc5986d8335)
+![Lines of code](badges/lines-of-code.svg?v=40965db7ea35)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -61,7 +61,7 @@ See [the product decision](docs/product-decision.md), [the architecture](docs/de
 
 The application publishes interactive Swagger UI at `/docs`, ReDoc at `/redoc`, and its OpenAPI JSON at `/openapi.json`. Deterministic snapshots are committed as [OpenAPI JSON](api/openapi.json), a [Postman collection](api/postman/watchtower.postman_collection.json), and a [Swagger-style static reference](api/reference/index.html). The reference is published through GitHub Pages at [guiltykeyboard.github.io/msp-vciso](https://guiltykeyboard.github.io/msp-vciso/). See [API documentation](docs/api.md) for generation and validation commands.
 
-The current machine-readable [CycloneDX SBOM](sbom/watchtower.cdx.json) and its [human-readable guide](SBOM.md) are maintained in the repository. CI regenerates the SBOM and the repository-local language/line-count badges whenever `main` changes.
+The current machine-readable [CycloneDX SBOM](sbom/watchtower.cdx.json) and its [human-readable guide](SBOM.md) are maintained in the repository. CI regenerates the SBOM and repository-local language/line-count badges and fails if the reviewed files are stale; it never creates an unchecked follow-up commit on `main`. See the [continuous integration trust model](docs/continuous-integration.md).
 
 ## Framework packs
 

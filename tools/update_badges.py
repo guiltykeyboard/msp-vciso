@@ -4,13 +4,17 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
+import re
+import subprocess
 from collections import Counter
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 BADGE_DIRECTORY = ROOT / "badges"
+README_PATH = ROOT / "README.md"
 LANGUAGES = {
     ".cs": "C#",
     ".css": "CSS",
@@ -42,15 +46,37 @@ EXCLUDED_DIRECTORIES = {
     "sbom",
     "vendor",
 }
+README_BADGES = {
+    "languages.svg": "Languages",
+    "lines-of-code.svg": "Lines of code",
+}
+
+
+def tracked_files() -> list[Path]:
+    """Return repository files tracked by Git in stable order."""
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    )
+    return [
+        ROOT / raw_path.decode("utf-8")
+        for raw_path in result.stdout.split(b"\0")
+        if raw_path
+    ]
 
 
 def source_line_counts() -> Counter[str]:
     """Return nonblank physical source lines grouped by language."""
     counts: Counter[str] = Counter()
-    for path in ROOT.rglob("*"):
+    for path in tracked_files():
         if not path.is_file() or path.suffix.lower() not in LANGUAGES:
             continue
-        if any(part in EXCLUDED_DIRECTORIES for part in path.relative_to(ROOT).parts):
+        relative_parts = path.relative_to(ROOT).parts
+        if relative_parts[0] == "api":
+            continue
+        if any(part in EXCLUDED_DIRECTORIES for part in relative_parts):
             continue
         try:
             lines = path.read_text(encoding="utf-8").splitlines()
@@ -58,6 +84,22 @@ def source_line_counts() -> Counter[str]:
             continue
         counts[LANGUAGES[path.suffix.lower()]] += sum(bool(line.strip()) for line in lines)
     return counts
+
+
+def readme_with_cache_keys(badges: dict[Path, str]) -> str:
+    """Return README content with badge URLs keyed to generated SVG content."""
+    content = README_PATH.read_text(encoding="utf-8")
+    for filename, alt_text in README_BADGES.items():
+        badge_content = badges[BADGE_DIRECTORY / filename]
+        cache_key = hashlib.sha256(badge_content.encode("utf-8")).hexdigest()[:12]
+        pattern = re.compile(
+            rf"!\[{re.escape(alt_text)}\]\(badges/{re.escape(filename)}(?:\?v=[^)]+)?\)"
+        )
+        replacement = f"![{alt_text}](badges/{filename}?v={cache_key})"
+        content, replacements = pattern.subn(replacement, content, count=1)
+        if replacements != 1:
+            raise ValueError(f"README badge reference not found: {filename}")
+    return content
 
 
 def language_summary(counts: Counter[str]) -> str:
@@ -111,7 +153,7 @@ def badge_svg(label: str, value: str, color: str) -> str:
 def update_badges(check: bool) -> int:
     """Write badges or report whether committed badges match calculated metrics."""
     counts = source_line_counts()
-    outputs = {
+    badges = {
         BADGE_DIRECTORY / "languages.svg": badge_svg(
             "languages", language_summary(counts), "#3572a5"
         ),
@@ -119,6 +161,7 @@ def update_badges(check: bool) -> int:
             "lines of code", f"{sum(counts.values()):,}", "#0b7c3e"
         ),
     }
+    outputs = {**badges, README_PATH: readme_with_cache_keys(badges)}
     stale: list[Path] = []
     for path, content in outputs.items():
         if path.exists() and path.read_text(encoding="utf-8") == content:
@@ -133,7 +176,7 @@ def update_badges(check: bool) -> int:
             print(f"stale badge: {path.relative_to(ROOT)}")
         return 1
     for path in outputs:
-        print(f"current badge: {path.relative_to(ROOT)}")
+        print(f"current generated metadata: {path.relative_to(ROOT)}")
     return 0
 
 
