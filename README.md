@@ -2,8 +2,8 @@
 
 [![Lint](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml)
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
-[![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
-[![SLSA provenance](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml)
+[![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
+[![SLSA workflow](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml)
 ![Languages](badges/languages.svg)
 ![Lines of code](badges/lines-of-code.svg)
 

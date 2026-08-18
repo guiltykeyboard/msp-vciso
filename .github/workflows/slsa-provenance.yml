@@ -2,14 +2,39 @@ name: SLSA provenance
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  validate-release-input:
+    if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+      - name: Verify release archive and provenance subject generation
+        run: |
+          archive="$RUNNER_TEMP/watchtower-${GITHUB_SHA}.tar.gz"
+          git archive \
+            --format=tar.gz \
+            --prefix="watchtower-${GITHUB_SHA}/" \
+            --output="$archive" \
+            HEAD
+          test -s "$archive"
+          sha256sum "$archive"
+
   build:
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     outputs:
       hashes: ${{ steps.hash.outputs.hashes }}
@@ -63,4 +88,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$GITHUB_REF_NAME" dist/* --clobber
-
