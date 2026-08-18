@@ -7,11 +7,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "a220aa62d419172d493662f2348aeb9f79377508"
+          "content": "cd122097d561424a5d48b7ddcd51114810c6d0ff"
         },
         {
           "alg": "SHA-256",
-          "content": "13efffec35c92f65fed1d6926b9cc8d4e336e65ef6958596232e3e3b550f6363"
+          "content": "3efd041cfba1a28ddbb1dba00ba90c482dd64f74435d76959957a5fa6e730f30"
         }
       ],
       "name": ".github/workflows/api-docs.yml",
@@ -67,11 +67,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "4a6ddc04633e509661661898d3118a5ccf10c293"
+          "content": "b24812fe5c129dc5835d7d50fee069f0b5cf7248"
         },
         {
           "alg": "SHA-256",
-          "content": "21096fb01043d65cd0a17ea3dd692ebecc9d493a325d1a69837d4cab5d1b22f3"
+          "content": "3c8da87ae6deb8620c0a2e50401fce1cfa5575f2a62f8fd1357857c1192b2348"
         }
       ],
       "name": ".github/workflows/repository-metadata.yml",
@@ -82,11 +82,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "f6043a1ce3e811729298c1490ba6aee239557adc"
+          "content": "29f1d4caacd13b682ff9d90c3393fc110d87a4b3"
         },
         {
           "alg": "SHA-256",
-          "content": "6551f730c7bdfe90bc1157791213625de11272da7f43f2c3255483bb0e8b8114"
+          "content": "56de561f1655bbcd5eb0abd5f2200eb5a57ace28e3c30e56a3c887af79c1e3a9"
         }
       ],
       "name": ".github/workflows/slsa-provenance.yml",
@@ -279,8 +279,8 @@
       "version": "v6.1.0"
     },
     {
-      "bom-ref": "pkg:github/actions/configure-pages@v5?package-id=89cb331692222945",
-      "cpe": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure-pages:v5:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/configure-pages@v6.0.0?package-id=e924d6ee78e7fb24",
+      "cpe": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure-pages:v6.0.0:*:*:*:*:*:*:*",
       "name": "actions/configure-pages",
       "properties": [
         {
@@ -297,36 +297,36 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure_pages:v6.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure-pages:v5:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure-pages:v6.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure_pages:v6.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure-pages:v5:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure-pages:v6.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure_pages:v6.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/api-docs.yml"
         }
       ],
-      "purl": "pkg:github/actions/configure-pages@v5",
+      "purl": "pkg:github/actions/configure-pages@v6.0.0",
       "type": "library",
-      "version": "v5"
+      "version": "v6.0.0"
     },
     {
-      "bom-ref": "pkg:github/actions/deploy-pages@v4?package-id=a466743724c98c59",
-      "cpe": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy-pages:v4:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/deploy-pages@v5.0.0?package-id=0524dd8c0e9b949e",
+      "cpe": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy-pages:v5.0.0:*:*:*:*:*:*:*",
       "name": "actions/deploy-pages",
       "properties": [
         {
@@ -343,36 +343,36 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy_pages:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy-pages:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy-pages:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy_pages:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy-pages:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy-pages:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy_pages:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/api-docs.yml"
         }
       ],
-      "purl": "pkg:github/actions/deploy-pages@v4",
+      "purl": "pkg:github/actions/deploy-pages@v5.0.0",
       "type": "library",
-      "version": "v4"
+      "version": "v5.0.0"
     },
     {
-      "bom-ref": "pkg:github/actions/download-artifact@v4.3.0?package-id=9c8af85cfbc5d047",
-      "cpe": "cpe:2.3:a:actions\\/download-artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/download-artifact@v8.0.1?package-id=705fe0f18acf5658",
+      "cpe": "cpe:2.3:a:actions\\/download-artifact:actions\\/download-artifact:v8.0.1:*:*:*:*:*:*:*",
       "name": "actions/download-artifact",
       "properties": [
         {
@@ -389,32 +389,32 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/download-artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/download-artifact:actions\\/download_artifact:v8.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download-artifact:v8.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download_artifact:v8.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/download:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download-artifact:v8.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/download:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download_artifact:v8.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/slsa-provenance.yml"
         }
       ],
-      "purl": "pkg:github/actions/download-artifact@v4.3.0",
+      "purl": "pkg:github/actions/download-artifact@v8.0.1",
       "type": "library",
-      "version": "v4.3.0"
+      "version": "v8.0.1"
     },
     {
       "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=0ccc20df9db34d9f",
@@ -601,8 +601,8 @@
       "version": "v6.3.0"
     },
     {
-      "bom-ref": "pkg:github/actions/upload-artifact@v4.6.2?package-id=ced5bbcc092c9ef7",
-      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/upload-artifact@v7.0.1?package-id=61cc9baecd58c865",
+      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*",
       "name": "actions/upload-artifact",
       "properties": [
         {
@@ -619,36 +619,36 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/repository-metadata.yml"
         }
       ],
-      "purl": "pkg:github/actions/upload-artifact@v4.6.2",
+      "purl": "pkg:github/actions/upload-artifact@v7.0.1",
       "type": "library",
-      "version": "v4.6.2"
+      "version": "v7.0.1"
     },
     {
-      "bom-ref": "pkg:github/actions/upload-artifact@v4.6.2?package-id=022265afc3169512",
-      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/upload-artifact@v7.0.1?package-id=2d296b80d3564baa",
+      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*",
       "name": "actions/upload-artifact",
       "properties": [
         {
@@ -665,36 +665,36 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v7.0.1:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/slsa-provenance.yml"
         }
       ],
-      "purl": "pkg:github/actions/upload-artifact@v4.6.2",
+      "purl": "pkg:github/actions/upload-artifact@v7.0.1",
       "type": "library",
-      "version": "v4.6.2"
+      "version": "v7.0.1"
     },
     {
-      "bom-ref": "pkg:github/actions/upload-pages-artifact@v4?package-id=55980e95add3a93c",
-      "cpe": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*",
+      "bom-ref": "pkg:github/actions/upload-pages-artifact@v5.0.0?package-id=2e1d1aa4d08d7019",
+      "cpe": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload-pages-artifact:v5.0.0:*:*:*:*:*:*:*",
       "name": "actions/upload-pages-artifact",
       "properties": [
         {
@@ -711,48 +711,48 @@
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload_pages_artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload-pages-artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload_pages_artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload-pages-artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload_pages_artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload-pages-artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload_pages_artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-pages-artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:cpe23",
-          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_pages_artifact:v5.0.0:*:*:*:*:*:*:*"
         },
         {
           "name": "syft:location:0:path",
           "value": "/.github/workflows/api-docs.yml"
         }
       ],
-      "purl": "pkg:github/actions/upload-pages-artifact@v4",
+      "purl": "pkg:github/actions/upload-pages-artifact@v5.0.0",
       "type": "library",
-      "version": "v4"
+      "version": "v5.0.0"
     },
     {
       "bom-ref": "pkg:pypi/alembic@1.19.1?package-id=94fbbc1b5c722f39",
