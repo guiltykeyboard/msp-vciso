@@ -36,7 +36,7 @@ The first useful release should support:
 5. Configurable obligations, deadlines, and sensitive-evidence handling, initially demonstrated by Ohio incident reporting and CJIS.
 6. Auditor/customer read-only access and a redacted evidence export.
 
-See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), and [framework authoring](docs/framework-authoring.md).
+See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
 
 The current machine-readable [CycloneDX SBOM](sbom/watchtower.cdx.json) and its [human-readable guide](SBOM.md) are maintained in the repository. CI regenerates the SBOM and the repository-local language/line-count badges whenever `main` changes.
 
@@ -70,7 +70,7 @@ The initial Ohio pack distinguishes statutory requirements, conditional duties, 
 
 ## Licensing
 
-The project license is GNU AGPLv3 so self-hosting remains free and hosted modifications remain available to their users. Complete a dependency/license review before the first software release. Comp AI was evaluated as a reference project; no Comp AI source code is included in this repository.
+The project license is GNU AGPLv3 so self-hosting remains free and hosted modifications remain available to their users. Compatible open-source platforms are intended to serve as both implementation references and, after path-specific license review, sources for integrations or adapted components. Every source import must be traceable through [third-party notices](THIRD_PARTY_NOTICES.md); commercially licensed open-core directories remain excluded without a separate grant.
 
 ## Authoritative references
 

@@ -7,7 +7,7 @@ Status: proposed
 
 Build an open-source, self-hostable MSP compliance control plane, but do not begin by rebuilding every generic GRC feature. The core product must serve customers across industries. Deliver a differentiated vertical slice first and integrate proven open-source collectors and security tools; treat law-enforcement support as an important accommodation and content specialization, not an exclusive product category.
 
-The project should remain capable of importing or interoperating with Comp AI, CISO Assistant, Prowler, FleetDM/osquery, and OSCAL rather than making one of those projects a permanent architectural dependency.
+The project should remain capable of importing or interoperating with Comp AI, CISO Assistant, Prowler, FleetDM/osquery, and OSCAL rather than making one of those projects a permanent architectural dependency. These projects are also approved implementation sources when the exact upstream revision, file-level license boundary, attribution, and maintenance approach are documented under the upstream reuse policy.
 
 ## Why
 
@@ -38,7 +38,7 @@ Comp AI is technically attractive: active AGPL code, organization-scoped data, i
 
 However, the current upstream repository describes local development more clearly than production self-hosting, says Docker deployment instructions are forthcoming, and relies on services such as Vercel, Trigger.dev, Upstash, and Browserbase in important paths. A wholesale fork would create a large upstream merge and operations burden before proving the MSP operating model and specialized workflows. Its open-core boundary must also be reviewed feature by feature.
 
-Decision: reuse concepts and consider selectively adapting compatible AGPL components only after a written dependency/license decision. Do not copy code accidentally; preserve notices and satisfy AGPL network-source obligations for any derivative work.
+Decision: inspect and reuse eligible upstream source deliberately rather than recreating proven components by default. Preserve exact provenance and notices, satisfy AGPL network-source obligations for derivative work, and exclude commercially licensed directories such as Comp AI's `/ee` unless a separate grant is obtained.
 
 ### Focused greenfield control plane
 

@@ -168,6 +168,12 @@ Keep infrastructure boring and self-hostable:
 
 Exact frameworks should be selected in an architecture decision record before scaffolding the production runtime. The first vertical slice should prove tenant isolation, framework import, one assessment, one manual evidence upload, one automated endpoint observation, review, and export.
 
+## Upstream-first engineering
+
+Architecture work begins with the upstream source register. Generic GRC and endpoint capabilities should be integrated or adapted from maintained open-source projects when that is safer and more economical than a new implementation. The architecture must retain clear component seams so Prowler, Fleet/osquery, or another collector can be replaced without changing the compliance domain model.
+
+Copied or modified source must identify its upstream revision and license at file/change level and appear in `THIRD_PARTY_NOTICES.md`. Open-core repositories are reviewed by directory: an open repository does not make its commercially licensed subdirectories available. Framework text and policy content receive a separate content-license review even when the application code is compatible.
+
 ## Deployment modes
 
 - Single-customer self-host: one organization, all multi-tenant controls still active.
