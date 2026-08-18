@@ -47,23 +47,29 @@ REQUIRED_TOP_LEVEL = {
 
 
 class ValidationErrors:
+    """Collect path-aware validation messages without failing fast."""
+
     def __init__(self, path: Path) -> None:
         self.path = path
         self.messages: list[str] = []
 
     def add(self, location: str, message: str) -> None:
+        """Add one validation message."""
         self.messages.append(f"{self.path.relative_to(ROOT)}:{location}: {message}")
 
     def require(self, condition: bool, location: str, message: str) -> None:
+        """Add a message when a required condition is false."""
         if not condition:
             self.add(location, message)
 
 
 def is_nonempty_string(value: Any) -> bool:
+    """Return whether a value is a string containing non-whitespace text."""
     return isinstance(value, str) and bool(value.strip())
 
 
 def is_https_url(value: Any) -> bool:
+    """Return whether a value is an absolute HTTPS URL."""
     if not isinstance(value, str):
         return False
     parsed = urlparse(value)
@@ -71,6 +77,7 @@ def is_https_url(value: Any) -> bool:
 
 
 def validate_pack(path: Path) -> list[str]:
+    """Validate one framework pack and return all discovered errors."""
     errors = ValidationErrors(path)
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -191,6 +198,7 @@ def validate_pack(path: Path) -> list[str]:
 
 
 def main() -> int:
+    """Validate the schema document and every repository framework pack."""
     if not SCHEMA_PATH.exists():
         print(f"missing schema: {SCHEMA_PATH.relative_to(ROOT)}", file=sys.stderr)
         return 1

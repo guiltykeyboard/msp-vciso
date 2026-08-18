@@ -1,0 +1,825 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "a3485502527f3555",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "5550be732b53324f50d466b459e8b71822b06328"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "629eac95977809d5c05901f7d66459c24682faf70a26df125404e43f8f6fdb91"
+        }
+      ],
+      "name": ".github/workflows/frameworks.yml",
+      "type": "file"
+    },
+    {
+      "bom-ref": "5ebde7ddc8076c2b",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "5be60522f9c8f3cbc439717591dcb17835f78fb9"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "63da22e01b4ae0f4850bbdd258e3b3fcdd04f60d120712a754ef67b2c55f42fe"
+        }
+      ],
+      "name": ".github/workflows/lint.yml",
+      "type": "file"
+    },
+    {
+      "bom-ref": "b0a51c126e9c4d2c",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "044cb00802b2bb86a4a4d057040d8621900565d0"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "62cb73d2bbc236090c79e61e12fa6a2202debee4045e4514012eaee777efe74e"
+        }
+      ],
+      "name": ".github/workflows/repository-metadata.yml",
+      "type": "file"
+    },
+    {
+      "bom-ref": "1066d3bfd77fcea6",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "adda29f5b7c4eb937d2343b88af3037a1a6c0424"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "ab3246b067b4384427a7a703de9f62fe4db5dd56921a552590558140134c6803"
+        }
+      ],
+      "name": ".github/workflows/slsa-provenance.yml",
+      "type": "file"
+    },
+    {
+      "bom-ref": "4ba17b6e41ad51a8",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "7840a4675b915051be776858d6daca4f3bc5b396"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "afca5c1004b3067e583ada675e7fe88ed7de0dd91d0c239f2a85d88750d2db18"
+        }
+      ],
+      "name": "requirements-dev.txt",
+      "type": "file"
+    },
+    {
+      "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=18c45782b687f41d",
+      "cpe": "cpe:2.3:a:actions\\/checkout:actions\\/checkout:v6.1.0:*:*:*:*:*:*:*",
+      "name": "actions/checkout",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/frameworks.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@v6.1.0",
+      "type": "library",
+      "version": "v6.1.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=24f37c9a2e9016eb",
+      "cpe": "cpe:2.3:a:actions\\/checkout:actions\\/checkout:v6.1.0:*:*:*:*:*:*:*",
+      "name": "actions/checkout",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/lint.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@v6.1.0",
+      "type": "library",
+      "version": "v6.1.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=0313ac91415e9acb",
+      "cpe": "cpe:2.3:a:actions\\/checkout:actions\\/checkout:v6.1.0:*:*:*:*:*:*:*",
+      "name": "actions/checkout",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/repository-metadata.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@v6.1.0",
+      "type": "library",
+      "version": "v6.1.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=a6ad424af716a01b",
+      "cpe": "cpe:2.3:a:actions\\/checkout:actions\\/checkout:v6.1.0:*:*:*:*:*:*:*",
+      "name": "actions/checkout",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/slsa-provenance.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@v6.1.0",
+      "type": "library",
+      "version": "v6.1.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/download-artifact@v4.3.0?package-id=40c9a96ae9ac347f",
+      "cpe": "cpe:2.3:a:actions\\/download-artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*",
+      "name": "actions/download-artifact",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download-artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/repository-metadata.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/download-artifact@v4.3.0",
+      "type": "library",
+      "version": "v4.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/download-artifact@v4.3.0?package-id=9c8af85cfbc5d047",
+      "cpe": "cpe:2.3:a:actions\\/download-artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*",
+      "name": "actions/download-artifact",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download-artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download_artifact:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/download:actions\\/download_artifact:v4.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/slsa-provenance.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/download-artifact@v4.3.0",
+      "type": "library",
+      "version": "v4.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=c459c6d9035face6",
+      "cpe": "cpe:2.3:a:actions\\/setup-python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*",
+      "name": "actions/setup-python",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup-python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/frameworks.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/setup-python@v6.3.0",
+      "type": "library",
+      "version": "v6.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=2476e3cc81beea57",
+      "cpe": "cpe:2.3:a:actions\\/setup-python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*",
+      "name": "actions/setup-python",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup-python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/lint.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/setup-python@v6.3.0",
+      "type": "library",
+      "version": "v6.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=fbc6fac33b5eedca",
+      "cpe": "cpe:2.3:a:actions\\/setup-python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*",
+      "name": "actions/setup-python",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup-python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/repository-metadata.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/setup-python@v6.3.0",
+      "type": "library",
+      "version": "v6.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/upload-artifact@v4.6.2?package-id=ced5bbcc092c9ef7",
+      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*",
+      "name": "actions/upload-artifact",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/repository-metadata.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/upload-artifact@v4.6.2",
+      "type": "library",
+      "version": "v4.6.2"
+    },
+    {
+      "bom-ref": "pkg:github/actions/upload-artifact@v4.6.2?package-id=022265afc3169512",
+      "cpe": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*",
+      "name": "actions/upload-artifact",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload-artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_artifact:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_artifact:v4.6.2:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/slsa-provenance.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/upload-artifact@v4.6.2",
+      "type": "library",
+      "version": "v4.6.2"
+    },
+    {
+      "bom-ref": "pkg:github/anchore/sbom-action@v0.24.0?package-id=4091c57a1486dd41",
+      "cpe": "cpe:2.3:a:anchore\\/sbom-action:anchore\\/sbom-action:v0.24.0:*:*:*:*:*:*:*",
+      "name": "anchore/sbom-action",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:anchore\\/sbom-action:anchore\\/sbom_action:v0.24.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:anchore\\/sbom_action:anchore\\/sbom-action:v0.24.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:anchore\\/sbom_action:anchore\\/sbom_action:v0.24.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:anchore\\/sbom:anchore\\/sbom-action:v0.24.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:anchore\\/sbom:anchore\\/sbom_action:v0.24.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/repository-metadata.yml"
+        }
+      ],
+      "purl": "pkg:github/anchore/sbom-action@v0.24.0",
+      "type": "library",
+      "version": "v0.24.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pylint@4.0.6?package-id=858a238de286ddb7",
+      "cpe": "cpe:2.3:a:python-pylint:python-pylint:4.0.6:*:*:*:*:*:*:*",
+      "name": "pylint",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "python-package-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "python"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "python"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "python-pip-requirements-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python-pylint:python_pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_pylint:python-pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_pylint:python_pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:pylint:python-pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:pylint:python_pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python-pylint:pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:python-pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:python_pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_pylint:pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:pylint:pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:pylint:4.0.6:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/requirements-dev.txt"
+        }
+      ],
+      "purl": "pkg:pypi/pylint@4.0.6",
+      "type": "library",
+      "version": "4.0.6"
+    },
+    {
+      "bom-ref": "pkg:github/slsa-framework/slsa-github-generator@v2.1.0?package-id=220a63326a52e464#.github/workflows/generator_generic_slsa3.yml",
+      "cpe": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*",
+      "name": "slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-action-workflow-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action-workflow"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa-github:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa_github:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa-framework\\/slsa:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa_framework\\/slsa:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator-generic-slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa:slsa-framework\\/slsa-github-generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:slsa:slsa_framework\\/slsa_github_generator\\/.github\\/workflows\\/generator_generic_slsa3.yml:v2.1.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/slsa-provenance.yml"
+        }
+      ],
+      "purl": "pkg:github/slsa-framework/slsa-github-generator@v2.1.0#.github/workflows/generator_generic_slsa3.yml",
+      "type": "library",
+      "version": "v2.1.0"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "af63bd4c8601b7f1",
+      "name": "watchtower-grc",
+      "type": "file",
+      "version": "development"
+    },
+    "tools": {
+      "components": [
+        {
+          "author": "anchore",
+          "name": "syft",
+          "type": "application",
+          "version": "1.50.0"
+        }
+      ]
+    }
+  },
+  "specVersion": "1.7",
+  "version": 1
+}

@@ -1,0 +1,13 @@
+[tool.pylint.main]
+py-version = "3.12"
+recursive = true
+ignore-paths = ["^tools/__pycache__/.*$"]
+
+[tool.pylint.format]
+max-line-length = 200
+
+[tool.pylint.messages-control]
+disable = ["too-many-branches", "too-many-locals", "too-many-statements"]
+
+[tool.pylint.reports]
+score = true

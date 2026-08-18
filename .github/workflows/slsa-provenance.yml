@@ -1,0 +1,66 @@
+name: SLSA provenance
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+      - name: Create release source archive
+        run: |
+          git archive \
+            --format=tar.gz \
+            --prefix="watchtower-${GITHUB_REF_NAME}/" \
+            --output="watchtower-${GITHUB_REF_NAME}.tar.gz" \
+            HEAD
+      - name: Calculate provenance subject
+        id: hash
+        run: |
+          echo "hashes=$(sha256sum "watchtower-${GITHUB_REF_NAME}.tar.gz" | base64 -w0)" >> "$GITHUB_OUTPUT"
+      - name: Upload source archive for release job
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: watchtower-source
+          path: watchtower-${{ github.ref_name }}.tar.gz
+          if-no-files-found: error
+          retention-days: 5
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
+    with:
+      base64-subjects: ${{ needs.build.outputs.hashes }}
+      upload-assets: true
+      upload-tag-name: ${{ github.ref_name }}
+
+  release-source:
+    needs: [build, provenance]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download source archive
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: watchtower-source
+          path: dist
+      - name: Upload source archive to tagged release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+

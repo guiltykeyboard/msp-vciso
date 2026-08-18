@@ -1,0 +1,79 @@
+name: Repository metadata
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "badges/**"
+      - "sbom/**"
+  workflow_dispatch:
+
+concurrency:
+  group: repository-metadata-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Generate repository badges
+        run: python tools/update_badges.py
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom/watchtower.cdx.json
+          syft-version: v1.50.0
+          artifact-name: watchtower-cyclonedx-sbom
+          upload-artifact: true
+          upload-release-assets: false
+      - name: Normalize CycloneDX SBOM
+        run: python tools/normalize_sbom.py sbom/watchtower.cdx.json --source-root "$GITHUB_WORKSPACE"
+      - name: Show pull-request metadata changes
+        if: github.event_name == 'pull_request'
+        run: |
+          git status --short -- badges sbom
+          git diff -- badges sbom
+      - name: Upload generated metadata
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: repository-metadata-files
+          path: |
+            badges
+            sbom
+          if-no-files-found: error
+          retention-days: 5
+
+  commit:
+    if: github.event_name != 'pull_request'
+    needs: [generate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Download generated metadata
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: repository-metadata-files
+          path: .
+      - name: Commit refreshed metadata
+        run: |
+          git add badges sbom
+          if git diff --cached --quiet; then
+            echo "Repository metadata is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh repository metadata [skip ci]"
+          git push

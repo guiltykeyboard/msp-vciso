@@ -1,5 +1,12 @@
 # Watchtower GRC
 
+[![Lint](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml)
+[![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
+[![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
+[![SLSA provenance](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml)
+![Languages](badges/languages.svg)
+![Lines of code](badges/lines-of-code.svg)
+
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
 > Project status: product and data-model foundation. This repository is not yet an audit-ready product and does not provide legal advice or certify compliance.
@@ -30,6 +37,8 @@ The first useful release should support:
 6. Auditor/customer read-only access and a redacted evidence export.
 
 See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), and [framework authoring](docs/framework-authoring.md).
+
+The current machine-readable [CycloneDX SBOM](sbom/watchtower.cdx.json) and its [human-readable guide](SBOM.md) are maintained in the repository. CI regenerates the SBOM and the repository-local language/line-count badges whenever `main` changes.
 
 ## Framework packs
 

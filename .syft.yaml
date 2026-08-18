@@ -1,0 +1,15 @@
+check-for-app-update: false
+
+source:
+  name: watchtower-grc
+  version: development
+  base-path: .
+
+exclude:
+  - "./.git/**"
+  - "./badges/**"
+  - "./sbom/**"
+  - "./build/**"
+  - "./dist/**"
+  - "./node_modules/**"
+  - "./vendor/**"
