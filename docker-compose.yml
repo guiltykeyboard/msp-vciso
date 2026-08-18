@@ -1,7 +1,72 @@
-# The production runtime has not been selected or scaffolded yet.
-# A non-functional placeholder compose file creates false confidence, so this
-# file intentionally documents the gate instead of declaring incomplete services.
-
 name: watchtower-grc
 
-services: {}
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: watchtower
+      POSTGRES_PASSWORD: watchtower_admin_dev_password
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d watchtower"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/bootstrap:/docker-entrypoint-initdb.d:ro
+
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_ADMIN_URL: postgresql+psycopg://postgres:watchtower_admin_dev_password@db:5432/watchtower
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://watchtower_runtime:watchtower_dev_password@db:5432/watchtower
+      WATCHTOWER_ALLOW_INSECURE_DEV_AUTH: "true"
+      WATCHTOWER_ENVIRONMENT: development
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready', timeout=2)"
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "8000:8000"
+
+  api-tests:
+    profiles: [test]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ["pytest"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_ADMIN_URL: postgresql://postgres:watchtower_admin_dev_password@db:5432/watchtower
+      DATABASE_URL: postgresql://watchtower_runtime:watchtower_dev_password@db:5432/watchtower
+      WATCHTOWER_ALLOW_INSECURE_DEV_AUTH: "true"
+      WATCHTOWER_ENVIRONMENT: test
+
+volumes:
+  postgres-data:

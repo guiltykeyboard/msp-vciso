@@ -1,6 +1,7 @@
 # Watchtower GRC
 
 [![Lint](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/lint.yml)
+[![API and tenant isolation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api.yml)
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![SLSA workflow](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/slsa-provenance.yml)
@@ -10,6 +11,24 @@
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
 > Project status: product and data-model foundation. This repository is not yet an audit-ready product and does not provide legal advice or certify compliance.
+
+## Development stack
+
+The first executable vertical slice includes a FastAPI service, PostgreSQL migrations, forced row-level security, tenant-scoped assessment endpoints, append-only audit events, and negative cross-tenant tests.
+
+Start PostgreSQL, apply migrations, and wait for the API health check:
+
+```bash
+docker compose up --build --wait db migrate api
+```
+
+The OpenAPI interface is then available at `http://localhost:8000/docs`. Run the API and database isolation suite with:
+
+```bash
+docker compose --profile test run --rm api-tests
+```
+
+The local API uses explicit `X-Watchtower-Organization` and `X-Watchtower-Actor` headers only when `WATCHTOWER_ALLOW_INSECURE_DEV_AUTH=true`. This adapter is for development and automated tests; application startup rejects it in the production environment. A production OIDC identity adapter is a required security gate before real customer data is used.
 
 ## Why this exists
 

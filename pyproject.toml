@@ -1,7 +1,7 @@
 [tool.pylint.main]
 py-version = "3.12"
 recursive = true
-ignore-paths = ["^tools/__pycache__/.*$"]
+ignore-paths = [".*/__pycache__/.*$"]
 
 [tool.pylint.format]
 max-line-length = 200
@@ -11,3 +11,9 @@ disable = ["too-many-branches", "too-many-locals", "too-many-statements"]
 
 [tool.pylint.reports]
 score = true
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+asyncio_mode = "auto"
+pythonpath = ["apps/api"]
+testpaths = ["tests"]
