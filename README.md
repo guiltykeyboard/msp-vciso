@@ -1,7 +1,12 @@
-# MSP Multi-Tenant Audit Platform
+# MSP Multi-Tenant Audit Platform (`msp-vciso`)
 
-Quick start: `docker-compose --profile with-web up --build`
-DB: `postgres:5432` · API: `localhost:8000` · Agent: 300s
+> Design reference for a low-cost, multi-tenant audit and evidence platform for MSP clients with CJIS Security Policy and Ohio House Bill 96 compliance needs.
+
+## Quick Start
+```bash
+docker-compose --profile with-web up --build
+```
+DB: `postgres:5432` · API: `localhost:8000` · Agent: 300s interval.
 
 ## Framework Mappings
 | Framework | Key Controls |
