@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+__MACOSX/
+# Python
+__pycache__/
+# Docker
+agent_logs/
+minio_data/
+db_data/
+# Secrets
+.env
