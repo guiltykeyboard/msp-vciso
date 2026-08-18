@@ -52,11 +52,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "adda29f5b7c4eb937d2343b88af3037a1a6c0424"
+          "content": "9c5afc5fdb1e467391d799aa21f52c6d9d356efa"
         },
         {
           "alg": "SHA-256",
-          "content": "ab3246b067b4384427a7a703de9f62fe4db5dd56921a552590558140134c6803"
+          "content": "0ecb00e24267296eaf727e321c669796f511a4f75668548d00833054294fe6e5"
         }
       ],
       "name": ".github/workflows/slsa-provenance.yml",
