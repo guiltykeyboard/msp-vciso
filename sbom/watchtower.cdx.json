@@ -3,18 +3,33 @@
   "bomFormat": "CycloneDX",
   "components": [
     {
+      "bom-ref": "3848c8a1d21fc58e",
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "2051aa56b91f07c897f7f30a0e7f85d9f1ee0f35"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "52d566579f0ed5990426281fc8007b74027a83e225804c9d2f27e33d1b0c752a"
+        }
+      ],
+      "name": "/workspace/.github/workflows/api-docs.yml",
+      "type": "file"
+    },
+    {
       "bom-ref": "2005239e2a819b2a",
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "2b3055ae074075ec5f95a9a40abfb8f51518aeed"
+          "content": "a97d5989433fb3fc579a02973b05d0026e488d74"
         },
         {
           "alg": "SHA-256",
-          "content": "55ce2b5ef24ed0f3bc514c90a7cd992da81eed45934e5abe4c93aaefd906e325"
+          "content": "549dbb4e208e97d85f41d75f2bd67852d99ebbb1d10d84301bcb08c46a8663d9"
         }
       ],
-      "name": ".github/workflows/api.yml",
+      "name": "/workspace/.github/workflows/api.yml",
       "type": "file"
     },
     {
@@ -29,7 +44,7 @@
           "content": "629eac95977809d5c05901f7d66459c24682faf70a26df125404e43f8f6fdb91"
         }
       ],
-      "name": ".github/workflows/frameworks.yml",
+      "name": "/workspace/.github/workflows/frameworks.yml",
       "type": "file"
     },
     {
@@ -44,7 +59,7 @@
           "content": "3a6c1a0141d2c1629a88057abf71188d85bb892535bfb7bbe650995e75a28aba"
         }
       ],
-      "name": ".github/workflows/lint.yml",
+      "name": "/workspace/.github/workflows/lint.yml",
       "type": "file"
     },
     {
@@ -59,7 +74,7 @@
           "content": "62cb73d2bbc236090c79e61e12fa6a2202debee4045e4514012eaee777efe74e"
         }
       ],
-      "name": ".github/workflows/repository-metadata.yml",
+      "name": "/workspace/.github/workflows/repository-metadata.yml",
       "type": "file"
     },
     {
@@ -74,7 +89,7 @@
           "content": "0ecb00e24267296eaf727e321c669796f511a4f75668548d00833054294fe6e5"
         }
       ],
-      "name": ".github/workflows/slsa-provenance.yml",
+      "name": "/workspace/.github/workflows/slsa-provenance.yml",
       "type": "file"
     },
     {
@@ -89,7 +104,7 @@
           "content": "f563afd4356f0a858d1cf8f3a84df512f4f3794ab6924ee3982e0e7e8375e5c7"
         }
       ],
-      "name": "requirements-dev.txt",
+      "name": "/workspace/requirements-dev.txt",
       "type": "file"
     },
     {
@@ -104,8 +119,34 @@
           "content": "e0321f475f6f21b424982bca37293b8c4dfdb93b1c3db972c7b6a53d5144537e"
         }
       ],
-      "name": "requirements.txt",
+      "name": "/workspace/requirements.txt",
       "type": "file"
+    },
+    {
+      "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=55a00b5f95b3003c",
+      "cpe": "cpe:2.3:a:actions\\/checkout:actions\\/checkout:v6.1.0:*:*:*:*:*:*:*",
+      "name": "actions/checkout",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/api-docs.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@v6.1.0",
+      "type": "library",
+      "version": "v6.1.0"
     },
     {
       "bom-ref": "pkg:github/actions/checkout@v6.1.0?package-id=ec94991ae5611ce5",
@@ -238,6 +279,98 @@
       "version": "v6.1.0"
     },
     {
+      "bom-ref": "pkg:github/actions/configure-pages@v5?package-id=89cb331692222945",
+      "cpe": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure-pages:v5:*:*:*:*:*:*:*",
+      "name": "actions/configure-pages",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/configure-pages:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure-pages:v5:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/configure_pages:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure-pages:v5:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/configure:actions\\/configure_pages:v5:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/api-docs.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/configure-pages@v5",
+      "type": "library",
+      "version": "v5"
+    },
+    {
+      "bom-ref": "pkg:github/actions/deploy-pages@v4?package-id=a466743724c98c59",
+      "cpe": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy-pages:v4:*:*:*:*:*:*:*",
+      "name": "actions/deploy-pages",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/deploy-pages:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy-pages:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/deploy_pages:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy-pages:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/deploy:actions\\/deploy_pages:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/api-docs.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/deploy-pages@v4",
+      "type": "library",
+      "version": "v4"
+    },
+    {
       "bom-ref": "pkg:github/actions/download-artifact@v4.3.0?package-id=40c9a96ae9ac347f",
       "cpe": "cpe:2.3:a:actions\\/download-artifact:actions\\/download-artifact:v4.3.0:*:*:*:*:*:*:*",
       "name": "actions/download-artifact",
@@ -328,6 +461,52 @@
       "purl": "pkg:github/actions/download-artifact@v4.3.0",
       "type": "library",
       "version": "v4.3.0"
+    },
+    {
+      "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=0ccc20df9db34d9f",
+      "cpe": "cpe:2.3:a:actions\\/setup-python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*",
+      "name": "actions/setup-python",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup-python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup_python:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup-python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/setup:actions\\/setup_python:v6.3.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/api-docs.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/setup-python@v6.3.0",
+      "type": "library",
+      "version": "v6.3.0"
     },
     {
       "bom-ref": "pkg:github/actions/setup-python@v6.3.0?package-id=c459c6d9035face6",
@@ -558,6 +737,68 @@
       "purl": "pkg:github/actions/upload-artifact@v4.6.2",
       "type": "library",
       "version": "v4.6.2"
+    },
+    {
+      "bom-ref": "pkg:github/actions/upload-pages-artifact@v4?package-id=55980e95add3a93c",
+      "cpe": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*",
+      "name": "actions/upload-pages-artifact",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "github-actions-usage-cataloger"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "github-action"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "github-actions-use-statement"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload-pages-artifact:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_pages_artifact:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload-pages:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload_pages:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload-pages-artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:actions\\/upload:actions\\/upload_pages_artifact:v4:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/.github/workflows/api-docs.yml"
+        }
+      ],
+      "purl": "pkg:github/actions/upload-pages-artifact@v4",
+      "type": "library",
+      "version": "v4"
     },
     {
       "bom-ref": "pkg:pypi/alembic@1.19.1?package-id=94fbbc1b5c722f39",
@@ -1760,7 +2001,7 @@
   ],
   "metadata": {
     "component": {
-      "bom-ref": "af63bd4c8601b7f1",
+      "bom-ref": "8dcbd803f369ec9f",
       "name": "watchtower-grc",
       "type": "file",
       "version": "development"

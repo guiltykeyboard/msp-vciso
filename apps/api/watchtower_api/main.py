@@ -37,18 +37,53 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(
     title="Watchtower GRC API",
+    summary="Tenant-safe compliance and evidence automation for MSPs",
+    description=(
+        "Watchtower's versioned HTTP API for MSP, customer, auditor, evidence, "
+        "and assessment workflows. The X-Watchtower headers currently shown on "
+        "tenant endpoints are an insecure development adapter, not production authentication."
+    ),
     version=__version__,
     lifespan=lifespan,
+    contact={
+        "name": "Watchtower GRC maintainers",
+        "url": "https://github.com/guiltykeyboard/msp-vciso",
+    },
+    license_info={
+        "name": "GNU Affero General Public License v3.0",
+        "identifier": "AGPL-3.0-only",
+    },
+    openapi_tags=[
+        {"name": "health", "description": "Process and dependency health checks."},
+        {
+            "name": "tenancy",
+            "description": "The organization authorized for the current request.",
+        },
+        {
+            "name": "assessments",
+            "description": "Tenant-isolated compliance assessment operations.",
+        },
+    ],
 )
 
 
-@app.get("/health/live", tags=["health"])
+@app.get(
+    "/health/live",
+    tags=["health"],
+    summary="Check process liveness",
+    operation_id="getLiveness",
+)
 async def liveness() -> dict[str, str]:
     """Return process liveness without touching a dependency."""
     return {"status": "ok"}
 
 
-@app.get("/health/ready", tags=["health"])
+@app.get(
+    "/health/ready",
+    tags=["health"],
+    summary="Check database readiness",
+    operation_id="getReadiness",
+)
 async def readiness() -> dict[str, str]:
     """Return readiness only after PostgreSQL accepts a query."""
     async with app.state.pool.connection() as connection:
@@ -60,6 +95,8 @@ async def readiness() -> dict[str, str]:
     "/v1/organization",
     response_model=OrganizationResponse,
     tags=["tenancy"],
+    summary="Get the current organization",
+    operation_id="getCurrentOrganization",
 )
 async def current_organization(session: TenantDatabaseSession) -> Any:
     """Return the organization selected by the authorized tenant context."""
@@ -77,6 +114,8 @@ async def current_organization(session: TenantDatabaseSession) -> Any:
     "/v1/assessments",
     response_model=list[AssessmentResponse],
     tags=["assessments"],
+    summary="List assessments",
+    operation_id="listAssessments",
 )
 async def list_assessments(session: TenantDatabaseSession) -> list[dict[str, Any]]:
     """List assessments; RLS supplies the mandatory tenant predicate."""
@@ -95,6 +134,8 @@ async def list_assessments(session: TenantDatabaseSession) -> list[dict[str, Any
     response_model=AssessmentResponse,
     status_code=status.HTTP_201_CREATED,
     tags=["assessments"],
+    summary="Create an assessment",
+    operation_id="createAssessment",
 )
 async def create_assessment(
     payload: AssessmentCreate,

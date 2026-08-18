@@ -4,8 +4,10 @@ on:
   pull_request:
     paths:
       - "apps/api/**"
+      - "api/**"
       - "db/**"
       - "tests/**"
+      - "tools/export_api_artifacts.py"
       - "requirements*.txt"
       - "alembic.ini"
       - "docker-compose.yml"
@@ -14,8 +16,10 @@ on:
     branches: [main]
     paths:
       - "apps/api/**"
+      - "api/**"
       - "db/**"
       - "tests/**"
+      - "tools/export_api_artifacts.py"
       - "requirements*.txt"
       - "alembic.ini"
       - "docker-compose.yml"
@@ -34,6 +38,8 @@ jobs:
         run: docker compose up --build --wait db migrate
       - name: Run API and PostgreSQL isolation tests
         run: docker compose --profile test run --rm api-tests
+      - name: Verify committed OpenAPI and Postman artifacts
+        run: docker compose --profile test run --no-deps --rm api-tests python tools/export_api_artifacts.py --check
       - name: Show service logs after a failure
         if: failure()
         run: docker compose logs db migrate

@@ -15,5 +15,5 @@ score = true
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
 asyncio_mode = "auto"
-pythonpath = ["apps/api"]
+pythonpath = [".", "apps/api"]
 testpaths = ["tests"]

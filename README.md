@@ -55,7 +55,11 @@ The first useful release should support:
 5. Configurable obligations, deadlines, and sensitive-evidence handling, initially demonstrated by Ohio incident reporting and CJIS.
 6. Auditor/customer read-only access and a redacted evidence export.
 
-See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
+See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
+
+## API reference
+
+The application publishes interactive Swagger UI at `/docs`, ReDoc at `/redoc`, and its OpenAPI JSON at `/openapi.json`. Deterministic snapshots are committed as [OpenAPI JSON](api/openapi.json), a [Postman collection](api/postman/watchtower.postman_collection.json), and a [Swagger-style static reference](api/reference/index.html). The reference is published through GitHub Pages at [guiltykeyboard.github.io/msp-vciso](https://guiltykeyboard.github.io/msp-vciso/). See [API documentation](docs/api.md) for generation and validation commands.
 
 The current machine-readable [CycloneDX SBOM](sbom/watchtower.cdx.json) and its [human-readable guide](SBOM.md) are maintained in the repository. CI regenerates the SBOM and the repository-local language/line-count badges whenever `main` changes.
 

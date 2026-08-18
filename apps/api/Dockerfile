@@ -9,10 +9,12 @@ WORKDIR /app
 COPY requirements.txt requirements-dev.txt ./
 RUN python -m pip install --no-cache-dir --requirement requirements.txt --requirement requirements-dev.txt
 
-COPY alembic.ini ./
+COPY alembic.ini pyproject.toml ./
 COPY apps/api ./apps/api
+COPY api ./api
 COPY db ./db
 COPY tests ./tests
+COPY tools ./tools
 
 RUN useradd --create-home --uid 10001 watchtower \
     && chown -R watchtower:watchtower /app
