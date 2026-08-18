@@ -1,2 +1,7 @@
-version: "3.9"
-# Multi-tenant audit platform — MSP / LE-oriented
+# The production runtime has not been selected or scaffolded yet.
+# A non-functional placeholder compose file creates false confidence, so this
+# file intentionally documents the gate instead of declaring incomplete services.
+
+name: watchtower-grc
+
+services: {}

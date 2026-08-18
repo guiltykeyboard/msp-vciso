@@ -1,0 +1,30 @@
+name: Framework packs
+
+on:
+  pull_request:
+    paths:
+      - "frameworks/**"
+      - "tools/validate_frameworks.py"
+      - ".github/workflows/frameworks.yml"
+  push:
+    branches: [main]
+    paths:
+      - "frameworks/**"
+      - "tools/validate_frameworks.py"
+      - ".github/workflows/frameworks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile validator
+        run: python -m py_compile tools/validate_frameworks.py
+      - name: Validate framework packs
+        run: python tools/validate_frameworks.py

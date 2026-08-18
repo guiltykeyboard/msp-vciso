@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.0",
+  "id": "OH.ORC.9.64",
+  "slug": "ohio-orc-9-64",
+  "title": "Ohio Political Subdivision Cybersecurity",
+  "framework_version": "2025-09-30",
+  "pack_version": "0.1.0",
+  "authority": "State of Ohio",
+  "published_at": "2025-08-13",
+  "effective_at": "2025-09-30",
+  "supersedes": null,
+  "description": "Operational representation of Ohio Revised Code 9.64, enacted through House Bill 96 of the 136th General Assembly, with implementation milestones from Ohio Auditor of State Bulletin 2025-007.",
+  "legal_disclaimer": "This community-authored pack is not legal advice and is not an official interpretation. Users must confirm applicability and implementation with legal counsel and the relevant Ohio authorities.",
+  "sources": [
+    {
+      "id": "ORC-9.64",
+      "title": "Ohio Revised Code Section 9.64 — Political subdivision cybersecurity",
+      "url": "https://codes.ohio.gov/ohio-revised-code/section-9.64",
+      "authoritative": true,
+      "retrieved_at": "2026-08-18"
+    },
+    {
+      "id": "AOS-2025-007",
+      "title": "Ohio Auditor of State Bulletin 2025-007 — Adoption of Cybersecurity Program",
+      "url": "https://www.ohioauditor.gov/publications/bulletins/2025/2025-007.pdf",
+      "authoritative": true,
+      "retrieved_at": "2026-08-18"
+    }
+  ],
+  "applicability": {
+    "summary": "Applies to an Ohio political subdivision: a county, township, municipal corporation, or other body corporate and politic responsible for governmental activities in an area smaller than the state.",
+    "entity_types": ["county", "city", "village", "township", "other_political_subdivision"]
+  },
+  "milestones": [
+    {
+      "id": "OH-964-M1",
+      "title": "County and city cybersecurity program implementation",
+      "due_at": "2026-01-01",
+      "applies_when": "organization.entity_type in ['county', 'city']",
+      "source_id": "AOS-2025-007",
+      "citation": "Bulletin 2025-007, page 2, Cyber Security Program Implementation Due Dates"
+    },
+    {
+      "id": "OH-964-M2",
+      "title": "Other political subdivision cybersecurity program implementation",
+      "due_at": "2026-07-01",
+      "applies_when": "organization.entity_type in ['village', 'township', 'other_political_subdivision']",
+      "source_id": "AOS-2025-007",
+      "citation": "Bulletin 2025-007, page 2, Cyber Security Program Implementation Due Dates"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "OH-964-B-1",
+      "section": "9.64(B)",
+      "title": "Ransomware payment authorization",
+      "type": "conditional",
+      "condition": "A ransomware incident has occurred and the political subdivision will pay or otherwise comply with the ransom demand.",
+      "summary": "The legislative authority must formally approve payment or compliance in a resolution or ordinance that specifically explains why doing so is in the political subdivision's best interest.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(B)",
+      "test_procedure": "For every ransomware incident, verify whether payment or other compliance occurred. If it did, inspect the adopted resolution or ordinance for formal approval and a specific best-interest rationale.",
+      "evidence": [
+        {
+          "id": "OH-964-B-1-E1",
+          "title": "Ransomware payment decision record",
+          "type": "incident_record",
+          "sensitivity": "confidential",
+          "description": "Decision record showing whether payment or other compliance occurred, including decision date and responsible authority.",
+          "freshness_days": null
+        },
+        {
+          "id": "OH-964-B-1-E2",
+          "title": "Approved resolution or ordinance",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Adopted resolution or ordinance containing the required best-interest rationale when payment or compliance was approved.",
+          "freshness_days": null
+        }
+      ],
+      "automated_checks": [],
+      "tags": ["incident-response", "ransomware", "governance"]
+    },
+    {
+      "id": "OH-964-C-1",
+      "section": "9.64(C)",
+      "title": "Adopt a cybersecurity program",
+      "type": "mandatory",
+      "summary": "The legislative authority must adopt a cybersecurity program that protects the political subdivision's data, IT, and IT resources for availability, confidentiality, and integrity and is consistent with generally accepted cybersecurity best practices such as NIST CSF and CIS practices.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(C)",
+      "test_procedure": "Verify formal adoption by the legislative authority, determine the applicable Bulletin 2025-007 milestone, and review whether the program covers the entity's data and IT resources and identifies the accepted practice baseline used.",
+      "evidence": [
+        {
+          "id": "OH-964-C-1-E1",
+          "title": "Adopted cybersecurity program",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Current approved program or policy with version, approval date, scope, and referenced best-practice baseline.",
+          "freshness_days": 365
+        },
+        {
+          "id": "OH-964-C-1-E2",
+          "title": "Legislative adoption record",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Minutes, resolution, ordinance, or other record showing adoption by the legislative authority.",
+          "freshness_days": null
+        },
+        {
+          "id": "OH-964-C-1-E3",
+          "title": "Program scope and baseline attestation",
+          "type": "attestation",
+          "sensitivity": "confidential",
+          "description": "Reviewer-approved statement identifying covered data/technology resources and the NIST, CIS, or other accepted baseline used.",
+          "freshness_days": 365
+        }
+      ],
+      "automated_checks": [],
+      "tags": ["governance", "cybersecurity-program", "cia"]
+    },
+    {
+      "id": "OH-964-C-G1",
+      "section": "9.64(C)(1)-(5)",
+      "title": "Program lifecycle capabilities",
+      "type": "guidance",
+      "summary": "The statute says the program may include risk and critical-function identification, breach-impact analysis, threat/event detection, incident communications/analysis/containment, and infrastructure repair with maintained security.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(C)(1)-(5)",
+      "test_procedure": "Review whether the program addresses each lifecycle capability or documents a tailored alternative. Report gaps as guidance findings, not as independent statutory violations.",
+      "evidence": [
+        {
+          "id": "OH-964-C-G1-E1",
+          "title": "Risk and incident capability crosswalk",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Crosswalk from the program to risk, impact, detection, response, recovery, and maintenance capabilities.",
+          "freshness_days": 365
+        }
+      ],
+      "automated_checks": [],
+      "tags": ["risk", "detect", "respond", "recover"],
+      "notes": "The introductory statutory language is 'may include, but are not limited to'; this pack therefore models these items as guidance rather than separate mandatory duties."
+    },
+    {
+      "id": "OH-964-C-G2",
+      "section": "9.64(C)(6)",
+      "title": "Role-appropriate employee cybersecurity training",
+      "type": "guidance",
+      "summary": "The program may establish cybersecurity training for all employees with frequency, duration, and detail matched to their duties; specified state and O-PCI training can satisfy this element.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(C)(6); Auditor Bulletin 2025-007, pages 2-3",
+      "test_procedure": "Review the training standard, population, role-based cadence, completion records, and approved equivalencies. Report a missing element as a program-design gap with the statutory modality preserved.",
+      "evidence": [
+        {
+          "id": "OH-964-C-G2-E1",
+          "title": "Training standard",
+          "type": "document",
+          "sensitivity": "internal",
+          "description": "Program section or procedure defining role-appropriate cybersecurity training.",
+          "freshness_days": 365
+        },
+        {
+          "id": "OH-964-C-G2-E2",
+          "title": "Training completion roster",
+          "type": "training_record",
+          "sensitivity": "confidential",
+          "description": "Roster showing assigned and completed training by employee role and due date.",
+          "freshness_days": 365
+        }
+      ],
+      "automated_checks": [
+        {
+          "id": "OH-964-C-G2-A1",
+          "collector": "training.roster.v1",
+          "observation": "For each active employee: role, assigned module, due_at, completed_at, and accepted equivalency.",
+          "result_logic": "pass when every active employee has a non-expired completion or accepted equivalency matching the tenant's approved role-training matrix; otherwise fail with the missing employee identifiers",
+          "cadence": "daily",
+          "review_required": true
+        }
+      ],
+      "tags": ["training", "workforce"]
+    },
+    {
+      "id": "OH-964-D-1",
+      "section": "9.64(D)(1)",
+      "title": "Notify Ohio Homeland Security",
+      "type": "conditional",
+      "condition": "The political subdivision discovers a cybersecurity incident or ransomware incident as defined by section 9.64.",
+      "summary": "Notify the Executive Director of the Division of Homeland Security in the prescribed manner as soon as possible and no later than seven days after discovery.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(D)(1)",
+      "test_procedure": "For each qualifying incident, compare the recorded discovery time with the notification submission time and verify recipient and submission proof. Escalate before the deadline; do not wait for a periodic assessment.",
+      "evidence": [
+        {
+          "id": "OH-964-D-1-E1",
+          "title": "Incident discovery record",
+          "type": "incident_record",
+          "sensitivity": "confidential",
+          "description": "Record of incident classification and the date/time the entity discovered the incident.",
+          "freshness_days": null
+        },
+        {
+          "id": "OH-964-D-1-E2",
+          "title": "Homeland Security notification proof",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Submission receipt or equivalent proof identifying recipient, method, sender, and submission timestamp.",
+          "freshness_days": null
+        }
+      ],
+      "automated_checks": [
+        {
+          "id": "OH-964-D-1-A1",
+          "collector": "watchtower.incident-deadline.v1",
+          "observation": "Incident qualifies, discovered_at timestamp, and Homeland Security submitted_at timestamp.",
+          "result_logic": "pass when incident.qualifies is false or homeland_security.submitted_at <= incident.discovered_at + 7 calendar days; pending before deadline; fail after deadline",
+          "cadence": "event-driven and hourly while pending",
+          "review_required": true
+        }
+      ],
+      "tags": ["incident-response", "reporting", "deadline"]
+    },
+    {
+      "id": "OH-964-D-2",
+      "section": "9.64(D)(2)",
+      "title": "Notify the Ohio Auditor of State",
+      "type": "conditional",
+      "condition": "The political subdivision discovers a cybersecurity incident or ransomware incident as defined by section 9.64.",
+      "summary": "Notify the Auditor of State in the prescribed manner as soon as possible and no later than thirty days after discovery.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(D)(2)",
+      "test_procedure": "For each qualifying incident, compare the recorded discovery time with the Auditor submission time and verify recipient and submission proof.",
+      "evidence": [
+        {
+          "id": "OH-964-D-2-E1",
+          "title": "Incident discovery record",
+          "type": "incident_record",
+          "sensitivity": "confidential",
+          "description": "Record of incident classification and the date/time the entity discovered the incident.",
+          "freshness_days": null
+        },
+        {
+          "id": "OH-964-D-2-E2",
+          "title": "Auditor of State notification proof",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Submission receipt or equivalent proof identifying recipient, method, sender, and submission timestamp.",
+          "freshness_days": null
+        }
+      ],
+      "automated_checks": [
+        {
+          "id": "OH-964-D-2-A1",
+          "collector": "watchtower.incident-deadline.v1",
+          "observation": "Incident qualifies, discovered_at timestamp, and Auditor of State submitted_at timestamp.",
+          "result_logic": "pass when incident.qualifies is false or auditor.submitted_at <= incident.discovered_at + 30 calendar days; pending before deadline; fail after deadline",
+          "cadence": "event-driven and hourly while pending",
+          "review_required": true
+        }
+      ],
+      "tags": ["incident-response", "reporting", "deadline"]
+    },
+    {
+      "id": "OH-964-E-1",
+      "section": "9.64(E)",
+      "title": "Cybersecurity program and incident records are not public records",
+      "type": "record_classification",
+      "summary": "Records, documents, and reports related to the cybersecurity program/framework and incident reports under division (D) are not public records under section 149.43.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(E)",
+      "test_procedure": "Verify applicable records are classified, access-controlled, labeled in exports, and routed through the entity's counsel-approved public-records process.",
+      "evidence": [
+        {
+          "id": "OH-964-E-1-E1",
+          "title": "Records classification procedure",
+          "type": "document",
+          "sensitivity": "confidential",
+          "description": "Procedure mapping program/framework and incident-report records to the non-public classification and approved disclosure workflow.",
+          "freshness_days": 365
+        }
+      ],
+      "automated_checks": [],
+      "tags": ["records", "confidentiality", "public-records"]
+    },
+    {
+      "id": "OH-964-F-1",
+      "section": "9.64(F)",
+      "title": "Cybersecurity procurement and inventory records are security records",
+      "type": "record_classification",
+      "summary": "Records identifying cybersecurity-related software, hardware, goods, or services being considered, procured, or used—including vendor/product/project identifiers—are security records under section 149.433.",
+      "source_id": "ORC-9.64",
+      "citation": "Ohio Rev. Code 9.64(F)",
+      "test_procedure": "Verify procurement, inventory, evidence, and export workflows classify covered records as security records and require an approved disclosure review.",
+      "evidence": [
+        {
+          "id": "OH-964-F-1-E1",
+          "title": "Security-record handling procedure",
+          "type": "document",
+          "sensitivity": "security_record",
+          "description": "Procedure for identifying, labeling, authorizing, exporting, and responding to requests for covered cybersecurity procurement and inventory records.",
+          "freshness_days": 365
+        }
+      ],
+      "automated_checks": [],
+      "tags": ["records", "procurement", "asset-inventory", "public-records"]
+    }
+  ]
+}
+

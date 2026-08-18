@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://watchtower-grc.org/schemas/framework-pack.schema.json",
+  "title": "Watchtower framework pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "slug",
+    "title",
+    "framework_version",
+    "pack_version",
+    "authority",
+    "published_at",
+    "effective_at",
+    "sources",
+    "applicability",
+    "milestones",
+    "requirements"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "id": { "$ref": "#/$defs/id" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "framework_version": { "type": "string", "minLength": 1 },
+    "pack_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "authority": { "type": "string", "minLength": 1 },
+    "published_at": { "type": "string", "format": "date" },
+    "effective_at": { "type": "string", "format": "date" },
+    "supersedes": { "type": ["string", "null"] },
+    "description": { "type": "string" },
+    "legal_disclaimer": { "type": "string", "minLength": 1 },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "entity_types"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "entity_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "due_at", "applies_when", "source_id", "citation"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "title": { "type": "string", "minLength": 1 },
+          "due_at": { "type": "string", "format": "date" },
+          "applies_when": { "type": "string", "minLength": 1 },
+          "source_id": { "$ref": "#/$defs/id" },
+          "citation": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/requirement" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9._-]*$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "url", "authoritative"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "authoritative": { "type": "boolean" },
+        "retrieved_at": { "type": "string", "format": "date" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "type", "sensitivity", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "type": {
+          "enum": [
+            "document",
+            "attestation",
+            "config_snapshot",
+            "device_posture",
+            "training_record",
+            "incident_record",
+            "ticket",
+            "log",
+            "export"
+          ]
+        },
+        "sensitivity": {
+          "enum": ["public", "internal", "confidential", "security_record", "cji"]
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "freshness_days": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "automated_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "collector", "observation", "result_logic", "cadence", "review_required"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "collector": { "type": "string", "minLength": 1 },
+        "observation": { "type": "string", "minLength": 1 },
+        "result_logic": { "type": "string", "minLength": 1 },
+        "cadence": { "type": "string", "minLength": 1 },
+        "review_required": { "type": "boolean" }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "section",
+        "title",
+        "type",
+        "summary",
+        "source_id",
+        "citation",
+        "test_procedure",
+        "evidence",
+        "automated_checks",
+        "tags"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "section": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "type": {
+          "enum": ["mandatory", "conditional", "guidance", "record_classification"]
+        },
+        "condition": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "source_id": { "$ref": "#/$defs/id" },
+        "citation": { "type": "string", "minLength": 1 },
+        "test_procedure": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "automated_checks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/automated_check" }
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
+
