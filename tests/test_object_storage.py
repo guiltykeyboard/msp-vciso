@@ -51,6 +51,7 @@ class FakeS3Client:
     def __init__(self, content: bytes = TEST_CONTENT) -> None:
         self.presign: dict | None = None
         self.content = content
+        self.retention: dict | None = None
 
     def generate_presigned_url(self, operation, **kwargs):
         """Capture presign arguments and return a stable URL."""
@@ -73,6 +74,11 @@ class FakeS3Client:
     def copy_object(self, **_kwargs):
         """Accept preservation of the verified object."""
         return {"CopyObjectResult": {"ETag": '"copied-etag"'}}
+
+    def put_object_retention(self, **kwargs):
+        """Capture an Object Lock request."""
+        self.retention = kwargs
+        return {}
 
 
 @pytest.mark.asyncio
@@ -104,6 +110,12 @@ async def test_s3_presign_and_inspection_preserve_integrity_metadata() -> None:
     assert client.presign["Params"]["ServerSideEncryption"] == "AES256"
     assert stored.byte_size == 42
     assert stored.sha256 == TEST_SHA256
+
+    download = await store.create_download("evidence/tenant/upload.json", expires_at)
+    await store.set_retention("evidence/tenant/upload.json", expires_at, "governance")
+    assert download.url.endswith("signed-upload")
+    assert client.presign["operation"] == "get_object"
+    assert client.retention["Retention"]["Mode"] == "GOVERNANCE"
 
 
 @pytest.mark.asyncio
@@ -151,6 +163,9 @@ class FakeBlobClient:
 
     url = "https://watchtower.blob.core.usgovcloudapi.net/evidence/object.json"
 
+    def __init__(self) -> None:
+        self.immutability_policy = None
+
     def get_blob_properties(self):
         """Return provider properties with integrity metadata."""
         return SimpleNamespace(
@@ -167,6 +182,11 @@ class FakeBlobClient:
     def start_copy_from_url(self, *_args, **_kwargs):
         """Accept preservation of the verified blob."""
         return {"copy_status": "success"}
+
+    def set_immutability_policy(self, policy):
+        """Capture an Azure immutability policy."""
+        self.immutability_policy = policy
+        return {}
 
 
 class FakeBlobServiceClient:
@@ -216,3 +236,6 @@ async def test_azure_presign_and_inspection_preserve_integrity_metadata(monkeypa
     assert grant.headers["x-ms-meta-sha256"] == TEST_SHA256
     assert stored.expected_size == "42"
     assert stored.media_type == "application/json"
+    download = await store.create_download("evidence/tenant/object.json", expires_at)
+    await store.set_retention("evidence/tenant/object.json", expires_at, "compliance")
+    assert download.url.endswith("?signed-sas-token")

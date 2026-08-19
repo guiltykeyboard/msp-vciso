@@ -10,7 +10,12 @@ from typing import Any, Protocol
 
 from azure.core.exceptions import AzureError, ResourceNotFoundError
 from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobSasPermissions, BlobServiceClient, generate_blob_sas
+from azure.storage.blob import (
+    BlobSasPermissions,
+    BlobServiceClient,
+    ImmutabilityPolicy,
+    generate_blob_sas,
+)
 import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
@@ -37,6 +42,14 @@ class UploadGrant:
     method: str
     url: str
     headers: dict[str, str]
+    expires_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class DownloadGrant:
+    """A short-lived direct-download authorization."""
+
+    url: str
     expires_at: datetime
 
 
@@ -74,6 +87,17 @@ class ObjectStore(Protocol):
         sha256: str,
     ) -> StoredObject:
         """Hash staged bytes and copy the verified object to an unexposed key."""
+
+    async def create_download(self, object_key: str, expires_at: datetime) -> DownloadGrant:
+        """Create a constrained direct-download request."""
+
+    async def set_retention(
+        self,
+        object_key: str,
+        retain_until: datetime,
+        mode: str,
+    ) -> None:
+        """Apply provider-native retention to a committed evidence object."""
 
 
 class S3ObjectStore:
@@ -232,6 +256,38 @@ class S3ObjectStore:
             sha256,
         )
 
+    async def create_download(self, object_key: str, expires_at: datetime) -> DownloadGrant:
+        """Create a short-lived signed GET for one committed S3 object."""
+        lifetime = max(1, int((expires_at - datetime.now(UTC)).total_seconds()))
+        try:
+            url = await asyncio.to_thread(
+                self.signing_client.generate_presigned_url,
+                "get_object",
+                Params={"Bucket": self.bucket, "Key": object_key},
+                ExpiresIn=lifetime,
+                HttpMethod="GET",
+            )
+        except (ClientError, ValueError, TypeError) as error:
+            raise ObjectStorageError("S3 could not create a download URL") from error
+        return DownloadGrant(url=url, expires_at=expires_at)
+
+    async def set_retention(
+        self,
+        object_key: str,
+        retain_until: datetime,
+        mode: str,
+    ) -> None:
+        """Apply S3 Object Lock retention to the current object version."""
+        try:
+            await asyncio.to_thread(
+                self.client.put_object_retention,
+                Bucket=self.bucket,
+                Key=object_key,
+                Retention={"Mode": mode.upper(), "RetainUntilDate": retain_until},
+            )
+        except ClientError as error:
+            raise ObjectStorageError("S3 could not apply object retention") from error
+
 
 class AzureBlobObjectStore:
     """Azure Blob adapter using managed identity and user-delegation SAS tokens."""
@@ -379,6 +435,46 @@ class AzureBlobObjectStore:
             byte_size,
             sha256,
         )
+
+    async def create_download(self, object_key: str, expires_at: datetime) -> DownloadGrant:
+        """Create a short-lived read-only user-delegation SAS."""
+        start = datetime.now(UTC) - timedelta(minutes=5)
+        try:
+            delegation_key = await asyncio.to_thread(
+                self.service_client.get_user_delegation_key,
+                key_start_time=start,
+                key_expiry_time=expires_at,
+            )
+            token = generate_blob_sas(
+                account_name=self.service_client.account_name,
+                container_name=self.container,
+                blob_name=object_key,
+                user_delegation_key=delegation_key,
+                permission=BlobSasPermissions(read=True),
+                start=start,
+                expiry=expires_at,
+            )
+            blob = self.service_client.get_blob_client(container=self.container, blob=object_key)
+        except (AzureError, ValueError, TypeError) as error:
+            raise ObjectStorageError("Azure Blob could not create a download URL") from error
+        return DownloadGrant(url=f"{blob.url}?{token}", expires_at=expires_at)
+
+    async def set_retention(
+        self,
+        object_key: str,
+        retain_until: datetime,
+        mode: str,
+    ) -> None:
+        """Apply Azure version-level immutability to one evidence blob."""
+        policy_mode = "Locked" if mode == "compliance" else "Unlocked"
+        blob = self.service_client.get_blob_client(container=self.container, blob=object_key)
+        try:
+            await asyncio.to_thread(
+                blob.set_immutability_policy,
+                ImmutabilityPolicy(expiry_time=retain_until, policy_mode=policy_mode),
+            )
+        except AzureError as error:
+            raise ObjectStorageError("Azure Blob could not apply immutability") from error
 
 
 def create_object_store(settings: ObjectStorageSettings) -> ObjectStore | None:

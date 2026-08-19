@@ -219,6 +219,73 @@
           }
         },
         {
+          "name": "Get evidence retention defaults",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence-retention-policy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence-retention-policy"
+              ]
+            },
+            "description": "Return tenant defaults, including safe no-lock behavior when unset."
+          }
+        },
+        {
+          "name": "Set evidence retention defaults",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence-retention-policy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence-retention-policy"
+              ]
+            },
+            "description": "Set retention defaults for future artifacts; existing holds remain unchanged.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_lock_mode\": \"<value>\",\n  \"retention_days\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "Verify and complete an evidence upload",
           "request": {
             "method": "POST",
@@ -252,6 +319,90 @@
               ]
             },
             "description": "Verify object integrity before committing an immutable observation."
+          }
+        },
+        {
+          "name": "Authorize an evidence artifact download",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence/:evidence_id/artifact/download",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence",
+                ":evidence_id",
+                "artifact",
+                "download"
+              ],
+              "variable": [
+                {
+                  "key": "evidence_id",
+                  "value": "<evidence_id>"
+                }
+              ]
+            },
+            "description": "Issue a short-lived read URL only after a clean malware scan."
+          }
+        },
+        {
+          "name": "Set an evidence legal hold",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence/:evidence_id/legal-hold",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence",
+                ":evidence_id",
+                "legal-hold"
+              ],
+              "variable": [
+                {
+                  "key": "evidence_id",
+                  "value": "<evidence_id>"
+                }
+              ]
+            },
+            "description": "Set or release a legal hold without deleting or rewriting evidence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": false,\n  \"reason\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         },
         {
@@ -294,6 +445,54 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"decision\": \"<value>\",\n  \"rationale\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Record an evidence malware-scan result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence/:evidence_id/scan-result",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence",
+                ":evidence_id",
+                "scan-result"
+              ],
+              "variable": [
+                {
+                  "key": "evidence_id",
+                  "value": "<evidence_id>"
+                }
+              ]
+            },
+            "description": "Record a scanner result while retaining every transition in the audit ledger.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"detail\": \"<value>\",\n  \"engine\": \"<value>\",\n  \"status\": \"<value>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
