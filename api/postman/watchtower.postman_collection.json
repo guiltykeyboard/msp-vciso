@@ -170,6 +170,91 @@
           }
         },
         {
+          "name": "Create a direct evidence upload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/assessments/:assessment_id/evidence/uploads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "assessments",
+                ":assessment_id",
+                "evidence",
+                "uploads"
+              ],
+              "variable": [
+                {
+                  "key": "assessment_id",
+                  "value": "<assessment_id>"
+                }
+              ]
+            },
+            "description": "Authorize one short-lived upload without proxying artifact bytes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"artifact_name\": \"<value>\",\n  \"byte_size\": 0,\n  \"collection_method\": \"<value>\",\n  \"description\": \"<value>\",\n  \"media_type\": \"<value>\",\n  \"normalized_facts\": {},\n  \"observed_at\": \"<date-time>\",\n  \"sensitivity\": \"<value>\",\n  \"sha256\": \"<value>\",\n  \"source_identifier\": \"<value>\",\n  \"source_type\": \"<value>\",\n  \"title\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Verify and complete an evidence upload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/evidence/uploads/:upload_id/complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "evidence",
+                "uploads",
+                ":upload_id",
+                "complete"
+              ],
+              "variable": [
+                {
+                  "key": "upload_id",
+                  "value": "<upload_id>"
+                }
+              ]
+            },
+            "description": "Verify object integrity before committing an immutable observation."
+          }
+        },
+        {
           "name": "Review an evidence observation",
           "request": {
             "method": "POST",

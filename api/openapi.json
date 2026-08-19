@@ -69,6 +69,7 @@
             "type": "string"
           },
           "byte_size": {
+            "maximum": 5368709120.0,
             "minimum": 0.0,
             "title": "Byte Size",
             "type": "integer"
@@ -267,6 +268,21 @@
             "title": "Source Type",
             "type": "string"
           },
+          "storage_provider": {
+            "anyOf": [
+              {
+                "enum": [
+                  "azure",
+                  "s3"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Provider"
+          },
           "submitted_by": {
             "format": "uuid",
             "title": "Submitted By",
@@ -362,6 +378,55 @@
           "reviewed_at"
         ],
         "title": "EvidenceReviewResponse",
+        "type": "object"
+      },
+      "EvidenceUploadResponse": {
+        "description": "Short-lived instructions for uploading an artifact directly to storage.",
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Headers",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "method": {
+            "const": "PUT",
+            "title": "Method",
+            "type": "string"
+          },
+          "provider": {
+            "enum": [
+              "azure",
+              "s3"
+            ],
+            "title": "Provider",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "provider",
+          "method",
+          "url",
+          "headers",
+          "expires_at"
+        ],
+        "title": "EvidenceUploadResponse",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -767,6 +832,144 @@
           }
         },
         "summary": "Register an evidence observation",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/assessments/{assessment_id}/evidence/uploads": {
+      "post": {
+        "description": "Authorize one short-lived upload without proxying artifact bytes.",
+        "operationId": "createEvidenceUpload",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceObservationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceUploadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create a direct evidence upload",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/evidence/uploads/{upload_id}/complete": {
+      "post": {
+        "description": "Verify object integrity before committing an immutable observation.",
+        "operationId": "completeEvidenceUpload",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Upload Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceObservationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Verify and complete an evidence upload",
         "tags": [
           "evidence"
         ]

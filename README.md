@@ -5,8 +5,8 @@
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
-![Languages](badges/languages.svg?v=0fc5986d8335)
-![Lines of code](badges/lines-of-code.svg?v=3fee1668c424)
+![Languages](badges/languages.svg?v=b3de768b7e85)
+![Lines of code](badges/lines-of-code.svg?v=6fcf8e0a6250)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -55,7 +55,7 @@ The first useful release should support:
 5. Configurable obligations, deadlines, and sensitive-evidence handling, initially demonstrated by Ohio incident reporting and CJIS.
 6. Auditor/customer read-only access and a redacted evidence export.
 
-See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
+See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [evidence object storage](docs/object-storage.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
 
 ## API reference
 

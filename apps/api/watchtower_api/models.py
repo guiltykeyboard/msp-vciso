@@ -37,6 +37,8 @@ class AssessmentResponse(BaseModel):
 CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]
 EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cji"]
 ReviewDecision = Literal["accepted", "rejected"]
+StorageProvider = Literal["azure", "s3"]
+MAX_ARTIFACT_BYTES = 5 * 1024 * 1024 * 1024
 
 
 class EvidenceObservationCreate(BaseModel):
@@ -50,7 +52,7 @@ class EvidenceObservationCreate(BaseModel):
     observed_at: AwareDatetime
     artifact_name: str = Field(min_length=1, max_length=255)
     media_type: str = Field(min_length=1, max_length=255)
-    byte_size: int = Field(ge=0)
+    byte_size: int = Field(ge=0, le=MAX_ARTIFACT_BYTES)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     sensitivity: EvidenceSensitivity = "confidential"
     normalized_facts: dict[str, Any] = Field(default_factory=dict)
@@ -92,4 +94,16 @@ class EvidenceObservationResponse(BaseModel):
     sensitivity: EvidenceSensitivity
     normalized_facts: dict[str, Any]
     submitted_by: UUID
+    storage_provider: StorageProvider | None = None
     latest_review: EvidenceReviewResponse | None = None
+
+
+class EvidenceUploadResponse(BaseModel):
+    """Short-lived instructions for uploading an artifact directly to storage."""
+
+    id: UUID
+    provider: StorageProvider
+    method: Literal["PUT"]
+    url: str
+    headers: dict[str, str]
+    expires_at: datetime
