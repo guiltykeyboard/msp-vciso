@@ -816,6 +816,80 @@
       ]
     },
     {
+      "name": "profile",
+      "item": [
+        {
+          "name": "Get the current user's preferences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/profile/preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "profile",
+                "preferences"
+              ]
+            },
+            "description": "Return global preferences for the authenticated user, independent of tenant."
+          }
+        },
+        {
+          "name": "Update the current user's preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/profile/preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "profile",
+                "preferences"
+              ]
+            },
+            "description": "Upsert the authenticated user's server-backed profile preferences.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"theme\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "tenancy",
       "item": [
         {

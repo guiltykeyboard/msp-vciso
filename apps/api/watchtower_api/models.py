@@ -38,9 +38,22 @@ CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]
 EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cji"]
 ReviewDecision = Literal["accepted", "rejected"]
 StorageProvider = Literal["azure", "s3"]
+ThemePreference = Literal["light", "dark"]
 ScanStatus = Literal["pending", "clean", "quarantined", "error"]
 ObjectLockMode = Literal["none", "governance", "compliance"]
 MAX_ARTIFACT_BYTES = 5 * 1024 * 1024 * 1024
+
+
+class UserPreferencesUpdate(BaseModel):
+    """Mutable preferences stored with the authenticated user profile."""
+
+    theme: ThemePreference
+
+
+class UserPreferencesResponse(UserPreferencesUpdate):
+    """Current server-backed preferences for the authenticated user."""
+
+    updated_at: datetime | None
 
 
 class EvidenceObservationCreate(BaseModel):
