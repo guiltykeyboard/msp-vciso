@@ -182,6 +182,47 @@
           }
         },
         {
+          "name": "Invite an external auditor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/invitations/external-auditor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "invitations",
+                "external-auditor"
+              ]
+            },
+            "description": "Invite an external auditor with a non-configurable read-only tenant role.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<value>\",\n  \"email\": \"<value>\",\n  \"expires_in_days\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "Revoke a client invitation",
           "request": {
             "method": "DELETE",
@@ -245,6 +286,34 @@
                 }
               }
             }
+          }
+        },
+        {
+          "name": "List my authorized organizations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/me/organizations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "me",
+                "organizations"
+              ]
+            },
+            "description": "List active tenant memberships for only the current authenticated identity."
           }
         }
       ]

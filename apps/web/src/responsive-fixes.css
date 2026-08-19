@@ -147,6 +147,16 @@ input,
   margin: 0;
 }
 
+.auditor-note {
+  margin: -4px 0 0;
+  border-left: 3px solid #0755b8;
+  background: #f2f7ff;
+  color: #3c4a5f;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 10px 12px;
+}
+
 .invite-link-result {
   margin: 0 20px 20px;
   border: 1px solid #75c594;
@@ -236,6 +246,14 @@ input,
 .access-notice p {
   margin: 0;
   padding: 20px;
+}
+
+.auditor-summary {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.auditor-secondary {
+  grid-template-columns: 1fr;
 }
 
 .sidebar-collapsed {
@@ -415,8 +433,15 @@ html[data-theme="dark"] .connect input {
 html[data-theme="dark"] .access-form label,
 html[data-theme="dark"] .access-form input,
 html[data-theme="dark"] .access-form select,
-html[data-theme="dark"] .copy-row input {
+html[data-theme="dark"] .copy-row input,
+html[data-theme="dark"] .tenant-context select {
   color: #e7edf7;
+}
+
+html[data-theme="dark"] .auditor-note {
+  border-color: #67a9f5;
+  background: #14253d;
+  color: #c5d0df;
 }
 
 html[data-theme="dark"] .status-clean,
@@ -512,6 +537,10 @@ html[data-theme="dark"] .danger-action {
   }
 
   .topbar > div:first-child {
+    flex: 1;
+  }
+
+  .tenant-context {
     flex: 1;
   }
 

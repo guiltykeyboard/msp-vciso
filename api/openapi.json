@@ -252,6 +252,36 @@
         "title": "AssessmentResponse",
         "type": "object"
       },
+      "AuthorizedOrganizationResponse": {
+        "description": "One active tenant membership available to the current identity.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "role"
+        ],
+        "title": "AuthorizedOrganizationResponse",
+        "type": "object"
+      },
       "ClientAccessRoleResponse": {
         "description": "Documented tenant access profile available for a client invitation.",
         "properties": {
@@ -907,6 +937,45 @@
           "expires_at"
         ],
         "title": "EvidenceUploadResponse",
+        "type": "object"
+      },
+      "ExternalAuditorInvitationCreate": {
+        "additionalProperties": false,
+        "description": "External auditor invited with a fixed read-only tenant role.",
+        "properties": {
+          "display_name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 1,
+                "pattern": ".*\\S.*",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "email": {
+            "maxLength": 320,
+            "minLength": 3,
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+            "title": "Email",
+            "type": "string"
+          },
+          "expires_in_days": {
+            "default": 7,
+            "maximum": 30.0,
+            "minimum": 1.0,
+            "title": "Expires In Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "ExternalAuditorInvitationCreate",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -2948,6 +3017,70 @@
         ]
       }
     },
+    "/v1/invitations/external-auditor": {
+      "post": {
+        "description": "Invite an external auditor with a non-configurable read-only tenant role.",
+        "operationId": "createExternalAuditorInvitation",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalAuditorInvitationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationInvitationCreatedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Invite an external auditor",
+        "tags": [
+          "client access"
+        ]
+      }
+    },
     "/v1/invitations/{invitation_id}": {
       "delete": {
         "description": "Revoke an unconsumed invitation in the active tenant.",
@@ -3042,6 +3175,64 @@
           }
         },
         "summary": "Accept a client invitation",
+        "tags": [
+          "client access"
+        ]
+      }
+    },
+    "/v1/me/organizations": {
+      "get": {
+        "description": "List active tenant memberships for only the current authenticated identity.",
+        "operationId": "listCurrentUserOrganizations",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AuthorizedOrganizationResponse"
+                  },
+                  "title": "Response Listcurrentuserorganizations",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List my authorized organizations",
         "tags": [
           "client access"
         ]

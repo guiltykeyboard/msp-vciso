@@ -5,8 +5,8 @@
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
-![Languages](badges/languages.svg?v=206bec8056d3)
-![Lines of code](badges/lines-of-code.svg?v=370e263b0cb8)
+![Languages](badges/languages.svg?v=cef00a386024)
+![Lines of code](badges/lines-of-code.svg?v=7ead399b7eb9)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -67,7 +67,7 @@ The development stack now includes the React MSP operations dashboard at `http:/
 
 Light and dark themes are available from the dashboard header. The selected theme is stored in the authenticated user's server-side profile through `/v1/profile/preferences`, so it follows the user across browsers and computers instead of relying on a cookie, session, or browser theme cache.
 
-The Customers workspace supports tenant-scoped client invitations with customer administrator, control owner, evidence reviewer, and read-only auditor access profiles. Invitation secrets are returned once, stored only as hashes, expire in 1–30 days, and can be revoked before acceptance. See [client tenant access](docs/client-access.md) for the security and production-identity boundaries.
+The Customers workspace supports tenant-scoped client invitations with customer administrator, control owner, evidence reviewer, and external auditor access profiles. One external-auditor identity can hold separate read-only memberships across several invited customer tenants and switch only among those authorized tenants. Invitation secrets are returned once, stored only as hashes, expire in 1–30 days, and can be revoked before acceptance. See [client tenant access](docs/client-access.md) for the security and production-identity boundaries.
 
 ## API reference
 
