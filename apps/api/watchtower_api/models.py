@@ -1,6 +1,6 @@
 """API request and response models."""
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Literal
 from uuid import UUID
 
@@ -32,6 +32,133 @@ class AssessmentResponse(BaseModel):
     status: str
     framework_pack_version_id: int
     created_at: datetime
+
+
+PolicyDocumentType = Literal["policy", "procedure", "standard", "guideline"]
+PolicyDocumentStatus = Literal["draft", "approved", "retired"]
+PolicyEvidenceRelationship = Literal["supports", "implements", "demonstrates"]
+
+
+class PolicyControlLinkCreate(BaseModel):
+    """Framework control selected for a tenant document."""
+
+    framework_pack_version_id: int = Field(gt=0)
+    control_reference: str = Field(min_length=1, max_length=200)
+
+
+class PolicyEvidenceLinkCreate(BaseModel):
+    """Evidence selected to substantiate a tenant document."""
+
+    evidence_id: UUID
+    relationship: PolicyEvidenceRelationship = "supports"
+    notes: str | None = Field(default=None, max_length=2000)
+
+
+class PolicyDocumentCreate(BaseModel):
+    """Initial immutable revision and relationships for a tenant document."""
+
+    title: str = Field(min_length=1, max_length=240)
+    document_type: PolicyDocumentType
+    owner_display_name: str | None = Field(default=None, max_length=200)
+    review_due_at: date | None = None
+    content: str = Field(min_length=1, max_length=200_000)
+    change_summary: str = Field(default="Initial version", min_length=1, max_length=1000)
+    controls: list[PolicyControlLinkCreate] = Field(default_factory=list, max_length=200)
+    evidence: list[PolicyEvidenceLinkCreate] = Field(default_factory=list, max_length=200)
+
+
+class PolicyDocumentVersionCreate(BaseModel):
+    """A new immutable revision for an existing tenant document."""
+
+    content: str = Field(min_length=1, max_length=200_000)
+    change_summary: str = Field(min_length=1, max_length=1000)
+
+
+class PolicyDocumentStatusUpdate(BaseModel):
+    """An explicit policy lifecycle decision."""
+
+    status: PolicyDocumentStatus
+    review_due_at: date | None = None
+
+
+class PolicyControlReferenceResponse(BaseModel):
+    """Framework requirement available for document cross-referencing."""
+
+    framework_pack_version_id: int
+    framework: str
+    reference: str
+    title: str
+
+
+class PolicyEvidenceReferenceResponse(BaseModel):
+    """Tenant evidence available for document linking."""
+
+    id: UUID
+    title: str
+    assessment_name: str
+    sensitivity: str
+    observed_at: datetime
+
+
+class PolicyReferenceOptionsResponse(BaseModel):
+    """Tenant-valid controls and evidence selectable by a document editor."""
+
+    controls: list[PolicyControlReferenceResponse]
+    evidence: list[PolicyEvidenceReferenceResponse]
+
+
+class PolicyDocumentSummaryResponse(BaseModel):
+    """Policy library row with relationship coverage counts."""
+
+    id: UUID
+    title: str
+    document_type: PolicyDocumentType
+    status: PolicyDocumentStatus
+    owner_display_name: str | None
+    review_due_at: date | None
+    current_version: int
+    control_count: int
+    evidence_count: int
+    updated_at: datetime
+
+
+class PolicyDocumentVersionResponse(BaseModel):
+    """One immutable policy or procedure revision."""
+
+    id: UUID
+    version_number: int
+    content: str
+    change_summary: str
+    authored_by: UUID
+    created_at: datetime
+
+
+class PolicyControlLinkResponse(BaseModel):
+    """Control cross-reference retained with a tenant document."""
+
+    framework_pack_version_id: int
+    framework: str
+    control_reference: str
+    control_title: str
+    linked_at: datetime
+
+
+class PolicyEvidenceLinkResponse(BaseModel):
+    """Evidence relationship retained with a tenant document."""
+
+    evidence_id: UUID
+    evidence_title: str
+    relationship: PolicyEvidenceRelationship
+    notes: str | None
+    linked_at: datetime
+
+
+class PolicyDocumentResponse(PolicyDocumentSummaryResponse):
+    """Complete tenant document with revisions and compliance relationships."""
+
+    versions: list[PolicyDocumentVersionResponse]
+    controls: list[PolicyControlLinkResponse]
+    evidence: list[PolicyEvidenceLinkResponse]
 
 
 CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]

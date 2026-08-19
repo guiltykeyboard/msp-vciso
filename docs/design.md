@@ -84,6 +84,14 @@ FrameworkPackVersion -> Requirement -> ControlObjective
 
 Never collapse `not applicable`, `not implemented`, `not tested`, `failed`, and `stale evidence` into the same state.
 
+## Policy and procedure records
+
+Customer policies, procedures, standards, and guidelines are controlled tenant records rather than unversioned attachments. A policy document owns its lifecycle state, responsible owner, review date, and current version number. Its body and revision summary live in append-only version rows; editing creates a new version and returns the document to draft. Approval or retirement changes lifecycle metadata without rewriting an earlier version.
+
+Control relationships pin both the framework-pack version and control reference. Evidence relationships pin the immutable evidence observation and classify whether it supports, implements, or demonstrates the document. PostgreSQL composite foreign keys and forced row-level security prevent either relationship from crossing an organization boundary. Creation, revision, approval, and retirement also produce append-only audit events containing the document and version identifiers.
+
+MSP administrators, MSP analysts, customer administrators, and control owners may author records. Only MSP and customer administrators may approve or retire them. Reviewers and auditors have tenant-scoped read-only access so an external auditor can inspect the controlled record and its supporting trail without changing it.
+
 ## Evidence model
 
 Each observation records:

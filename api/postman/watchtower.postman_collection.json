@@ -1051,6 +1051,236 @@
       ]
     },
     {
+      "name": "policies",
+      "item": [
+        {
+          "name": "List policies and procedures",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies"
+              ]
+            },
+            "description": "List tenant documents with their control and evidence coverage."
+          }
+        },
+        {
+          "name": "Create a policy or procedure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies"
+              ]
+            },
+            "description": "Create a draft with an immutable first revision and validated links.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"change_summary\": \"<value>\",\n  \"content\": \"<value>\",\n  \"controls\": [\n    \"<value>\"\n  ],\n  \"document_type\": \"<value>\",\n  \"evidence\": [\n    \"<value>\"\n  ],\n  \"owner_display_name\": \"<value>\",\n  \"review_due_at\": \"<value>\",\n  \"title\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List policy cross-reference options",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/reference-options",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                "reference-options"
+              ]
+            },
+            "description": "Return only controls and evidence already visible in the active tenant."
+          }
+        },
+        {
+          "name": "Get a policy or procedure",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/:document_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                ":document_id"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "<document_id>"
+                }
+              ]
+            },
+            "description": "Return the tenant document, all revisions, controls, and evidence links."
+          }
+        },
+        {
+          "name": "Set policy lifecycle status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/:document_id/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                ":document_id",
+                "status"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "<document_id>"
+                }
+              ]
+            },
+            "description": "Record an administrator's approval, draft, or retirement decision.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"review_due_at\": \"<value>\",\n  \"status\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create a policy revision",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/:document_id/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                ":document_id",
+                "versions"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "<document_id>"
+                }
+              ]
+            },
+            "description": "Append a revision without overwriting the historical document body.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"change_summary\": \"<value>\",\n  \"content\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "profile",
       "item": [
         {

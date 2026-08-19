@@ -1431,6 +1431,613 @@
         "title": "OrganizationResponse",
         "type": "object"
       },
+      "PolicyControlLinkCreate": {
+        "description": "Framework control selected for a tenant document.",
+        "properties": {
+          "control_reference": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Control Reference",
+            "type": "string"
+          },
+          "framework_pack_version_id": {
+            "exclusiveMinimum": 0.0,
+            "title": "Framework Pack Version Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "framework_pack_version_id",
+          "control_reference"
+        ],
+        "title": "PolicyControlLinkCreate",
+        "type": "object"
+      },
+      "PolicyControlLinkResponse": {
+        "description": "Control cross-reference retained with a tenant document.",
+        "properties": {
+          "control_reference": {
+            "title": "Control Reference",
+            "type": "string"
+          },
+          "control_title": {
+            "title": "Control Title",
+            "type": "string"
+          },
+          "framework": {
+            "title": "Framework",
+            "type": "string"
+          },
+          "framework_pack_version_id": {
+            "title": "Framework Pack Version Id",
+            "type": "integer"
+          },
+          "linked_at": {
+            "format": "date-time",
+            "title": "Linked At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "framework_pack_version_id",
+          "framework",
+          "control_reference",
+          "control_title",
+          "linked_at"
+        ],
+        "title": "PolicyControlLinkResponse",
+        "type": "object"
+      },
+      "PolicyControlReferenceResponse": {
+        "description": "Framework requirement available for document cross-referencing.",
+        "properties": {
+          "framework": {
+            "title": "Framework",
+            "type": "string"
+          },
+          "framework_pack_version_id": {
+            "title": "Framework Pack Version Id",
+            "type": "integer"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "framework_pack_version_id",
+          "framework",
+          "reference",
+          "title"
+        ],
+        "title": "PolicyControlReferenceResponse",
+        "type": "object"
+      },
+      "PolicyDocumentCreate": {
+        "description": "Initial immutable revision and relationships for a tenant document.",
+        "properties": {
+          "change_summary": {
+            "default": "Initial version",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Change Summary",
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 200000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          },
+          "controls": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyControlLinkCreate"
+            },
+            "maxItems": 200,
+            "title": "Controls",
+            "type": "array"
+          },
+          "document_type": {
+            "enum": [
+              "policy",
+              "procedure",
+              "standard",
+              "guideline"
+            ],
+            "title": "Document Type",
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvidenceLinkCreate"
+            },
+            "maxItems": 200,
+            "title": "Evidence",
+            "type": "array"
+          },
+          "owner_display_name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Display Name"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "title": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "document_type",
+          "content"
+        ],
+        "title": "PolicyDocumentCreate",
+        "type": "object"
+      },
+      "PolicyDocumentResponse": {
+        "description": "Complete tenant document with revisions and compliance relationships.",
+        "properties": {
+          "control_count": {
+            "title": "Control Count",
+            "type": "integer"
+          },
+          "controls": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyControlLinkResponse"
+            },
+            "title": "Controls",
+            "type": "array"
+          },
+          "current_version": {
+            "title": "Current Version",
+            "type": "integer"
+          },
+          "document_type": {
+            "enum": [
+              "policy",
+              "procedure",
+              "standard",
+              "guideline"
+            ],
+            "title": "Document Type",
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvidenceLinkResponse"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "owner_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Display Name"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "approved",
+              "retired"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyDocumentVersionResponse"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "document_type",
+          "status",
+          "owner_display_name",
+          "review_due_at",
+          "current_version",
+          "control_count",
+          "evidence_count",
+          "updated_at",
+          "versions",
+          "controls",
+          "evidence"
+        ],
+        "title": "PolicyDocumentResponse",
+        "type": "object"
+      },
+      "PolicyDocumentStatusUpdate": {
+        "description": "An explicit policy lifecycle decision.",
+        "properties": {
+          "review_due_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "approved",
+              "retired"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "PolicyDocumentStatusUpdate",
+        "type": "object"
+      },
+      "PolicyDocumentSummaryResponse": {
+        "description": "Policy library row with relationship coverage counts.",
+        "properties": {
+          "control_count": {
+            "title": "Control Count",
+            "type": "integer"
+          },
+          "current_version": {
+            "title": "Current Version",
+            "type": "integer"
+          },
+          "document_type": {
+            "enum": [
+              "policy",
+              "procedure",
+              "standard",
+              "guideline"
+            ],
+            "title": "Document Type",
+            "type": "string"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "owner_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Display Name"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "approved",
+              "retired"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "document_type",
+          "status",
+          "owner_display_name",
+          "review_due_at",
+          "current_version",
+          "control_count",
+          "evidence_count",
+          "updated_at"
+        ],
+        "title": "PolicyDocumentSummaryResponse",
+        "type": "object"
+      },
+      "PolicyDocumentVersionCreate": {
+        "description": "A new immutable revision for an existing tenant document.",
+        "properties": {
+          "change_summary": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Change Summary",
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 200000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "change_summary"
+        ],
+        "title": "PolicyDocumentVersionCreate",
+        "type": "object"
+      },
+      "PolicyDocumentVersionResponse": {
+        "description": "One immutable policy or procedure revision.",
+        "properties": {
+          "authored_by": {
+            "format": "uuid",
+            "title": "Authored By",
+            "type": "string"
+          },
+          "change_summary": {
+            "title": "Change Summary",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "version_number": {
+            "title": "Version Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version_number",
+          "content",
+          "change_summary",
+          "authored_by",
+          "created_at"
+        ],
+        "title": "PolicyDocumentVersionResponse",
+        "type": "object"
+      },
+      "PolicyEvidenceLinkCreate": {
+        "description": "Evidence selected to substantiate a tenant document.",
+        "properties": {
+          "evidence_id": {
+            "format": "uuid",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "relationship": {
+            "default": "supports",
+            "enum": [
+              "supports",
+              "implements",
+              "demonstrates"
+            ],
+            "title": "Relationship",
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id"
+        ],
+        "title": "PolicyEvidenceLinkCreate",
+        "type": "object"
+      },
+      "PolicyEvidenceLinkResponse": {
+        "description": "Evidence relationship retained with a tenant document.",
+        "properties": {
+          "evidence_id": {
+            "format": "uuid",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "evidence_title": {
+            "title": "Evidence Title",
+            "type": "string"
+          },
+          "linked_at": {
+            "format": "date-time",
+            "title": "Linked At",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "relationship": {
+            "enum": [
+              "supports",
+              "implements",
+              "demonstrates"
+            ],
+            "title": "Relationship",
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "evidence_title",
+          "relationship",
+          "notes",
+          "linked_at"
+        ],
+        "title": "PolicyEvidenceLinkResponse",
+        "type": "object"
+      },
+      "PolicyEvidenceReferenceResponse": {
+        "description": "Tenant evidence available for document linking.",
+        "properties": {
+          "assessment_name": {
+            "title": "Assessment Name",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          },
+          "sensitivity": {
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "assessment_name",
+          "sensitivity",
+          "observed_at"
+        ],
+        "title": "PolicyEvidenceReferenceResponse",
+        "type": "object"
+      },
+      "PolicyReferenceOptionsResponse": {
+        "description": "Tenant-valid controls and evidence selectable by a document editor.",
+        "properties": {
+          "controls": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyControlReferenceResponse"
+            },
+            "title": "Controls",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvidenceReferenceResponse"
+            },
+            "title": "Evidence",
+            "type": "array"
+          }
+        },
+        "required": [
+          "controls",
+          "evidence"
+        ],
+        "title": "PolicyReferenceOptionsResponse",
+        "type": "object"
+      },
       "SiteCreate": {
         "description": "Tenant site used to scope endpoint enrollment.",
         "properties": {
@@ -3292,6 +3899,392 @@
         ]
       }
     },
+    "/v1/policies": {
+      "get": {
+        "description": "List tenant documents with their control and evidence coverage.",
+        "operationId": "listPolicyDocuments",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyDocumentSummaryResponse"
+                  },
+                  "title": "Response Listpolicydocuments",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List policies and procedures",
+        "tags": [
+          "policies"
+        ]
+      },
+      "post": {
+        "description": "Create a draft with an immutable first revision and validated links.",
+        "operationId": "createPolicyDocument",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyDocumentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyDocumentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create a policy or procedure",
+        "tags": [
+          "policies"
+        ]
+      }
+    },
+    "/v1/policies/reference-options": {
+      "get": {
+        "description": "Return only controls and evidence already visible in the active tenant.",
+        "operationId": "listPolicyReferenceOptions",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyReferenceOptionsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List policy cross-reference options",
+        "tags": [
+          "policies"
+        ]
+      }
+    },
+    "/v1/policies/{document_id}": {
+      "get": {
+        "description": "Return the tenant document, all revisions, controls, and evidence links.",
+        "operationId": "getPolicyDocument",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyDocumentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get a policy or procedure",
+        "tags": [
+          "policies"
+        ]
+      }
+    },
+    "/v1/policies/{document_id}/status": {
+      "put": {
+        "description": "Record an administrator's approval, draft, or retirement decision.",
+        "operationId": "setPolicyDocumentStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyDocumentStatusUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyDocumentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set policy lifecycle status",
+        "tags": [
+          "policies"
+        ]
+      }
+    },
+    "/v1/policies/{document_id}/versions": {
+      "post": {
+        "description": "Append a revision without overwriting the historical document body.",
+        "operationId": "createPolicyDocumentVersion",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyDocumentVersionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyDocumentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create a policy revision",
+        "tags": [
+          "policies"
+        ]
+      }
+    },
     "/v1/profile/preferences": {
       "get": {
         "description": "Return global preferences for the authenticated user, independent of tenant.",
@@ -3497,6 +4490,10 @@
     {
       "description": "Immutable evidence provenance and human review operations.",
       "name": "evidence"
+    },
+    {
+      "description": "Versioned tenant policies and procedures with control and evidence links.",
+      "name": "policies"
     },
     {
       "description": "Tenant-mapped read-only vendor connections.",
