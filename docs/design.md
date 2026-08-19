@@ -53,6 +53,8 @@ Tenant isolation is enforced twice:
 
 An `organization_id` supplied in a URL or body never establishes authority. Background jobs carry a signed job envelope with one organization, purpose, and expiration. Object keys begin with a non-guessable tenant identifier and are authorized before a short-lived download URL is created.
 
+Client personnel are onboarded through expiring, one-time tenant invitations. Invitation secrets are stored only as hashes, cannot grant MSP roles, and atomically create a named membership profile when accepted. Create, accept, and revoke transitions are appended to the tenant audit ledger. Production acceptance must bind the invitation email to a verified identity-provider claim; the invitation bearer secret is never a replacement for an authenticated session.
+
 ## Compliance domain
 
 ```text

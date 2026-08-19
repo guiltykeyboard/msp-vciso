@@ -62,6 +62,182 @@ input,
   padding: 4px 2px;
 }
 
+.invitation-acceptance {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+}
+
+.invitation-acceptance .connect {
+  width: min(100%, 520px);
+  background: #fff;
+}
+
+.invitation-acceptance h1 {
+  margin: 24px 0 8px;
+}
+
+.invitation-brand {
+  height: 58px;
+  margin: -26px -26px 0;
+  background: #062247;
+  color: #fff;
+  font-size: 18px;
+}
+
+.access-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(360px, 1.2fr);
+  gap: 16px;
+}
+
+.access-form {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.access-form label {
+  display: grid;
+  gap: 6px;
+  color: #253248;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.access-form input,
+.access-form select,
+.copy-row input {
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid #6b778c;
+  border-radius: 3px;
+  background: #fff;
+  color: #172033;
+  padding: 9px 10px;
+}
+
+.access-form button,
+.copy-row button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 3px;
+  background: #0755b8;
+  color: #fff;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.access-form button:disabled,
+.copy-row button:disabled,
+.danger-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.optional,
+.form-note {
+  color: #596579;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.form-note {
+  margin: 0;
+}
+
+.invite-link-result {
+  margin: 0 20px 20px;
+  border: 1px solid #75c594;
+  background: #f3fcf6;
+  padding: 16px;
+}
+
+.invite-link-result h3,
+.invite-link-result p {
+  margin: 0 0 8px;
+}
+
+.copy-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.access-profiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.access-profiles article {
+  border-bottom: 1px solid #d6dce5;
+  padding: 16px;
+}
+
+.access-profiles article:nth-child(odd) {
+  border-right: 1px solid #d6dce5;
+}
+
+.access-profiles h3,
+.access-profiles p {
+  margin: 0 0 8px;
+}
+
+.access-profiles h3 {
+  font-size: 15px;
+}
+
+.access-profiles p,
+.access-profiles li,
+.access-notice p {
+  color: #596579;
+  font-size: 13px;
+}
+
+.access-profiles ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.invitations-panel {
+  grid-column: 1 / -1;
+}
+
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.invitations-panel table {
+  min-width: 720px;
+}
+
+.invitations-panel td:first-child strong,
+.invitations-panel td:first-child small {
+  display: block;
+}
+
+.invitations-panel td:first-child small {
+  margin-top: 3px;
+  color: #596579;
+}
+
+.danger-action {
+  min-height: 32px;
+  border: 1px solid #ad1e26;
+  border-radius: 3px;
+  background: #fff5f5;
+  color: #ad1e26;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+.access-notice p {
+  margin: 0;
+  padding: 20px;
+}
+
 .sidebar-collapsed {
   grid-template-columns: 64px 1fr;
 }
@@ -161,7 +337,10 @@ html[data-theme="dark"] .sidebar {
 
 html[data-theme="dark"] .topbar,
 html[data-theme="dark"] .panel,
-html[data-theme="dark"] .connect {
+html[data-theme="dark"] .connect,
+html[data-theme="dark"] .access-form input,
+html[data-theme="dark"] .access-form select,
+html[data-theme="dark"] .copy-row input {
   border-color: #2b3b52;
   background: #101b2d;
 }
@@ -173,7 +352,8 @@ html[data-theme="dark"] td,
 html[data-theme="dark"] .line,
 html[data-theme="dark"] .audit-line,
 html[data-theme="dark"] .summary,
-html[data-theme="dark"] .summary div {
+html[data-theme="dark"] .summary div,
+html[data-theme="dark"] .access-profiles article {
   border-color: #2b3b52;
 }
 
@@ -185,7 +365,12 @@ html[data-theme="dark"] .line small,
 html[data-theme="dark"] .audit-line small,
 html[data-theme="dark"] .audit-line time,
 html[data-theme="dark"] .empty,
-html[data-theme="dark"] .connect p {
+html[data-theme="dark"] .connect p,
+html[data-theme="dark"] .access-profiles p,
+html[data-theme="dark"] .access-profiles li,
+html[data-theme="dark"] .access-notice p,
+html[data-theme="dark"] .optional,
+html[data-theme="dark"] .form-note {
   color: #9daac0;
 }
 
@@ -227,6 +412,13 @@ html[data-theme="dark"] .connect input {
   color: #f5f8fc;
 }
 
+html[data-theme="dark"] .access-form label,
+html[data-theme="dark"] .access-form input,
+html[data-theme="dark"] .access-form select,
+html[data-theme="dark"] .copy-row input {
+  color: #e7edf7;
+}
+
 html[data-theme="dark"] .status-clean,
 html[data-theme="dark"] .status-healthy,
 html[data-theme="dark"] .status-active,
@@ -254,6 +446,17 @@ html[data-theme="dark"] .banner {
   color: #ffabb1;
 }
 
+html[data-theme="dark"] .invite-link-result {
+  border-color: #28734a;
+  background: #102b20;
+}
+
+html[data-theme="dark"] .danger-action {
+  border-color: #ff9ca3;
+  background: #32181d;
+  color: #ffb4ba;
+}
+
 @media (max-width: 760px) {
   .nav-dot {
     font-size: 10px;
@@ -266,6 +469,14 @@ html[data-theme="dark"] .banner {
   .heading h1 {
     overflow-wrap: anywhere;
     font-size: 22px;
+  }
+
+  .access-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .invitations-panel {
+    grid-column: auto;
   }
 }
 
@@ -321,6 +532,15 @@ html[data-theme="dark"] .banner {
   }
 
   .summary div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .access-profiles,
+  .copy-row {
+    grid-template-columns: 1fr;
+  }
+
+  .access-profiles article:nth-child(odd) {
     border-right: 0;
   }
 }

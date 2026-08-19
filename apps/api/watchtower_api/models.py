@@ -39,9 +39,73 @@ EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cj
 ReviewDecision = Literal["accepted", "rejected"]
 StorageProvider = Literal["azure", "s3"]
 ThemePreference = Literal["light", "dark"]
+ClientAccessRole = Literal["customer_admin", "control_owner", "reviewer", "auditor"]
 ScanStatus = Literal["pending", "clean", "quarantined", "error"]
 ObjectLockMode = Literal["none", "governance", "compliance"]
 MAX_ARTIFACT_BYTES = 5 * 1024 * 1024 * 1024
+
+
+class ClientAccessRoleResponse(BaseModel):
+    """Documented tenant access profile available for a client invitation."""
+
+    id: ClientAccessRole
+    name: str
+    description: str
+    permissions: list[str]
+
+
+class OrganizationInvitationCreate(BaseModel):
+    """Client personnel and access profile selected by a tenant administrator."""
+
+    email: str = Field(
+        min_length=3,
+        max_length=320,
+        pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+    )
+    display_name: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+        pattern=r".*\S.*",
+    )
+    role: ClientAccessRole
+    expires_in_days: int = Field(default=7, ge=1, le=30)
+
+
+class OrganizationInvitationResponse(BaseModel):
+    """Redacted tenant invitation lifecycle state."""
+
+    id: UUID
+    email: str
+    display_name: str | None
+    role: ClientAccessRole
+    status: Literal["pending", "accepted", "revoked", "expired"]
+    expires_at: datetime
+    created_at: datetime
+    accepted_at: datetime | None
+    revoked_at: datetime | None
+
+
+class OrganizationInvitationCreatedResponse(OrganizationInvitationResponse):
+    """Invitation response that returns its bearer token exactly once."""
+
+    token: str
+
+
+class OrganizationInvitationAccept(BaseModel):
+    """One-time bearer invitation accepted by client personnel."""
+
+    token: str = Field(min_length=40, max_length=500)
+    display_name: str = Field(min_length=1, max_length=200, pattern=r".*\S.*")
+
+
+class OrganizationInvitationAcceptedResponse(BaseModel):
+    """Development identity established after consuming an invitation."""
+
+    organization_id: UUID
+    organization_name: str
+    actor_id: UUID
+    role: ClientAccessRole
 
 
 class UserPreferencesUpdate(BaseModel):

@@ -4,11 +4,29 @@ type Row = Record<string, string | null>;
 type Theme = "light" | "dark";
 type Dashboard = {
   organization: { id: string; name: string };
+  identity: { actor_id: string; role: string };
   assessments: Row[];
   evidence: Row[];
   integrations: Row[];
   endpoints: Row[];
   audit: Row[];
+};
+type AccessProfile = {
+  id: string;
+  name: string;
+  description: string;
+  permissions: string[];
+};
+type Invitation = {
+  id: string;
+  email: string;
+  display_name: string | null;
+  role: string;
+  status: string;
+  expires_at: string;
+  created_at: string;
+  accepted_at: string | null;
+  revoked_at: string | null;
 };
 
 const navigation = ["Overview", "Customers", "Assessments", "Evidence", "Integrations", "Endpoints", "Audit"];
@@ -23,6 +41,7 @@ function Empty({ children }: { children: string }) {
 }
 
 export function App() {
+  const [invitationToken, setInvitationToken] = useState(new URLSearchParams(window.location.hash.slice(1)).get("invite") ?? "");
   const [active, setActive] = useState("Overview");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [organizationId, setOrganizationId] = useState(window.localStorage.getItem("watchtower.organization") ?? "");
@@ -32,8 +51,18 @@ export function App() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
   const [themeSaving, setThemeSaving] = useState(false);
-  const [themeReady, setThemeReady] = useState(!organizationId || !actorId);
+  const [themeReady, setThemeReady] = useState(Boolean(invitationToken) || !organizationId || !actorId);
   const [announcement, setAnnouncement] = useState("");
+  const [inviteeName, setInviteeName] = useState("");
+  const [acceptingInvitation, setAcceptingInvitation] = useState(false);
+  const [accessProfiles, setAccessProfiles] = useState<AccessProfile[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [accessLoading, setAccessLoading] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteDisplayName, setInviteDisplayName] = useState("");
+  const [inviteRole, setInviteRole] = useState("control_owner");
+  const [inviteExpiry, setInviteExpiry] = useState("7");
+  const [createdInviteLink, setCreatedInviteLink] = useState("");
 
   const identityHeaders = useCallback(() => ({
     "X-Watchtower-Organization": organizationId,
@@ -41,7 +70,7 @@ export function App() {
   }), [actorId, organizationId]);
 
   const loadPreferences = useCallback(async () => {
-    if (!organizationId || !actorId) return;
+    if (invitationToken || !organizationId || !actorId) return;
     setThemeReady(false);
     try {
       const response = await fetch("/v1/profile/preferences", { headers: identityHeaders() });
@@ -53,10 +82,10 @@ export function App() {
     } finally {
       setThemeReady(true);
     }
-  }, [actorId, identityHeaders, organizationId]);
+  }, [actorId, identityHeaders, invitationToken, organizationId]);
 
   const load = useCallback(async () => {
-    if (!organizationId || !actorId) return;
+    if (invitationToken || !organizationId || !actorId) return;
     setLoading(true);
     setError("");
     try {
@@ -67,9 +96,31 @@ export function App() {
     } catch (problem) {
       setError(problem instanceof Error ? problem.message : "Dashboard request failed");
     } finally { setLoading(false); }
-  }, [actorId, identityHeaders, organizationId]);
+  }, [actorId, identityHeaders, invitationToken, organizationId]);
+
+  const loadClientAccess = useCallback(async () => {
+    if (!data || !["customer_admin", "msp_admin"].includes(data.identity.role)) return;
+    setAccessLoading(true);
+    setError("");
+    try {
+      const [profilesResponse, invitationsResponse] = await Promise.all([
+        fetch("/v1/access/roles", { headers: identityHeaders() }),
+        fetch("/v1/invitations", { headers: identityHeaders() }),
+      ]);
+      if (!profilesResponse.ok || !invitationsResponse.ok) {
+        throw new Error("Client access request failed");
+      }
+      setAccessProfiles(await profilesResponse.json());
+      setInvitations(await invitationsResponse.json());
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Client access request failed");
+    } finally {
+      setAccessLoading(false);
+    }
+  }, [data, identityHeaders]);
 
   useEffect(() => { void load(); void loadPreferences(); }, [load, loadPreferences]);
+  useEffect(() => { if (active === "Customers") void loadClientAccess(); }, [active, loadClientAccess]);
   useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
 
   function connect(event: FormEvent) {
@@ -104,6 +155,108 @@ export function App() {
     } finally {
       setThemeSaving(false);
     }
+  }
+
+  async function acceptInvitation(event: FormEvent) {
+    event.preventDefault();
+    if (acceptingInvitation) return;
+    setAcceptingInvitation(true);
+    setError("");
+    try {
+      const response = await fetch("/v1/invitations:accept", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: invitationToken, display_name: inviteeName }),
+      });
+      if (!response.ok) throw new Error(response.status === 401 ? "This invitation is invalid, expired, or already used." : `Invitation acceptance failed (${response.status})`);
+      const accepted = await response.json() as { organization_id: string; actor_id: string; organization_name: string };
+      window.localStorage.setItem("watchtower.organization", accepted.organization_id);
+      window.localStorage.setItem("watchtower.actor", accepted.actor_id);
+      setOrganizationId(accepted.organization_id);
+      setActorId(accepted.actor_id);
+      setInvitationToken("");
+      setThemeReady(false);
+      window.history.replaceState({}, "", window.location.pathname);
+      setAnnouncement(`Invitation accepted. Connected to ${accepted.organization_name}.`);
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Invitation acceptance failed");
+    } finally {
+      setAcceptingInvitation(false);
+    }
+  }
+
+  async function createInvitation(event: FormEvent) {
+    event.preventDefault();
+    setAccessLoading(true);
+    setError("");
+    setCreatedInviteLink("");
+    try {
+      const response = await fetch("/v1/invitations", {
+        method: "POST",
+        headers: { ...identityHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: inviteEmail,
+          display_name: inviteDisplayName || null,
+          role: inviteRole,
+          expires_in_days: Number(inviteExpiry),
+        }),
+      });
+      if (!response.ok) {
+        const problem = await response.json() as { detail?: string };
+        throw new Error(problem.detail ?? `Invitation request failed (${response.status})`);
+      }
+      const created = await response.json() as Invitation & { token: string };
+      const link = `${window.location.origin}${window.location.pathname}#invite=${encodeURIComponent(created.token)}`;
+      setCreatedInviteLink(link);
+      setInvitations((current) => [created, ...current]);
+      setInviteEmail("");
+      setInviteDisplayName("");
+      setAnnouncement("Client invitation created. The acceptance link is shown once.");
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Invitation request failed");
+    } finally {
+      setAccessLoading(false);
+    }
+  }
+
+  async function copyInviteLink() {
+    try {
+      await navigator.clipboard.writeText(createdInviteLink);
+      setAnnouncement("Invitation link copied to the clipboard.");
+    } catch {
+      setError("Clipboard access was unavailable. Select and copy the invitation link manually.");
+    }
+  }
+
+  async function revokeInvitation(invitationId: string) {
+    setAccessLoading(true);
+    setError("");
+    try {
+      const response = await fetch(`/v1/invitations/${invitationId}`, {
+        method: "DELETE",
+        headers: identityHeaders(),
+      });
+      if (!response.ok) throw new Error(`Invitation revocation failed (${response.status})`);
+      setInvitations((current) => current.map((invitation) => invitation.id === invitationId ? { ...invitation, status: "revoked", revoked_at: new Date().toISOString() } : invitation));
+      setAnnouncement("Invitation revoked.");
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Invitation revocation failed");
+    } finally {
+      setAccessLoading(false);
+    }
+  }
+
+  if (invitationToken) {
+    return <main className="invitation-acceptance" id="main-content">
+      <form className="connect" aria-labelledby="accept-invitation-heading" onSubmit={acceptInvitation}>
+        <div className="brand invitation-brand"><span className="brand-mark">W</span><span>Watchtower</span></div>
+        <h1 id="accept-invitation-heading">Accept client access</h1>
+        <p>You were invited to a protected customer tenant. This link can be used only once and may expire.</p>
+        <label>Display name<input value={inviteeName} onChange={(event) => setInviteeName(event.target.value)} autoComplete="name" required /></label>
+        <button type="submit" disabled={acceptingInvitation}>{acceptingInvitation ? "Accepting…" : "Accept invitation"}</button>
+        {error && <p className="error" role="alert">{error}</p>}
+      </form>
+    </main>;
   }
 
   return <div className={`shell${themeReady ? "" : " theme-loading"}${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
@@ -144,9 +297,33 @@ export function App() {
         <div className="avatar" aria-hidden="true">MS</div>
       </header>
       <section className="content" aria-labelledby="operations-heading">
-        <div className="heading"><div><h1 id="operations-heading">Compliance operations</h1><p>Current evidence, assessment, integration, and endpoint activity.</p></div></div>
+        <div className="heading"><div><h1 id="operations-heading">{active === "Customers" ? "Client access" : "Compliance operations"}</h1><p>{active === "Customers" ? "Invite client personnel and assign auditable tenant access profiles." : "Current evidence, assessment, integration, and endpoint activity."}</p></div></div>
         {!data && <form className="connect" aria-labelledby="connect-heading" aria-describedby="connect-help" onSubmit={connect}><h2 id="connect-heading">Connect this browser</h2><p id="connect-help">Development identity headers are stored only in this browser. Production authentication will replace this form.</p><label>Organization ID<input value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><label>Actor ID<input value={actorId} onChange={(event) => setActorId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><button type="submit">Load operations</button>{error && <p className="error" role="alert">{error}</p>}</form>}
-        {data && <>
+        {data && (active === "Customers" ? <>
+          {error && <div className="error banner" role="alert">{error}</div>}
+          {!['customer_admin', 'msp_admin'].includes(data.identity.role) ? <section className="panel access-notice" aria-labelledby="access-restricted-heading"><div className="panel-title"><h2 id="access-restricted-heading">Client access is restricted</h2></div><p>Only customer administrators and MSP administrators can invite or revoke client personnel.</p></section> : <div className="access-layout">
+            <section className="panel" aria-labelledby="invite-client-heading">
+              <div className="panel-title"><h2 id="invite-client-heading">Invite client personnel</h2></div>
+              <form className="access-form" onSubmit={createInvitation} aria-describedby="invite-delivery-note">
+                <label>Email address<input type="email" value={inviteEmail} onChange={(event) => setInviteEmail(event.target.value)} autoComplete="email" required /></label>
+                <label>Display name <span className="optional">Optional</span><input value={inviteDisplayName} onChange={(event) => setInviteDisplayName(event.target.value)} autoComplete="name" /></label>
+                <label>Access profile<select value={inviteRole} onChange={(event) => setInviteRole(event.target.value)}>{accessProfiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}</select></label>
+                <label>Invitation expires<select value={inviteExpiry} onChange={(event) => setInviteExpiry(event.target.value)}><option value="1">In 1 day</option><option value="7">In 7 days</option><option value="14">In 14 days</option><option value="30">In 30 days</option></select></label>
+                <p id="invite-delivery-note" className="form-note">Email delivery is not configured yet. The secure acceptance link is shown once so you can deliver it through an approved channel.</p>
+                <button type="submit" disabled={accessLoading}>{accessLoading ? "Creating…" : "Create invitation"}</button>
+              </form>
+              {createdInviteLink && <div className="invite-link-result" role="region" aria-labelledby="invite-link-heading"><h3 id="invite-link-heading">Acceptance link</h3><p>Copy this link now. Watchtower does not retain the invitation secret.</p><div className="copy-row"><input aria-label="Client acceptance link" readOnly value={createdInviteLink} onFocus={(event) => event.currentTarget.select()} /><button type="button" onClick={() => void copyInviteLink()}>Copy link</button></div></div>}
+            </section>
+            <section className="panel" aria-labelledby="access-profile-heading">
+              <div className="panel-title"><h2 id="access-profile-heading">Access profiles</h2></div>
+              <div className="access-profiles">{accessProfiles.map((profile) => <article key={profile.id}><h3>{profile.name}</h3><p>{profile.description}</p><ul>{profile.permissions.map((permission) => <li key={permission}>{permission.replaceAll("_", " ")}</li>)}</ul></article>)}</div>
+            </section>
+            <section className="panel invitations-panel" aria-labelledby="pending-invitations-heading">
+              <div className="panel-title"><h2 id="pending-invitations-heading">Invitation history</h2><button type="button" onClick={() => void loadClientAccess()} disabled={accessLoading}>Refresh</button></div>
+              {invitations.length ? <div className="table-scroll" role="region" aria-label="Client invitation history" tabIndex={0}><table><caption className="sr-only">Client invitation history</caption><thead><tr><th scope="col">Person</th><th scope="col">Profile</th><th scope="col">Status</th><th scope="col">Expires</th><th scope="col">Action</th></tr></thead><tbody>{invitations.map((invitation) => <tr key={invitation.id}><td><strong>{invitation.display_name || invitation.email}</strong>{invitation.display_name && <small>{invitation.email}</small>}</td><td>{accessProfiles.find((profile) => profile.id === invitation.role)?.name ?? invitation.role.replaceAll("_", " ")}</td><td><Status value={invitation.status} /></td><td><time dateTime={invitation.expires_at}>{new Date(invitation.expires_at).toLocaleDateString()}</time></td><td>{invitation.status === "pending" ? <button type="button" className="danger-action" onClick={() => void revokeInvitation(invitation.id)} disabled={accessLoading}>Revoke</button> : "—"}</td></tr>)}</tbody></table></div> : <Empty>No client invitations have been created.</Empty>}
+            </section>
+          </div>}
+        </> : <>
           {error && <div className="error banner" role="alert">{error}</div>}
           <div className="summary" aria-label="Operations summary" role="list">
             <div role="listitem"><span>Assessments</span><strong>{data.assessments.length}</strong><small>recent records</small></div>
@@ -163,7 +340,7 @@ export function App() {
             <section className="panel"><div className="panel-title"><h2>Endpoint fleet status</h2></div>{data.endpoints.length ? data.endpoints.map((row) => <div className="line" key={row.id}><span><strong>{row.hostname}</strong><small>{row.platform}</small></span><Status value={row.status} /></div>) : <Empty>No endpoint collectors enrolled.</Empty>}</section>
             <section className="panel"><div className="panel-title"><h2>Recent audit activity</h2></div>{data.audit.length ? data.audit.map((row, index) => <div className="audit-line" key={`${row.target_id}-${index}`}><span className="timeline-dot" aria-hidden="true" /><span><strong>{row.event_type?.replaceAll(".", " ")}</strong><small>{row.target_type}</small></span><time dateTime={row.occurred_at!}>{new Date(row.occurred_at!).toLocaleString()}</time></div>) : <Empty>No audit activity recorded.</Empty>}</section>
           </div>
-        </>}
+        </>)}
       </section>
     </main>
   </div>;
