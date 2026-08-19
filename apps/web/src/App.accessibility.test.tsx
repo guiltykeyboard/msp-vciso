@@ -235,6 +235,57 @@ describe("Watchtower accessibility baseline", () => {
     expect((await axe(container)).violations).toEqual([]);
   });
 
+  it("presents an accessible shared-responsibility matrix", async () => {
+    window.localStorage.setItem("watchtower.organization", "organization-a");
+    window.localStorage.setItem("watchtower.actor", "actor-a");
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = input.toString();
+      if (url.endsWith("/v1/dashboard")) return jsonResponse(dashboard);
+      if (url.endsWith("/v1/me/organizations")) return jsonResponse([{ id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "msp_admin" }]);
+      if (url.endsWith("/v1/responsibilities")) return jsonResponse({
+        roles: [{
+          id: "role-a",
+          name: "Information Security Officer",
+          description: "Owns the customer security program.",
+          party: "customer",
+          status: "active",
+          created_at: "2026-08-19T12:00:00Z",
+          holders: [{ id: "holder-a", app_user_id: null, display_name: "Alex Officer", email: "alex@example.gov", is_primary: true, starts_on: null, ends_on: null, created_at: "2026-08-19T12:00:00Z" }],
+        }],
+        assignments: [{
+          id: "assignment-a",
+          role_id: "role-a",
+          role_name: "Information Security Officer",
+          role_party: "customer",
+          target_type: "policy",
+          target_key: "policy-a",
+          target_title: "Incident Response Policy",
+          framework: null,
+          raci: "accountable",
+          delivery_model: "shared",
+          notes: "Customer approves; MSP maintains the procedure.",
+          assigned_at: "2026-08-19T12:00:00Z",
+        }],
+        options: {
+          policies: [{ id: "policy-a", title: "Incident Response Policy", document_type: "policy", status: "approved", current_version: 1 }],
+          controls: [],
+        },
+      });
+      return jsonResponse({ theme: "light" });
+    });
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await screen.findByText("Test Public Safety");
+    await user.click(screen.getByRole("button", { name: "Responsibilities" }));
+    expect(await screen.findByRole("heading", { name: "Responsibility matrix" })).toBeVisible();
+    expect(screen.getByRole("region", { name: "RACI responsibility matrix" })).toBeVisible();
+    expect(screen.getByRole("table", { name: "Organizational responsibilities by policy and compliance control" })).toBeVisible();
+    expect(screen.getByText(/does not grant Watchtower access/i)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Add responsibility" })).toBeDisabled();
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
   it("keeps the one-time invitation acceptance screen labeled and operable", async () => {
     window.history.replaceState({}, "", "/#invite=invitation-id.secret-value-that-is-long-enough");
     const { container } = render(<App />);

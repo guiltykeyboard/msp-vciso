@@ -2678,6 +2678,510 @@
         "title": "PolicyReferenceOptionsResponse",
         "type": "object"
       },
+      "ResponsibilityAssignmentCreate": {
+        "description": "RACI responsibility for one tenant policy or assessed control.",
+        "properties": {
+          "control_reference": {
+            "anyOf": [
+              {
+                "maxLength": 240,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Control Reference"
+          },
+          "delivery_model": {
+            "enum": [
+              "customer",
+              "msp",
+              "shared",
+              "vendor"
+            ],
+            "title": "Delivery Model",
+            "type": "string"
+          },
+          "framework_pack_version_id": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Framework Pack Version Id"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "policy_document_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Document Id"
+          },
+          "raci": {
+            "enum": [
+              "responsible",
+              "accountable",
+              "consulted",
+              "informed"
+            ],
+            "title": "Raci",
+            "type": "string"
+          },
+          "role_id": {
+            "format": "uuid",
+            "title": "Role Id",
+            "type": "string"
+          },
+          "target_type": {
+            "enum": [
+              "policy",
+              "control"
+            ],
+            "title": "Target Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role_id",
+          "target_type",
+          "raci",
+          "delivery_model"
+        ],
+        "title": "ResponsibilityAssignmentCreate",
+        "type": "object"
+      },
+      "ResponsibilityAssignmentResponse": {
+        "description": "Resolved responsibility row for display and audit review.",
+        "properties": {
+          "assigned_at": {
+            "format": "date-time",
+            "title": "Assigned At",
+            "type": "string"
+          },
+          "delivery_model": {
+            "enum": [
+              "customer",
+              "msp",
+              "shared",
+              "vendor"
+            ],
+            "title": "Delivery Model",
+            "type": "string"
+          },
+          "framework": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Framework"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "raci": {
+            "enum": [
+              "responsible",
+              "accountable",
+              "consulted",
+              "informed"
+            ],
+            "title": "Raci",
+            "type": "string"
+          },
+          "role_id": {
+            "format": "uuid",
+            "title": "Role Id",
+            "type": "string"
+          },
+          "role_name": {
+            "title": "Role Name",
+            "type": "string"
+          },
+          "role_party": {
+            "enum": [
+              "customer",
+              "msp",
+              "vendor"
+            ],
+            "title": "Role Party",
+            "type": "string"
+          },
+          "target_key": {
+            "title": "Target Key",
+            "type": "string"
+          },
+          "target_title": {
+            "title": "Target Title",
+            "type": "string"
+          },
+          "target_type": {
+            "enum": [
+              "policy",
+              "control"
+            ],
+            "title": "Target Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "role_id",
+          "role_name",
+          "role_party",
+          "target_type",
+          "target_key",
+          "target_title",
+          "framework",
+          "raci",
+          "delivery_model",
+          "notes",
+          "assigned_at"
+        ],
+        "title": "ResponsibilityAssignmentResponse",
+        "type": "object"
+      },
+      "ResponsibilityHolderCreate": {
+        "description": "Named person currently filling an operational role.",
+        "properties": {
+          "display_name": {
+            "maxLength": 200,
+            "minLength": 2,
+            "pattern": ".*\\S.*",
+            "title": "Display Name",
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "maxLength": 320,
+                "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "ends_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends On"
+          },
+          "is_primary": {
+            "default": false,
+            "title": "Is Primary",
+            "type": "boolean"
+          },
+          "starts_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts On"
+          }
+        },
+        "required": [
+          "display_name"
+        ],
+        "title": "ResponsibilityHolderCreate",
+        "type": "object"
+      },
+      "ResponsibilityHolderResponse": {
+        "description": "Named role holder visible in a tenant responsibility matrix.",
+        "properties": {
+          "app_user_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App User Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 200,
+            "minLength": 2,
+            "pattern": ".*\\S.*",
+            "title": "Display Name",
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "maxLength": 320,
+                "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "ends_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends On"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_primary": {
+            "default": false,
+            "title": "Is Primary",
+            "type": "boolean"
+          },
+          "starts_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts On"
+          }
+        },
+        "required": [
+          "display_name",
+          "id",
+          "app_user_id",
+          "created_at"
+        ],
+        "title": "ResponsibilityHolderResponse",
+        "type": "object"
+      },
+      "ResponsibilityMatrixResponse": {
+        "description": "Complete tenant role catalog, mapping rows, and eligible targets.",
+        "properties": {
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/ResponsibilityAssignmentResponse"
+            },
+            "title": "Assignments",
+            "type": "array"
+          },
+          "options": {
+            "$ref": "#/components/schemas/ResponsibilityOptionsResponse"
+          },
+          "roles": {
+            "items": {
+              "$ref": "#/components/schemas/ResponsibilityRoleResponse"
+            },
+            "title": "Roles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "roles",
+          "assignments",
+          "options"
+        ],
+        "title": "ResponsibilityMatrixResponse",
+        "type": "object"
+      },
+      "ResponsibilityOptionsResponse": {
+        "description": "Tenant policies and assessed controls eligible for responsibility mapping.",
+        "properties": {
+          "controls": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Controls",
+            "type": "array"
+          },
+          "policies": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Policies",
+            "type": "array"
+          }
+        },
+        "required": [
+          "policies",
+          "controls"
+        ],
+        "title": "ResponsibilityOptionsResponse",
+        "type": "object"
+      },
+      "ResponsibilityRoleCreate": {
+        "description": "Tenant-defined operational role, distinct from application authorization.",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 2,
+            "pattern": ".*\\S.*",
+            "title": "Name",
+            "type": "string"
+          },
+          "party": {
+            "enum": [
+              "customer",
+              "msp",
+              "vendor"
+            ],
+            "title": "Party",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "party"
+        ],
+        "title": "ResponsibilityRoleCreate",
+        "type": "object"
+      },
+      "ResponsibilityRoleResponse": {
+        "description": "Organizational role and the people currently filling it.",
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "holders": {
+            "items": {
+              "$ref": "#/components/schemas/ResponsibilityHolderResponse"
+            },
+            "title": "Holders",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "party": {
+            "enum": [
+              "customer",
+              "msp",
+              "vendor"
+            ],
+            "title": "Party",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "party",
+          "status",
+          "created_at",
+          "holders"
+        ],
+        "title": "ResponsibilityRoleResponse",
+        "type": "object"
+      },
       "SiteCreate": {
         "description": "Tenant site used to scope endpoint enrollment.",
         "properties": {
@@ -5444,6 +5948,319 @@
         ]
       }
     },
+    "/v1/responsibilities": {
+      "get": {
+        "description": "Return roles, holders, RACI rows, and tenant-valid mapping targets.",
+        "operationId": "getResponsibilityMatrix",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsibilityMatrixResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get the tenant responsibility matrix",
+        "tags": [
+          "responsibilities"
+        ]
+      }
+    },
+    "/v1/responsibility-assignments": {
+      "post": {
+        "description": "Create one RACI row with an explicit service-delivery boundary.",
+        "operationId": "createResponsibilityAssignment",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsibilityAssignmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsibilityAssignmentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Map a role to a policy or control",
+        "tags": [
+          "responsibilities"
+        ]
+      }
+    },
+    "/v1/responsibility-assignments/{assignment_id}": {
+      "delete": {
+        "description": "Remove a tenant mapping while preserving an append-only audit event.",
+        "operationId": "deleteResponsibilityAssignment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assignment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assignment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove a responsibility mapping",
+        "tags": [
+          "responsibilities"
+        ]
+      }
+    },
+    "/v1/responsibility-roles": {
+      "post": {
+        "description": "Create a responsibility role without granting application permissions.",
+        "operationId": "createResponsibilityRole",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsibilityRoleCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsibilityRoleResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create an organizational responsibility role",
+        "tags": [
+          "responsibilities"
+        ]
+      }
+    },
+    "/v1/responsibility-roles/{role_id}/holders": {
+      "post": {
+        "description": "Name a role holder without implicitly granting tenant access.",
+        "operationId": "createResponsibilityHolder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "role_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Role Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsibilityHolderCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsibilityHolderResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assign a person to an organizational role",
+        "tags": [
+          "responsibilities"
+        ]
+      }
+    },
     "/v1/sites": {
       "post": {
         "description": "Create a tenant site for endpoint enrollment.",
@@ -5541,6 +6358,10 @@
     {
       "description": "Recipient-scoped electronic acknowledgements pinned to approved policy versions.",
       "name": "policy agreements"
+    },
+    {
+      "description": "Tenant organizational roles and RACI responsibility mappings.",
+      "name": "responsibilities"
     },
     {
       "description": "Tenant-mapped read-only vendor connections.",

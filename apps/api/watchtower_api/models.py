@@ -258,6 +258,95 @@ class PolicyAcknowledgementReceiptResponse(BaseModel):
     signed_version: int
 
 
+ResponsibilityParty = Literal["customer", "msp", "vendor"]
+ResponsibilityRaci = Literal["responsible", "accountable", "consulted", "informed"]
+ResponsibilityDeliveryModel = Literal["customer", "msp", "shared", "vendor"]
+ResponsibilityTargetType = Literal["policy", "control"]
+
+
+class ResponsibilityRoleCreate(BaseModel):
+    """Tenant-defined operational role, distinct from application authorization."""
+
+    name: str = Field(min_length=2, max_length=160, pattern=r".*\S.*")
+    description: str | None = Field(default=None, max_length=1000)
+    party: ResponsibilityParty
+
+
+class ResponsibilityHolderCreate(BaseModel):
+    """Named person currently filling an operational role."""
+
+    display_name: str = Field(min_length=2, max_length=200, pattern=r".*\S.*")
+    email: str | None = Field(default=None, max_length=320, pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+    is_primary: bool = False
+    starts_on: date | None = None
+    ends_on: date | None = None
+
+
+class ResponsibilityHolderResponse(ResponsibilityHolderCreate):
+    """Named role holder visible in a tenant responsibility matrix."""
+
+    id: UUID
+    app_user_id: UUID | None
+    created_at: datetime
+
+
+class ResponsibilityRoleResponse(BaseModel):
+    """Organizational role and the people currently filling it."""
+
+    id: UUID
+    name: str
+    description: str | None
+    party: ResponsibilityParty
+    status: Literal["active", "inactive"]
+    created_at: datetime
+    holders: list[ResponsibilityHolderResponse]
+
+
+class ResponsibilityAssignmentCreate(BaseModel):
+    """RACI responsibility for one tenant policy or assessed control."""
+
+    role_id: UUID
+    target_type: ResponsibilityTargetType
+    policy_document_id: UUID | None = None
+    framework_pack_version_id: int | None = Field(default=None, gt=0)
+    control_reference: str | None = Field(default=None, max_length=240)
+    raci: ResponsibilityRaci
+    delivery_model: ResponsibilityDeliveryModel
+    notes: str | None = Field(default=None, max_length=1000)
+
+
+class ResponsibilityAssignmentResponse(BaseModel):
+    """Resolved responsibility row for display and audit review."""
+
+    id: UUID
+    role_id: UUID
+    role_name: str
+    role_party: ResponsibilityParty
+    target_type: ResponsibilityTargetType
+    target_key: str
+    target_title: str
+    framework: str | None
+    raci: ResponsibilityRaci
+    delivery_model: ResponsibilityDeliveryModel
+    notes: str | None
+    assigned_at: datetime
+
+
+class ResponsibilityOptionsResponse(BaseModel):
+    """Tenant policies and assessed controls eligible for responsibility mapping."""
+
+    policies: list[dict[str, Any]]
+    controls: list[dict[str, Any]]
+
+
+class ResponsibilityMatrixResponse(BaseModel):
+    """Complete tenant role catalog, mapping rows, and eligible targets."""
+
+    roles: list[ResponsibilityRoleResponse]
+    assignments: list[ResponsibilityAssignmentResponse]
+    options: ResponsibilityOptionsResponse
+
+
 CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]
 EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cji"]
 ReviewDecision = Literal["accepted", "rejected"]
