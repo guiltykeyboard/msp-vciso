@@ -1,7 +1,7 @@
 """Integration test fixtures for the tenant database and API."""
 
 # Pytest resolves fixture parameters by reusing the fixture function name.
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name,too-many-instance-attributes
 
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -23,6 +23,8 @@ class SeedData:
     user_b: UUID
     user_auditor: UUID
     framework_version_id: int
+    assessment_a: UUID
+    assessment_b: UUID
 
 
 @pytest.fixture(scope="session")
@@ -47,10 +49,14 @@ def seed_data(admin_url: str) -> Iterator[SeedData]:
         user_b=UUID("40000000-0000-0000-0000-000000000004"),
         user_auditor=UUID("60000000-0000-0000-0000-000000000006"),
         framework_version_id=1,
+        assessment_a=UUID("70000000-0000-0000-0000-000000000007"),
+        assessment_b=UUID("80000000-0000-0000-0000-000000000008"),
     )
     with psycopg.connect(admin_url, autocommit=True) as connection:
         connection.execute(
-            "truncate audit_events, assessments, organization_memberships, app_users, organizations, service_providers, framework_pack_versions restart identity cascade"
+            "truncate audit_events, evidence_reviews, evidence_observations, "
+            "assessments, organization_memberships, app_users, organizations, "
+            "service_providers, framework_pack_versions restart identity cascade"
         )
         connection.execute(
             "insert into service_providers (id, name, slug) values (%s, 'Example MSP', 'example-msp')",
@@ -93,18 +99,20 @@ def seed_data(admin_url: str) -> Iterator[SeedData]:
         with connection.cursor() as cursor:
             cursor.executemany(
                 """
-                insert into assessments (organization_id, framework_pack_version_id, name, created_by)
-                values (%s, %s, %s, %s)
+                insert into assessments (public_id, organization_id, framework_pack_version_id, name, created_by)
+                values (%s, %s, %s, %s, %s)
                 """,
                 [
-                    (seed.organization_a, seed.framework_version_id, "Tenant A Assessment", seed.user_a),
-                    (seed.organization_b, seed.framework_version_id, "Tenant B Assessment", seed.user_b),
+                    (seed.assessment_a, seed.organization_a, seed.framework_version_id, "Tenant A Assessment", seed.user_a),
+                    (seed.assessment_b, seed.organization_b, seed.framework_version_id, "Tenant B Assessment", seed.user_b),
                 ],
             )
     yield seed
     with psycopg.connect(admin_url, autocommit=True) as connection:
         connection.execute(
-            "truncate audit_events, assessments, organization_memberships, app_users, organizations, service_providers, framework_pack_versions restart identity cascade"
+            "truncate audit_events, evidence_reviews, evidence_observations, "
+            "assessments, organization_memberships, app_users, organizations, "
+            "service_providers, framework_pack_versions restart identity cascade"
         )
 
 
