@@ -1604,6 +1604,200 @@
       ]
     },
     {
+      "name": "responsibilities",
+      "item": [
+        {
+          "name": "Get the tenant responsibility matrix",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/responsibilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "responsibilities"
+              ]
+            },
+            "description": "Return roles, holders, RACI rows, and tenant-valid mapping targets."
+          }
+        },
+        {
+          "name": "Map a role to a policy or control",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/responsibility-assignments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "responsibility-assignments"
+              ]
+            },
+            "description": "Create one RACI row with an explicit service-delivery boundary.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"control_reference\": \"<value>\",\n  \"delivery_model\": \"<value>\",\n  \"framework_pack_version_id\": \"<value>\",\n  \"notes\": \"<value>\",\n  \"policy_document_id\": \"<value>\",\n  \"raci\": \"<value>\",\n  \"role_id\": \"<uuid>\",\n  \"target_type\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remove a responsibility mapping",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/responsibility-assignments/:assignment_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "responsibility-assignments",
+                ":assignment_id"
+              ],
+              "variable": [
+                {
+                  "key": "assignment_id",
+                  "value": "<assignment_id>"
+                }
+              ]
+            },
+            "description": "Remove a tenant mapping while preserving an append-only audit event."
+          }
+        },
+        {
+          "name": "Create an organizational responsibility role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/responsibility-roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "responsibility-roles"
+              ]
+            },
+            "description": "Create a responsibility role without granting application permissions.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<value>\",\n  \"name\": \"<value>\",\n  \"party\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Assign a person to an organizational role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/responsibility-roles/:role_id/holders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "responsibility-roles",
+                ":role_id",
+                "holders"
+              ],
+              "variable": [
+                {
+                  "key": "role_id",
+                  "value": "<role_id>"
+                }
+              ]
+            },
+            "description": "Name a role holder without implicitly granting tenant access.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<value>\",\n  \"email\": \"<value>\",\n  \"ends_on\": \"<value>\",\n  \"is_primary\": false,\n  \"starts_on\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "tenancy",
       "item": [
         {

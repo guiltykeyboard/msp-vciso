@@ -1282,6 +1282,170 @@ html[data-theme="dark"] .danger-action {
   }
 }
 
+/* Tenant responsibility catalog and RACI matrix. */
+.responsibility-workspace {
+  display: grid;
+  gap: 18px;
+}
+
+.responsibility-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid #d6dce5;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.responsibility-summary div {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+  border-right: 1px solid #d6dce5;
+}
+
+.responsibility-summary div:last-child { border-right: 0; }
+.responsibility-summary span { color: #536174; font-size: .78rem; }
+.responsibility-summary strong { font-size: 1.6rem; }
+
+.role-card-grid,
+.responsibility-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.role-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, .7fr);
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid #d6dce5;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+
+.role-card h3,
+.role-card h4 { margin: 6px 0; }
+.role-card p { margin: 0; color: #536174; }
+
+.party-badge,
+.delivery-badge,
+.primary-holder {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 7px;
+  border: 1px solid #b9c5d6;
+  border-radius: 999px;
+  background: #edf3fa;
+  color: #314560;
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+.party-msp, .delivery-msp { background: #e8f3ff; color: #174a76; }
+.party-vendor, .delivery-vendor { background: #f5edff; color: #65358a; }
+.delivery-shared { background: #e8f8f2; color: #185d48; }
+
+.role-holders ul { margin: 8px 0 0; padding: 0; list-style: none; }
+.role-holders li { display: grid; gap: 3px; padding: 8px 0; border-top: 1px solid #e0e5ec; }
+.role-holders li span:not(.primary-holder) { color: #536174; font-size: .78rem; overflow-wrap: anywhere; }
+.primary-holder { margin-left: 6px; }
+
+.responsibility-form {
+  display: grid;
+  gap: 12px;
+}
+
+.responsibility-form label:not(.responsibility-check) {
+  display: grid;
+  gap: 6px;
+  color: #39485c;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.responsibility-form input,
+.responsibility-form select,
+.responsibility-form textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #aeb9c8;
+  border-radius: 7px;
+  background: #fff;
+  color: #182333;
+  font: inherit;
+}
+
+.responsibility-check { display: flex; align-items: center; gap: 8px; }
+.responsibility-check input { width: auto; }
+.responsibility-map-form { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.responsibility-map-form button { align-self: end; }
+
+.responsibility-matrix table { min-width: 980px; }
+.responsibility-matrix td > strong,
+.responsibility-matrix td > small,
+.matrix-role { display: block; }
+.responsibility-matrix td > small,
+.matrix-role small { margin-top: 3px; color: #536174; font-size: .72rem; }
+.matrix-role { margin-bottom: 8px; font-weight: 700; }
+.delivery-badge { margin: 2px; }
+.mapping-remove { display: block; margin: 0 0 5px; }
+
+html[data-theme="dark"] .responsibility-summary,
+html[data-theme="dark"] .role-card,
+html[data-theme="dark"] .responsibility-form input,
+html[data-theme="dark"] .responsibility-form select,
+html[data-theme="dark"] .responsibility-form textarea {
+  border-color: #33445b;
+  background: #142033;
+  color: #eef3fa;
+}
+
+html[data-theme="dark"] .responsibility-summary div,
+html[data-theme="dark"] .role-holders li { border-color: #2b3b52; }
+html[data-theme="dark"] .responsibility-summary span,
+html[data-theme="dark"] .role-card p,
+html[data-theme="dark"] .role-holders li span:not(.primary-holder),
+html[data-theme="dark"] .responsibility-matrix td > small,
+html[data-theme="dark"] .matrix-role small { color: #b9c7d9; }
+
+html[data-theme="dark"] .responsibility-form label:not(.responsibility-check) {
+  color: #d7e1ed;
+}
+
+@media (max-width: 920px) {
+  .role-card-grid,
+  .responsibility-editor-grid,
+  .responsibility-map-form { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .responsibility-summary { grid-template-columns: 1fr 1fr; }
+  .responsibility-summary div:nth-child(2) { border-right: 0; }
+  .responsibility-summary div:nth-child(-n + 2) { border-bottom: 1px solid #d6dce5; }
+  .role-card { grid-template-columns: 1fr; }
+  html[data-theme="dark"] .responsibility-summary div:nth-child(-n + 2) { border-bottom-color: #2b3b52; }
+}
+
+@media (max-width: 430px) {
+  .responsibility-summary { grid-template-columns: 1fr; }
+  .responsibility-summary div,
+  .responsibility-summary div:nth-child(2) { border-right: 0; border-bottom: 1px solid #d6dce5; }
+  .responsibility-summary div:last-child { border-bottom: 0; }
+  html[data-theme="dark"] .responsibility-summary div { border-bottom-color: #2b3b52; }
+}
+
+@media (forced-colors: active) {
+  .party-badge,
+  .delivery-badge,
+  .primary-holder { border: 1px solid ButtonText; }
+}
+
 @media (max-width: 760px) {
   html[data-theme="dark"] .policy-metadata div:nth-child(-n + 2) {
     border-bottom-color: #2b3b52;

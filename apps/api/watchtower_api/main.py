@@ -44,6 +44,7 @@ from watchtower_api.object_storage import (
 )
 from watchtower_api.policies import router as policies_router
 from watchtower_api.profile import router as profile_router
+from watchtower_api.responsibilities import router as responsibilities_router
 
 
 ASSESSMENT_CREATORS = frozenset(
@@ -236,6 +237,10 @@ app = FastAPI(
                 "Recipient-scoped electronic acknowledgements pinned to approved policy versions."
             ),
         },
+        {
+            "name": "responsibilities",
+            "description": "Tenant organizational roles and RACI responsibility mappings.",
+        },
         {"name": "integrations", "description": "Tenant-mapped read-only vendor connections."},
         {"name": "endpoints", "description": "Endpoint collector enrollment and posture ingestion."},
     ],
@@ -245,6 +250,7 @@ app.include_router(agreements_router)
 app.include_router(automation_router)
 app.include_router(policies_router)
 app.include_router(profile_router)
+app.include_router(responsibilities_router)
 
 
 @app.get(

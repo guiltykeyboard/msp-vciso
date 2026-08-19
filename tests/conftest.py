@@ -54,7 +54,8 @@ def seed_data(admin_url: str) -> Iterator[SeedData]:
     )
     with psycopg.connect(admin_url, autocommit=True) as connection:
         connection.execute(
-            "truncate audit_events, policy_acknowledgements, policy_agreement_requests, "
+            "truncate audit_events, responsibility_assignments, responsibility_role_holders, responsibility_roles, "
+            "policy_acknowledgements, policy_agreement_requests, "
             "policy_evidence_links, policy_control_links, policy_document_versions, "
             "policy_documents, organization_invitations, "
             "agent_observations, agents, agent_enrollment_tokens, sites, "
@@ -115,7 +116,8 @@ def seed_data(admin_url: str) -> Iterator[SeedData]:
     yield seed
     with psycopg.connect(admin_url, autocommit=True) as connection:
         connection.execute(
-            "truncate audit_events, policy_acknowledgements, policy_agreement_requests, "
+            "truncate audit_events, responsibility_assignments, responsibility_role_holders, responsibility_roles, "
+            "policy_acknowledgements, policy_agreement_requests, "
             "policy_evidence_links, policy_control_links, policy_document_versions, "
             "policy_documents, organization_invitations, "
             "agent_observations, agents, agent_enrollment_tokens, sites, "

@@ -5,8 +5,8 @@
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
-![Languages](badges/languages.svg?v=6e71359c7b9e)
-![Lines of code](badges/lines-of-code.svg?v=87a8436d649e)
+![Languages](badges/languages.svg?v=177c4c778853)
+![Lines of code](badges/lines-of-code.svg?v=2023fa03db38)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -62,8 +62,9 @@ The first useful release should support:
 6. Auditor/customer read-only access and a redacted evidence export.
 7. Tenant policy and procedure records with immutable version history, approval state, review dates, and exact control/evidence relationships.
 8. End-user policy acknowledgements pinned to the exact approved version and document fingerprint, without granting dashboard access.
+9. Tenant role catalogs and RACI mappings that make customer, MSP, shared, and vendor responsibility explicit without conflating job ownership with application permissions.
 
-See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [the policy and procedure library](docs/policy-library.md), [end-user policy acknowledgements](docs/policy-acknowledgements.md), [client tenant access](docs/client-access.md), [the accessibility policy](ACCESSIBILITY.md), [evidence object storage](docs/object-storage.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
+See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [the policy and procedure library](docs/policy-library.md), [organizational roles and shared responsibility](docs/responsibility-matrix.md), [end-user policy acknowledgements](docs/policy-acknowledgements.md), [client tenant access](docs/client-access.md), [the accessibility policy](ACCESSIBILITY.md), [evidence object storage](docs/object-storage.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
 
 The development stack now includes the React MSP operations dashboard at `http://localhost:5173`. It reads tenant-scoped assessment, evidence, integration, endpoint, and audit data from the API. The current identity form is deliberately labeled as development-only until the production OIDC adapter is implemented.
 
@@ -74,6 +75,8 @@ The Customers workspace supports tenant-scoped client invitations with customer 
 The Policies workspace lets each customer maintain policies, procedures, standards, and guidelines as controlled records. Every revision is immutable, approval and retirement are audited, and relationships identify the exact assessed framework control and evidence observation supporting the document. Customer and MSP administrators can approve records; invited reviewers and external auditors receive read-only access. See [the policy and procedure library](docs/policy-library.md).
 
 For an approved policy, a customer or MSP administrator can issue a recipient-specific acknowledgement link. The end user sees only the pinned document version, provides a typed name and explicit agreement, and receives an immutable receipt containing the version, SHA-256 fingerprint, attestation, and timestamp. This is an electronic acknowledgement workflow—not a qualified digital-signature service—and production use remains disabled until OIDC sign-in verifies the recipient's work email. See [end-user policy acknowledgements](docs/policy-acknowledgements.md).
+
+The Responsibilities workspace provides a tenant role catalog, named role holders, and a RACI matrix across controlled policies and assessed controls. Each mapping identifies customer, MSP, shared, or vendor delivery, while role-holder records remain deliberately separate from dashboard access. See [organizational roles and shared responsibility](docs/responsibility-matrix.md).
 
 ## API reference
 
