@@ -47,7 +47,15 @@ class ObjectStorageSettings:
 
 
 @dataclass(frozen=True, slots=True)
-class Settings:
+class TrustCenterSettings:
+    """Public edge hostname used for tenant custom-domain routing."""
+
+    cname_target: str | None
+    tls_authorization_secret: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class Settings:  # pylint: disable=too-many-instance-attributes
     """Validated API settings."""
 
     database_url: str
@@ -57,6 +65,7 @@ class Settings:
     pool_max_size: int
     object_storage: ObjectStorageSettings
     credential_encryption_key: str | None
+    trust_center: TrustCenterSettings
 
     @classmethod
     def from_environment(cls) -> "Settings":
@@ -90,6 +99,12 @@ class Settings:
             pool_max_size=int(os.getenv("WATCHTOWER_DB_POOL_MAX_SIZE", "10")),
             object_storage=storage,
             credential_encryption_key=os.getenv("WATCHTOWER_CREDENTIAL_ENCRYPTION_KEY"),
+            trust_center=TrustCenterSettings(
+                cname_target=os.getenv("WATCHTOWER_TRUST_CNAME_TARGET"),
+                tls_authorization_secret=os.getenv(
+                    "WATCHTOWER_TRUST_TLS_AUTHORIZATION_SECRET"
+                ),
+            ),
         )
         if settings.environment == "production" and settings.allow_insecure_dev_auth:
             raise ValueError("Insecure development authentication cannot run in production")
@@ -124,4 +139,15 @@ class Settings:
             and not storage.s3.public_endpoint_url.startswith("https://")
         ):
             raise ValueError("Production public S3-compatible endpoints must use HTTPS")
+        if settings.trust_center.cname_target and any(
+            marker in settings.trust_center.cname_target for marker in ("/", ":", " ")
+        ):
+            raise ValueError("WATCHTOWER_TRUST_CNAME_TARGET must be a DNS hostname")
+        if (
+            settings.trust_center.tls_authorization_secret
+            and len(settings.trust_center.tls_authorization_secret) < 32
+        ):
+            raise ValueError(
+                "WATCHTOWER_TRUST_TLS_AUTHORIZATION_SECRET must be at least 32 characters"
+            )
         return settings

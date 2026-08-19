@@ -127,11 +127,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "4e9ad94cd72cd46d15b3fba225073cc4d2a5a7be"
+          "content": "178cbb46637d1999181e53706d3f6f4115dafeaf"
         },
         {
           "alg": "SHA-256",
-          "content": "6775ff5b9c9b7067b44669973c5f443d00ca44365669e8e627a814f56cd7ba37"
+          "content": "107f2ccab2657d8e2a69513254fd22173a788218519eba6a2a1a63c988a15252"
         }
       ],
       "name": "requirements.txt",
@@ -1368,6 +1368,80 @@
       "purl": "pkg:pypi/cryptography@50.0.0",
       "type": "library",
       "version": "50.0.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/dnspython@2.8.0?package-id=2f46d5ebb6ed1cbd",
+      "cpe": "cpe:2.3:a:python-dnspython:python-dnspython:2.8.0:*:*:*:*:*:*:*",
+      "name": "dnspython",
+      "properties": [
+        {
+          "name": "syft:package:foundBy",
+          "value": "python-package-cataloger"
+        },
+        {
+          "name": "syft:package:language",
+          "value": "python"
+        },
+        {
+          "name": "syft:package:type",
+          "value": "python"
+        },
+        {
+          "name": "syft:package:metadataType",
+          "value": "python-pip-requirements-entry"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python-dnspython:python_dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_dnspython:python-dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_dnspython:python_dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:dnspython:python-dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:dnspython:python_dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python-dnspython:dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python_dnspython:dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:python-dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:python_dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:dnspython:dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:cpe23",
+          "value": "cpe:2.3:a:python:dnspython:2.8.0:*:*:*:*:*:*:*"
+        },
+        {
+          "name": "syft:location:0:path",
+          "value": "/requirements.txt"
+        }
+      ],
+      "purl": "pkg:pypi/dnspython@2.8.0",
+      "type": "library",
+      "version": "2.8.0"
     },
     {
       "bom-ref": "pkg:pypi/fastapi@0.141.1?package-id=e59c7c9fae9758e0",

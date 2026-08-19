@@ -45,6 +45,7 @@ from watchtower_api.object_storage import (
 from watchtower_api.policies import router as policies_router
 from watchtower_api.profile import router as profile_router
 from watchtower_api.responsibilities import router as responsibilities_router
+from watchtower_api.trust_centers import router as trust_centers_router
 
 
 ASSESSMENT_CREATORS = frozenset(
@@ -241,6 +242,14 @@ app = FastAPI(
             "name": "responsibilities",
             "description": "Tenant organizational roles and RACI responsibility mappings.",
         },
+        {
+            "name": "trust centers",
+            "description": "Tenant-managed public assurance content and custom domains.",
+        },
+        {
+            "name": "public trust centers",
+            "description": "Unauthenticated, explicitly published trust center metadata.",
+        },
         {"name": "integrations", "description": "Tenant-mapped read-only vendor connections."},
         {"name": "endpoints", "description": "Endpoint collector enrollment and posture ingestion."},
     ],
@@ -251,6 +260,7 @@ app.include_router(automation_router)
 app.include_router(policies_router)
 app.include_router(profile_router)
 app.include_router(responsibilities_router)
+app.include_router(trust_centers_router)
 
 
 @app.get(

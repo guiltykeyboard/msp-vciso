@@ -116,6 +116,12 @@ Raw artifacts are immutable. Redaction produces a new derivative linked to its s
 
 The default endpoint collector must not enumerate user files, capture screen contents, collect browser history, or search for CJI. It should collect narrowly defined posture facts such as OS/build, disk encryption state, firewall state, screen-lock policy, supported security product health, patch age, and agent heartbeat.
 
+## Public trust centers
+
+The tenant Trust Center is a separate public projection, not an anonymous dashboard mode. A security-definer database function returns only allow-listed fields from a published profile and explicitly published policy-version metadata. It never serializes policy bodies, evidence, control mappings, assessment results, personnel, or internal tenant identifiers. Authenticated administrators control publication; auditors can inspect configuration read-only; all publication and custom-domain transitions are audited.
+
+Custom domains require a tenant-specific TXT challenge and a direct CNAME to the configured platform edge. An indexed authorization function answers certificate-edge requests only for active domains belonging to published profiles. DNS resolution happens during administrator-triggered verification, never during a TLS handshake. Azure Front Door Standard/Premium with managed certificates is the preferred hosted edge; Caddy On-Demand TLS with a private authorization path is the self-hosted ACME option.
+
 ## Automation and AI
 
 Automated checks consist of:

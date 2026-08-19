@@ -1,0 +1,16 @@
+{
+	email {$ACME_CONTACT_EMAIL}
+	on_demand_tls {
+		ask http://api:8000/v1/internal/trust-domains:authorize?token={$WATCHTOWER_TRUST_TLS_AUTHORIZATION_SECRET}
+	}
+}
+
+https:// {
+	tls {
+		on_demand
+	}
+
+	@api path /v1/* /health/*
+	reverse_proxy @api api:8000
+	reverse_proxy web:5173
+}

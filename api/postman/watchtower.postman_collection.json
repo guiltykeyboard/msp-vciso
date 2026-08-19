@@ -1604,6 +1604,30 @@
       ]
     },
     {
+      "name": "public trust centers",
+      "item": [
+        {
+          "name": "Get a published trust center by hostname or tenant slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/public/trust",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "public",
+                "trust"
+              ]
+            },
+            "description": "Resolve only explicitly published, public-safe data without tenant headers."
+          }
+        }
+      ]
+    },
+    {
       "name": "responsibilities",
       "item": [
         {
@@ -1852,6 +1876,300 @@
               ]
             },
             "description": "Return the organization selected by the authorized tenant context."
+          }
+        }
+      ]
+    },
+    {
+      "name": "trust centers",
+      "item": [
+        {
+          "name": "Get tenant trust center configuration",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center"
+              ]
+            },
+            "description": "Return tenant-managed public content, resources, and domain states."
+          }
+        },
+        {
+          "name": "Save and publish a tenant trust center",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center"
+              ]
+            },
+            "description": "Upsert the allow-listed profile fields and explicit publication state.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<value>\",\n  \"headline\": \"<value>\",\n  \"overview\": \"<value>\",\n  \"primary_color\": \"<value>\",\n  \"security_contact_email\": \"<value>\",\n  \"status\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register a custom trust center domain",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/domains",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "domains"
+              ]
+            },
+            "description": "Register a hostname and return its DNS ownership challenge.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hostname\": \"<value>\",\n  \"tls_provider\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Authorize custom-domain TLS provisioning",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/domains/{domain_id}:activate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "domains",
+                "{domain_id}:activate"
+              ],
+              "variable": [
+                {
+                  "key": "domain_id",
+                  "value": "<domain_id>"
+                }
+              ]
+            },
+            "description": "Require the verified hostname to point directly at the configured edge."
+          }
+        },
+        {
+          "name": "Disable a custom trust center domain",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/domains/{domain_id}:disable",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "domains",
+                "{domain_id}:disable"
+              ],
+              "variable": [
+                {
+                  "key": "domain_id",
+                  "value": "<domain_id>"
+                }
+              ]
+            },
+            "description": "Immediately remove a hostname from public routing and TLS authorization."
+          }
+        },
+        {
+          "name": "Verify custom-domain DNS ownership",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/domains/{domain_id}:verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "domains",
+                "{domain_id}:verify"
+              ],
+              "variable": [
+                {
+                  "key": "domain_id",
+                  "value": "<domain_id>"
+                }
+              ]
+            },
+            "description": "Confirm the tenant's unique TXT challenge before allowing activation."
+          }
+        },
+        {
+          "name": "Publish approved policy metadata",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/resources",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "resources"
+              ]
+            },
+            "description": "Pin public-safe metadata to the currently approved policy version.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"<value>\",\n  \"policy_document_id\": \"<uuid>\",\n  \"public_summary\": \"<value>\",\n  \"public_title\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unpublish a trust center resource",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/trust-center/resources/:resource_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "trust-center",
+                "resources",
+                ":resource_id"
+              ],
+              "variable": [
+                {
+                  "key": "resource_id",
+                  "value": "<resource_id>"
+                }
+              ]
+            },
+            "description": "Remove public metadata without changing the underlying controlled policy."
           }
         }
       ]
