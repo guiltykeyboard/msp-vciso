@@ -37,6 +37,9 @@ class AssessmentResponse(BaseModel):
 PolicyDocumentType = Literal["policy", "procedure", "standard", "guideline"]
 PolicyDocumentStatus = Literal["draft", "approved", "retired"]
 PolicyEvidenceRelationship = Literal["supports", "implements", "demonstrates"]
+TrustCenterStatus = Literal["draft", "published"]
+TrustResourceCategory = Literal["policy", "assurance", "privacy", "compliance"]
+TrustTlsProvider = Literal["platform_managed", "azure_managed", "caddy_acme"]
 
 
 class PolicyControlLinkCreate(BaseModel):
@@ -159,6 +162,91 @@ class PolicyDocumentResponse(PolicyDocumentSummaryResponse):
     versions: list[PolicyDocumentVersionResponse]
     controls: list[PolicyControlLinkResponse]
     evidence: list[PolicyEvidenceLinkResponse]
+
+
+class TrustCenterProfileUpdate(BaseModel):
+    """Tenant-controlled public trust center content and publication state."""
+
+    display_name: str = Field(min_length=1, max_length=200)
+    headline: str = Field(min_length=1, max_length=240)
+    overview: str = Field(min_length=1, max_length=5000)
+    security_contact_email: str | None = Field(
+        default=None,
+        min_length=3,
+        max_length=320,
+        pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+    )
+    primary_color: str = Field(default="#14532d", pattern=r"^#[0-9a-fA-F]{6}$")
+    status: TrustCenterStatus = "draft"
+
+
+class TrustResourceCreate(BaseModel):
+    """Approved policy version explicitly exposed as public metadata."""
+
+    policy_document_id: UUID
+    public_title: str = Field(min_length=1, max_length=240)
+    public_summary: str = Field(min_length=1, max_length=2000)
+    category: TrustResourceCategory
+
+
+class TrustResourceResponse(BaseModel):
+    """Public-safe metadata pinned to an approved policy version."""
+
+    id: UUID
+    policy_document_id: UUID
+    title: str
+    summary: str
+    category: TrustResourceCategory
+    document_type: PolicyDocumentType
+    version: int
+    published_at: datetime
+
+
+class TrustDomainCreate(BaseModel):
+    """Requested tenant hostname and its certificate automation provider."""
+
+    hostname: str = Field(min_length=4, max_length=253)
+    tls_provider: TrustTlsProvider = "platform_managed"
+
+
+class TrustDomainResponse(BaseModel):
+    """Custom-domain ownership and TLS provisioning state."""
+
+    id: UUID
+    hostname: str
+    status: Literal["pending", "verified", "active", "disabled"]
+    tls_provider: TrustTlsProvider
+    certificate_status: Literal["not_requested", "provisioning", "active", "error"]
+    verification_record_name: str
+    verification_record_value: str
+    cname_target: str | None
+    verified_at: datetime | None
+    activated_at: datetime | None
+    last_error: str | None
+    created_at: datetime
+
+
+class TrustCenterManagementResponse(BaseModel):
+    """Authenticated tenant trust center configuration."""
+
+    profile: TrustCenterProfileUpdate | None
+    organization_slug: str
+    resources: list[TrustResourceResponse]
+    domains: list[TrustDomainResponse]
+    approved_policies: list[PolicyDocumentSummaryResponse]
+
+
+class PublicTrustCenterResponse(BaseModel):
+    """Strictly allow-listed public trust center representation."""
+
+    organization_slug: str
+    display_name: str
+    headline: str
+    overview: str
+    security_contact_email: str | None
+    primary_color: str
+    updated_at: datetime
+    resources: list[TrustResourceResponse]
 
 
 class PolicyAgreementCreate(BaseModel):

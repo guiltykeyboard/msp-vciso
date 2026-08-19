@@ -5,6 +5,7 @@ import { axe } from "jest-axe";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { App } from "./App";
+import { PublicTrustCenter } from "./PublicTrustCenter";
 
 
 const dashboard = {
@@ -283,6 +284,52 @@ describe("Watchtower accessibility baseline", () => {
     expect(screen.getByRole("table", { name: "Organizational responsibilities by policy and compliance control" })).toBeVisible();
     expect(screen.getByText(/does not grant Watchtower access/i)).toBeVisible();
     expect(screen.getByRole("button", { name: "Add responsibility" })).toBeDisabled();
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("keeps trust center publishing and DNS controls accessible", async () => {
+    window.localStorage.setItem("watchtower.organization", "organization-a");
+    window.localStorage.setItem("watchtower.actor", "actor-a");
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = input.toString();
+      if (url.endsWith("/v1/dashboard")) return jsonResponse(dashboard);
+      if (url.endsWith("/v1/me/organizations")) return jsonResponse([{ id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "msp_admin" }]);
+      if (url.endsWith("/v1/trust-center")) return jsonResponse({
+        profile: { display_name: "Test Public Safety", headline: "Security and trust", overview: "Public assurance information.", security_contact_email: "security@example.gov", primary_color: "#14532d", status: "published" },
+        organization_slug: "test-public-safety",
+        resources: [],
+        domains: [{ id: "domain-a", hostname: "trust.example.gov", status: "pending", tls_provider: "caddy_acme", certificate_status: "not_requested", verification_record_name: "_watchtower-trust.trust.example.gov", verification_record_value: "watchtower-domain-verification=test", cname_target: "trust.watchtower.example", verified_at: null, activated_at: null }],
+        approved_policies: [{ id: "policy-a", title: "Information Security Policy", document_type: "policy", current_version: 2 }],
+      });
+      return jsonResponse({ theme: "light" });
+    });
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await screen.findByText("Test Public Safety");
+    await user.click(screen.getByRole("button", { name: "Trust Center" }));
+    expect(await screen.findByRole("heading", { name: "Public trust profile" })).toBeVisible();
+    expect(screen.getByLabelText("Public organization name")).toHaveValue("Test Public Safety");
+    expect(screen.getByText("_watchtower-trust.trust.example.gov")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Verify TXT" })).toBeVisible();
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("renders an accessible public trust center without private controls", async () => {
+    const { container } = render(<PublicTrustCenter data={{
+      organization_slug: "test-public-safety",
+      display_name: "Test Public Safety",
+      headline: "Security and trust",
+      overview: "Reviewed assurance information for our partners.",
+      security_contact_email: "security@example.gov",
+      primary_color: "#14532d",
+      updated_at: "2026-08-19T12:00:00Z",
+      resources: [{ id: "resource-a", title: "Security Program", summary: "Leadership reviews our program annually.", category: "assurance", document_type: "policy", version: 2, published_at: "2026-08-19T12:00:00Z" }],
+    }} />);
+
+    expect(screen.getByRole("heading", { name: "Security and trust" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "Contact security" })).toHaveAttribute("href", "mailto:security@example.gov");
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect((await axe(container)).violations).toEqual([]);
   });
 

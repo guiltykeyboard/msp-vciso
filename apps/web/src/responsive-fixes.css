@@ -1446,6 +1446,127 @@ html[data-theme="dark"] .responsibility-form label:not(.responsibility-check) {
   .primary-holder { border: 1px solid ButtonText; }
 }
 
+/* Tenant trust-center administration. */
+.trust-admin { display: grid; gap: 18px; }
+.trust-admin-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border: 1px solid #d6dce5; border-radius: 12px; background: #fff; }
+.trust-admin-summary div { display: grid; gap: 5px; padding: 18px; border-right: 1px solid #d6dce5; }
+.trust-admin-summary div:last-child { border-right: 0; }
+.trust-admin-summary span { color: #536174; font-size: .78rem; }
+.trust-admin-summary strong { font-size: 1.35rem; text-transform: capitalize; }
+.trust-admin-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.trust-profile-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.trust-profile-form .trust-wide { grid-column: 1 / -1; }
+.trust-profile-form label,
+.trust-resource-form label,
+.trust-domain-form label { display: grid; gap: 6px; color: #39485c; font-size: .82rem; font-weight: 700; }
+.trust-profile-form input,
+.trust-profile-form select,
+.trust-profile-form textarea,
+.trust-resource-form input,
+.trust-resource-form select,
+.trust-resource-form textarea,
+.trust-domain-form input,
+.trust-domain-form select { width: 100%; min-width: 0; box-sizing: border-box; padding: 10px; border: 1px solid #aeb9c8; border-radius: 7px; background: #fff; color: #182333; font: inherit; }
+.trust-profile-form input[type="color"] { min-height: 42px; padding: 4px; }
+.trust-resource-list,
+.trust-domain-list { display: grid; gap: 10px; margin: 16px 0; }
+.trust-resource-list article,
+.trust-domain-list article { padding: 15px; border: 1px solid #d6dce5; border-radius: 9px; background: #fbfcfe; }
+.trust-resource-list article > span { display: inline-block; color: #275d4a; font-size: .72rem; font-weight: 800; text-transform: uppercase; }
+.trust-resource-list h3,
+.trust-domain-list h3 { margin: 5px 0; }
+.trust-resource-list p { color: #536174; }
+.trust-resource-list button { margin-top: 10px; }
+.trust-resource-form,
+.trust-domain-form { display: grid; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid #d6dce5; }
+.trust-domain-list article > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.trust-domain-list dl { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 7px 10px; margin: 12px 0; }
+.trust-domain-list dt { color: #536174; font-size: .75rem; font-weight: 700; }
+.trust-domain-list dd { margin: 0; overflow-wrap: anywhere; }
+.trust-domain-list code { display: block; margin-bottom: 4px; font-size: .72rem; }
+.domain-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+html[data-theme="dark"] .trust-admin-summary,
+html[data-theme="dark"] .trust-resource-list article,
+html[data-theme="dark"] .trust-domain-list article,
+html[data-theme="dark"] .trust-profile-form input,
+html[data-theme="dark"] .trust-profile-form select,
+html[data-theme="dark"] .trust-profile-form textarea,
+html[data-theme="dark"] .trust-resource-form input,
+html[data-theme="dark"] .trust-resource-form select,
+html[data-theme="dark"] .trust-resource-form textarea,
+html[data-theme="dark"] .trust-domain-form input,
+html[data-theme="dark"] .trust-domain-form select { border-color: #33445b; background: #142033; color: #eef3fa; }
+html[data-theme="dark"] .trust-admin-summary div,
+html[data-theme="dark"] .trust-resource-form,
+html[data-theme="dark"] .trust-domain-form { border-color: #2b3b52; }
+html[data-theme="dark"] .trust-profile-form label,
+html[data-theme="dark"] .trust-resource-form label,
+html[data-theme="dark"] .trust-domain-form label { color: #d7e1ed; }
+html[data-theme="dark"] .trust-admin-summary span,
+html[data-theme="dark"] .trust-resource-list p,
+html[data-theme="dark"] .trust-domain-list dt { color: #b9c7d9; }
+
+/* Public tenant trust center. */
+.bootstrap-loading { min-height: 100vh; display: grid; place-items: center; }
+.public-trust { --trust-accent: #14532d; min-height: 100vh; background: #f4f7f6; color: #14221d; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+.public-trust-header { display: flex; align-items: center; gap: 14px; padding: 18px max(24px, calc((100vw - 1120px) / 2)); border-bottom: 1px solid #d8e2de; background: #fff; }
+.public-trust-header > div:nth-child(2) { display: grid; gap: 2px; }
+.public-trust-header span { color: #52645d; font-size: .75rem; }
+.public-trust-header strong { font-size: 1.02rem; }
+.public-trust-header > a { margin-left: auto; padding: 9px 14px; border: 1px solid #a7b9b1; border-radius: 7px; color: #173f32; font-weight: 700; text-decoration: none; }
+.public-trust-mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 11px; background: var(--trust-accent); color: #fff; font-weight: 900; }
+.public-trust-content { width: min(1120px, calc(100% - 48px)); margin: 0 auto; outline: none; }
+.public-trust-hero { max-width: 850px; padding: 86px 0 72px; }
+.eyebrow { margin: 0 0 12px; color: #335e50; font-size: .75rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.public-trust-hero h1 { max-width: 820px; margin: 0; font-size: clamp(2.3rem, 6vw, 4.6rem); line-height: 1.03; letter-spacing: -.045em; }
+.public-trust-hero > p:last-child { max-width: 720px; margin: 24px 0 0; color: #465b53; font-size: 1.15rem; line-height: 1.65; }
+.public-trust-hero::after { display: block; width: 84px; height: 5px; margin-top: 34px; border-radius: 5px; background: var(--trust-accent); content: ""; }
+.public-trust-assurance { padding: 38px 0 80px; border-top: 1px solid #cddbd5; }
+.public-trust-assurance > div:first-child { display: block; }
+.public-trust-assurance h2 { margin: 0; font-size: 1.8rem; }
+.public-trust-assurance > p { max-width: 700px; color: #52645d; }
+.public-resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.public-resource-grid article { display: flex; min-height: 220px; flex-direction: column; padding: 22px; border: 1px solid #cddbd5; border-top: 4px solid var(--trust-accent); border-radius: 9px; background: #fff; box-shadow: 0 10px 24px rgba(20, 34, 29, .05); }
+.public-resource-grid article > div { display: flex; justify-content: space-between; gap: 8px; color: #62756d; font-size: .7rem; text-transform: capitalize; }
+.public-resource-category { color: #315f50; font-weight: 800; text-transform: uppercase; }
+.public-resource-grid h3 { margin: 18px 0 8px; font-size: 1.2rem; }
+.public-resource-grid p { margin: 0; color: #52645d; line-height: 1.55; }
+.public-resource-grid small { margin-top: auto; padding-top: 20px; color: #62756d; }
+.public-trust-empty { padding: 28px; border: 1px dashed #a7b9b1; border-radius: 8px; background: #fff; }
+.public-trust-footer { display: flex; justify-content: space-between; gap: 20px; padding: 24px max(24px, calc((100vw - 1120px) / 2)); border-top: 1px solid #d8e2de; background: #fff; color: #52645d; font-size: .78rem; }
+.public-trust-unavailable { display: grid; place-items: center; padding: 24px; }
+.public-trust-unavailable section { max-width: 600px; }
+
+@media (max-width: 920px) {
+  .trust-admin-grid { grid-template-columns: 1fr; }
+  .trust-profile-form { grid-template-columns: 1fr 1fr; }
+  .public-resource-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 620px) {
+  .trust-admin-summary,
+  .trust-profile-form,
+  .public-resource-grid { grid-template-columns: 1fr; }
+  .trust-admin-summary div { border-right: 0; border-bottom: 1px solid #d6dce5; }
+  .trust-admin-summary div:last-child { border-bottom: 0; }
+  .trust-profile-form .trust-wide { grid-column: auto; }
+  .trust-domain-list dl { grid-template-columns: 1fr; }
+  .trust-domain-list dt { margin-top: 5px; }
+  .public-trust-header { padding: 14px 16px; }
+  .public-trust-header > a { padding: 8px; font-size: .76rem; }
+  .public-trust-content { width: min(100% - 32px, 1120px); }
+  .public-trust-hero { padding: 58px 0 50px; }
+  .public-trust-hero h1 { font-size: 2.35rem; }
+  .public-trust-footer { flex-direction: column; padding: 20px 16px; }
+  html[data-theme="dark"] .trust-admin-summary div { border-bottom-color: #2b3b52; }
+}
+
+@media (forced-colors: active) {
+  .public-trust-mark,
+  .public-trust-hero::after { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+}
+
 @media (max-width: 760px) {
   html[data-theme="dark"] .policy-metadata div:nth-child(-n + 2) {
     border-bottom-color: #2b3b52;

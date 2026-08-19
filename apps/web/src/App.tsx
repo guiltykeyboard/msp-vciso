@@ -3,6 +3,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { AgreementAcceptance } from "./AgreementAcceptance";
 import { PolicyLibrary } from "./PolicyLibrary";
 import { ResponsibilityMatrix } from "./ResponsibilityMatrix";
+import { TrustCenter } from "./TrustCenter";
 
 type Row = Record<string, string | null>;
 type Theme = "light" | "dark";
@@ -39,8 +40,8 @@ type AuthorizedOrganization = {
   role: string;
 };
 
-const navigation = ["Overview", "Customers", "Policies", "Responsibilities", "Assessments", "Evidence", "Integrations", "Endpoints", "Audit"];
-const auditorNavigation = ["Overview", "Policies", "Responsibilities", "Assessments", "Evidence", "Audit"];
+const navigation = ["Overview", "Customers", "Policies", "Responsibilities", "Trust Center", "Assessments", "Evidence", "Integrations", "Endpoints", "Audit"];
+const auditorNavigation = ["Overview", "Policies", "Responsibilities", "Trust Center", "Assessments", "Evidence", "Audit"];
 
 function Status({ value }: { value: string | null }) {
   const label = value ?? "Not available";
@@ -355,7 +356,7 @@ export function App() {
         <div className="avatar" aria-hidden="true">MS</div>
       </header>
       <section className="content" aria-labelledby="operations-heading">
-        <div className="heading"><div><h1 id="operations-heading">{active === "Customers" ? "Client access" : active === "Policies" ? "Policies & procedures" : active === "Responsibilities" ? "Roles & responsibilities" : "Compliance operations"}</h1><p>{active === "Customers" ? "Invite client personnel and external auditors with auditable tenant access profiles." : active === "Policies" ? "Versioned internal documents cross-referenced to controls and supporting evidence." : active === "Responsibilities" ? "Document who owns, performs, supports, and receives updates for customer compliance work." : data?.identity.role === "auditor" ? "Read-only assessment, evidence, and audit activity for the selected tenant." : "Current evidence, assessment, integration, and endpoint activity."}</p></div></div>
+        <div className="heading"><div><h1 id="operations-heading">{active === "Customers" ? "Client access" : active === "Policies" ? "Policies & procedures" : active === "Responsibilities" ? "Roles & responsibilities" : active === "Trust Center" ? "Public trust center" : "Compliance operations"}</h1><p>{active === "Customers" ? "Invite client personnel and external auditors with auditable tenant access profiles." : active === "Policies" ? "Versioned internal documents cross-referenced to controls and supporting evidence." : active === "Responsibilities" ? "Document who owns, performs, supports, and receives updates for customer compliance work." : active === "Trust Center" ? "Publish carefully scoped assurance information on a tenant-branded domain." : data?.identity.role === "auditor" ? "Read-only assessment, evidence, and audit activity for the selected tenant." : "Current evidence, assessment, integration, and endpoint activity."}</p></div></div>
         {!data && <form className="connect" aria-labelledby="connect-heading" aria-describedby="connect-help" onSubmit={connect}><h2 id="connect-heading">Connect this browser</h2><p id="connect-help">Development identity headers are stored only in this browser. Production authentication will replace this form.</p><label>Organization ID<input value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><label>Actor ID<input value={actorId} onChange={(event) => setActorId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><button type="submit">Load operations</button>{error && <p className="error" role="alert">{error}</p>}</form>}
         {data && (active === "Customers" ? <>
           {error && <div className="error banner" role="alert">{error}</div>}
@@ -388,6 +389,11 @@ export function App() {
           tenantKey={organizationId}
           announce={setAnnouncement}
         /> : active === "Responsibilities" ? <ResponsibilityMatrix
+          identityHeaders={identityHeaders}
+          role={data.identity.role}
+          tenantKey={organizationId}
+          announce={setAnnouncement}
+        /> : active === "Trust Center" ? <TrustCenter
           identityHeaders={identityHeaders}
           role={data.identity.role}
           tenantKey={organizationId}
