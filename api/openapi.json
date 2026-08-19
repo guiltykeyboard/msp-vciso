@@ -59,6 +59,311 @@
         "title": "AssessmentResponse",
         "type": "object"
       },
+      "EvidenceObservationCreate": {
+        "description": "Provenance and integrity metadata for a newly received artifact.",
+        "properties": {
+          "artifact_name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Artifact Name",
+            "type": "string"
+          },
+          "byte_size": {
+            "minimum": 0.0,
+            "title": "Byte Size",
+            "type": "integer"
+          },
+          "collection_method": {
+            "default": "manual",
+            "enum": [
+              "manual",
+              "api",
+              "endpoint",
+              "browser",
+              "import"
+            ],
+            "title": "Collection Method",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "media_type": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Media Type",
+            "type": "string"
+          },
+          "normalized_facts": {
+            "additionalProperties": true,
+            "title": "Normalized Facts",
+            "type": "object"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          },
+          "sensitivity": {
+            "default": "confidential",
+            "enum": [
+              "internal",
+              "confidential",
+              "security_record",
+              "cji"
+            ],
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "source_identifier": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Identifier"
+          },
+          "source_type": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Source Type",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "source_type",
+          "observed_at",
+          "artifact_name",
+          "media_type",
+          "byte_size",
+          "sha256"
+        ],
+        "title": "EvidenceObservationCreate",
+        "type": "object"
+      },
+      "EvidenceObservationResponse": {
+        "description": "Tenant-scoped evidence metadata and its latest review decision.",
+        "properties": {
+          "artifact_name": {
+            "title": "Artifact Name",
+            "type": "string"
+          },
+          "assessment_id": {
+            "format": "uuid",
+            "title": "Assessment Id",
+            "type": "string"
+          },
+          "byte_size": {
+            "title": "Byte Size",
+            "type": "integer"
+          },
+          "collection_method": {
+            "enum": [
+              "manual",
+              "api",
+              "endpoint",
+              "browser",
+              "import"
+            ],
+            "title": "Collection Method",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "latest_review": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceReviewResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "media_type": {
+            "title": "Media Type",
+            "type": "string"
+          },
+          "normalized_facts": {
+            "additionalProperties": true,
+            "title": "Normalized Facts",
+            "type": "object"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          },
+          "received_at": {
+            "format": "date-time",
+            "title": "Received At",
+            "type": "string"
+          },
+          "sensitivity": {
+            "enum": [
+              "internal",
+              "confidential",
+              "security_record",
+              "cji"
+            ],
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          },
+          "source_identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Identifier"
+          },
+          "source_type": {
+            "title": "Source Type",
+            "type": "string"
+          },
+          "submitted_by": {
+            "format": "uuid",
+            "title": "Submitted By",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "assessment_id",
+          "title",
+          "description",
+          "collection_method",
+          "source_type",
+          "source_identifier",
+          "observed_at",
+          "received_at",
+          "artifact_name",
+          "media_type",
+          "byte_size",
+          "sha256",
+          "sensitivity",
+          "normalized_facts",
+          "submitted_by"
+        ],
+        "title": "EvidenceObservationResponse",
+        "type": "object"
+      },
+      "EvidenceReviewCreate": {
+        "description": "A human review decision appended to an evidence observation.",
+        "properties": {
+          "decision": {
+            "enum": [
+              "accepted",
+              "rejected"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "rationale": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Rationale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision",
+          "rationale"
+        ],
+        "title": "EvidenceReviewCreate",
+        "type": "object"
+      },
+      "EvidenceReviewResponse": {
+        "description": "An immutable evidence review ledger entry.",
+        "properties": {
+          "decision": {
+            "enum": [
+              "accepted",
+              "rejected"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "rationale": {
+            "title": "Rationale",
+            "type": "string"
+          },
+          "reviewed_at": {
+            "format": "date-time",
+            "title": "Reviewed At",
+            "type": "string"
+          },
+          "reviewed_by": {
+            "format": "uuid",
+            "title": "Reviewed By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "decision",
+          "rationale",
+          "reviewed_by",
+          "reviewed_at"
+        ],
+        "title": "EvidenceReviewResponse",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -327,6 +632,220 @@
         ]
       }
     },
+    "/v1/assessments/{assessment_id}/evidence": {
+      "get": {
+        "description": "List evidence and latest reviews for one tenant-visible assessment.",
+        "operationId": "listAssessmentEvidence",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EvidenceObservationResponse"
+                  },
+                  "title": "Response Listassessmentevidence",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List assessment evidence",
+        "tags": [
+          "evidence"
+        ]
+      },
+      "post": {
+        "description": "Register immutable evidence provenance under an authorized assessment.",
+        "operationId": "createEvidenceObservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceObservationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceObservationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Register an evidence observation",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/evidence/{evidence_id}/reviews": {
+      "post": {
+        "description": "Append a human decision without rewriting the evidence or prior reviews.",
+        "operationId": "reviewEvidenceObservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evidence_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Evidence Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceReviewCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceReviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Review an evidence observation",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
     "/v1/organization": {
       "get": {
         "description": "Return the organization selected by the authorized tenant context.",
@@ -394,6 +913,10 @@
     {
       "description": "Tenant-isolated compliance assessment operations.",
       "name": "assessments"
+    },
+    {
+      "description": "Immutable evidence provenance and human review operations.",
+      "name": "evidence"
     }
   ]
 }

@@ -6,7 +6,7 @@
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
 ![Languages](badges/languages.svg?v=0fc5986d8335)
-![Lines of code](badges/lines-of-code.svg?v=40965db7ea35)
+![Lines of code](badges/lines-of-code.svg?v=3fee1668c424)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -14,7 +14,7 @@ Watchtower is an open-source, self-hosted compliance and evidence platform for m
 
 ## Development stack
 
-The first executable vertical slice includes a FastAPI service, PostgreSQL migrations, forced row-level security, tenant-scoped assessment endpoints, append-only audit events, and negative cross-tenant tests.
+The executable vertical slice includes a FastAPI service, PostgreSQL migrations, forced row-level security, tenant-scoped assessment endpoints, immutable evidence provenance, append-only human reviews and audit events, and negative cross-tenant tests.
 
 Start PostgreSQL, apply migrations, and wait for the API health check:
 

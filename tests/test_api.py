@@ -1,6 +1,7 @@
 """HTTP tests for health and tenant authorization behavior."""
 
 from fastapi.testclient import TestClient
+import psycopg
 
 from watchtower_api.main import app
 
@@ -58,3 +59,34 @@ def test_api_prevents_auditor_from_creating_assessment(seed_data) -> None:
 
     assert response.status_code == 403
     assert response.json()["detail"] == "This tenant role cannot create assessments"
+
+
+def test_api_creates_assessment_and_audit_event(seed_data, admin_url) -> None:
+    """A permitted user can create an assessment with JSON audit details."""
+    with TestClient(app) as client:
+        response = client.post(
+            "/v1/assessments",
+            headers=_headers(seed_data.organization_a, seed_data.user_a),
+            json={
+                "framework_pack_version_id": seed_data.framework_version_id,
+                "name": "New tenant assessment",
+            },
+        )
+
+    assert response.status_code == 201
+    assert response.json()["name"] == "New tenant assessment"
+
+    with psycopg.connect(admin_url) as connection:
+        event = connection.execute(
+            """
+            select details
+            from audit_events
+            where target_id = %s and event_type = 'assessment.created'
+            """,
+            (response.json()["id"],),
+        ).fetchone()
+        assert event[0] == {"framework_pack_version_id": seed_data.framework_version_id}
+        connection.execute(
+            "delete from assessments where public_id = %s",
+            (response.json()["id"],),
+        )
