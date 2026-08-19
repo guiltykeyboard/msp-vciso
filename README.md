@@ -12,6 +12,12 @@ Watchtower is an open-source, self-hosted compliance and evidence platform for m
 
 > Project status: product and data-model foundation. This repository is not yet an audit-ready product and does not provide legal advice or certify compliance.
 
+## Dashboard preview
+
+[![Watchtower GRC MSP compliance operations dashboard](docs/design/msp-dashboard-concept.png)](docs/design/msp-dashboard-concept.png)
+
+The dashboard is designed as an MSP operations workspace: tenant-scoped compliance posture, evidence health, integration status, endpoint coverage, and audit activity are visible from one responsive control plane. The image above is the current product concept; the implemented React dashboard follows this direction while live features continue to mature.
+
 ## Development stack
 
 The executable vertical slice includes a FastAPI service, PostgreSQL migrations, forced row-level security, tenant-scoped assessment endpoints, immutable evidence provenance, append-only human reviews and audit events, and negative cross-tenant tests.
