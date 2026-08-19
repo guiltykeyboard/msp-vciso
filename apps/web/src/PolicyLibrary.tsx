@@ -49,6 +49,36 @@ type ReferenceOptions = {
     sensitivity: string;
   }>;
 };
+type AgreementRequest = {
+  id: string;
+  policy_document_id: string;
+  policy_version: number;
+  recipient_email: string;
+  recipient_display_name: string | null;
+  document_sha256: string;
+  status: "pending" | "acknowledged" | "revoked" | "expired";
+  expires_at: string;
+  created_at: string;
+  acknowledged_at: string | null;
+  revoked_at: string | null;
+  signer_display_name: string | null;
+  identity_assurance: string | null;
+  recurrence_days: number | null;
+  prompt_before_days: number;
+  next_review_at: string | null;
+  schedule_basis: string | null;
+  renewal_available: boolean;
+};
+type CadenceSuggestion = {
+  key: string;
+  label: string;
+  recurrence_days: number;
+  prompt_before_days: number;
+  rationale: string;
+  source_label: string;
+  source_url: string;
+  qualification: string;
+};
 
 const emptyOptions: ReferenceOptions = { controls: [], evidence: [] };
 const editors = new Set(["customer_admin", "control_owner", "msp_admin", "msp_analyst"]);
@@ -84,29 +114,44 @@ export function PolicyLibrary({
   const [selectedEvidence, setSelectedEvidence] = useState<string[]>([]);
   const [revisionContent, setRevisionContent] = useState("");
   const [changeSummary, setChangeSummary] = useState("");
+  const [agreements, setAgreements] = useState<AgreementRequest[]>([]);
+  const [recipientEmail, setRecipientEmail] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [expiresInDays, setExpiresInDays] = useState("14");
+  const [agreementLink, setAgreementLink] = useState("");
+  const [cadenceSuggestions, setCadenceSuggestions] = useState<CadenceSuggestion[]>([]);
+  const [cadenceKey, setCadenceKey] = useState("one-time");
+  const [recurrenceDays, setRecurrenceDays] = useState<number | null>(null);
+  const [promptBeforeDays, setPromptBeforeDays] = useState(14);
 
   const loadLibrary = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const [documentsResponse, optionsResponse] = await Promise.all([
+      const [documentsResponse, optionsResponse, cadenceResponse] = await Promise.all([
         fetch("/v1/policies", { headers: identityHeaders() }),
         fetch("/v1/policies/reference-options", { headers: identityHeaders() }),
+        approvers.has(role)
+          ? fetch("/v1/policies/agreement-cadence-suggestions", { headers: identityHeaders() })
+          : Promise.resolve(null),
       ]);
-      if (!documentsResponse.ok || !optionsResponse.ok) {
+      if (!documentsResponse.ok || !optionsResponse.ok || (cadenceResponse && !cadenceResponse.ok)) {
         throw new Error("Policy library request failed");
       }
       setPolicies(await documentsResponse.json());
       setOptions(await optionsResponse.json());
+      setCadenceSuggestions(cadenceResponse ? await cadenceResponse.json() as CadenceSuggestion[] : []);
     } catch (problem) {
       setError(problem instanceof Error ? problem.message : "Policy library request failed");
     } finally {
       setLoading(false);
     }
-  }, [identityHeaders]);
+  }, [identityHeaders, role]);
 
   useEffect(() => {
     setSelected(null);
+    setAgreements([]);
+    setAgreementLink("");
     void loadLibrary();
   }, [loadLibrary, tenantKey]);
 
@@ -114,10 +159,18 @@ export function PolicyLibrary({
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`/v1/policies/${documentId}`, { headers: identityHeaders() });
+      const [response, agreementsResponse] = await Promise.all([
+        fetch(`/v1/policies/${documentId}`, { headers: identityHeaders() }),
+        approvers.has(role)
+          ? fetch(`/v1/policies/${documentId}/agreements`, { headers: identityHeaders() })
+          : Promise.resolve(null),
+      ]);
       if (!response.ok) throw new Error(`Policy request failed (${response.status})`);
+      if (agreementsResponse && !agreementsResponse.ok) throw new Error(`Agreement history failed (${agreementsResponse.status})`);
       const detail = await response.json() as PolicyDetail;
       setSelected(detail);
+      setAgreements(agreementsResponse ? await agreementsResponse.json() as AgreementRequest[] : []);
+      setAgreementLink("");
       setRevisionContent(detail.versions[0]?.content ?? "");
       setChangeSummary("");
       announce(`${detail.title} opened.`);
@@ -224,6 +277,110 @@ export function PolicyLibrary({
     }
   }
 
+  async function createAgreement(event: FormEvent) {
+    event.preventDefault();
+    if (!selected) return;
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch(`/v1/policies/${selected.id}/agreements`, {
+        method: "POST",
+        headers: { ...identityHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipient_email: recipientEmail,
+          recipient_display_name: recipientName || null,
+          expires_in_days: Number(expiresInDays),
+          recurrence_days: recurrenceDays,
+          prompt_before_days: recurrenceDays === null ? 14 : promptBeforeDays,
+          schedule_basis: recurrenceDays === null ? null : cadenceKey,
+        }),
+      });
+      if (!response.ok) {
+        const problem = await response.json() as { detail?: string };
+        throw new Error(problem.detail ?? `Agreement request failed (${response.status})`);
+      }
+      const created = await response.json() as AgreementRequest & { token: string };
+      setAgreements((current) => [created, ...current]);
+      setAgreementLink(`${window.location.origin}${window.location.pathname}#agreement=${encodeURIComponent(created.token)}`);
+      setRecipientEmail("");
+      setRecipientName("");
+      announce(`Acknowledgement link created for ${created.recipient_email}. Copy it now; the secret is shown once.`);
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Agreement request failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function selectCadence(key: string) {
+    setCadenceKey(key);
+    if (key === "one-time") {
+      setRecurrenceDays(null);
+      setPromptBeforeDays(14);
+      return;
+    }
+    if (key === "custom") {
+      setRecurrenceDays(365);
+      setPromptBeforeDays(30);
+      return;
+    }
+    const suggestion = cadenceSuggestions.find((item) => item.key === key);
+    if (suggestion) {
+      setRecurrenceDays(suggestion.recurrence_days);
+      setPromptBeforeDays(suggestion.prompt_before_days);
+    }
+  }
+
+  async function renewAgreement(agreement: AgreementRequest) {
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch(`/v1/policy-agreements/${agreement.id}/renew`, {
+        method: "POST",
+        headers: identityHeaders(),
+      });
+      if (!response.ok) {
+        const problem = await response.json() as { detail?: string };
+        throw new Error(problem.detail ?? `Scheduled review creation failed (${response.status})`);
+      }
+      const renewed = await response.json() as AgreementRequest & { token: string };
+      setAgreements((current) => [renewed, ...current.map((item) => item.id === agreement.id ? { ...item, renewal_available: false } : item)]);
+      setAgreementLink(`${window.location.origin}${window.location.pathname}#agreement=${encodeURIComponent(renewed.token)}`);
+      announce(`Scheduled review link created for ${renewed.recipient_email}. Copy it now; the secret is shown once.`);
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Scheduled review creation failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function revokeAgreement(agreementId: string) {
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch(`/v1/policy-agreements/${agreementId}`, {
+        method: "DELETE",
+        headers: identityHeaders(),
+      });
+      if (!response.ok) throw new Error(`Agreement revocation failed (${response.status})`);
+      if (selected) {
+        const refreshed = await fetch(`/v1/policies/${selected.id}/agreements`, { headers: identityHeaders() });
+        if (!refreshed.ok) throw new Error(`Agreement history refresh failed (${refreshed.status})`);
+        setAgreements(await refreshed.json() as AgreementRequest[]);
+      }
+      announce("Acknowledgement request revoked.");
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Agreement revocation failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function copyAgreementLink() {
+    await navigator.clipboard.writeText(agreementLink);
+    announce("Acknowledgement link copied.");
+  }
+
   return <div className="policy-library">
     {error && <div className="error banner" role="alert">{error}</div>}
     <section className="panel policy-index" aria-labelledby="policy-index-heading">
@@ -278,6 +435,24 @@ export function PolicyLibrary({
           <section aria-labelledby="linked-evidence-heading"><h3 id="linked-evidence-heading">Linked evidence</h3>{selected.evidence.length ? <ul>{selected.evidence.map((evidence) => <li key={evidence.evidence_id}><strong>{evidence.evidence_title}</strong><small>{evidence.relationship}{evidence.notes ? ` · ${evidence.notes}` : ""}</small></li>)}</ul> : <p>No evidence linked.</p>}</section>
         </div>
         <section className="version-history" aria-labelledby="version-history-heading"><h3 id="version-history-heading">Version history</h3><ol>{selected.versions.map((version) => <li key={version.id}><strong>Version {version.version_number}</strong><span>{version.change_summary}</span><time dateTime={version.created_at}>{new Date(version.created_at).toLocaleString()}</time></li>)}</ol></section>
+        {approvers.has(role) && <section className="policy-agreements" aria-labelledby="policy-agreements-heading">
+          <div className="policy-agreements-heading"><div><h3 id="policy-agreements-heading">End-user acknowledgements</h3><p>Issue a recipient-specific link for this exact approved version. The link grants access only to this document—not the tenant dashboard.</p></div><span>{agreements.length} request{agreements.length === 1 ? "" : "s"}</span></div>
+          {selected.status === "approved" ? <form className="agreement-request-form" onSubmit={createAgreement}>
+            <div className="policy-form-grid">
+              <label>Recipient email<input type="email" value={recipientEmail} onChange={(event) => setRecipientEmail(event.target.value)} autoComplete="email" required /></label>
+              <label>Recipient name <span className="optional">Optional</span><input value={recipientName} onChange={(event) => setRecipientName(event.target.value)} autoComplete="name" maxLength={200} /></label>
+              <label>Link expires in<select value={expiresInDays} onChange={(event) => setExpiresInDays(event.target.value)}><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option></select></label>
+              <label>Review schedule<select value={cadenceKey} onChange={(event) => selectCadence(event.target.value)}><option value="one-time">One-time acknowledgement</option>{cadenceSuggestions.map((suggestion) => <option key={suggestion.key} value={suggestion.key}>{suggestion.label}</option>)}<option value="custom">Custom cadence</option></select></label>
+              {cadenceKey === "custom" && <label>Repeat every (days)<input type="number" min="90" max="1095" value={recurrenceDays ?? 365} onChange={(event) => setRecurrenceDays(Number(event.target.value))} required /></label>}
+              {recurrenceDays !== null && <label>Prompt before due date<select value={promptBeforeDays} onChange={(event) => setPromptBeforeDays(Number(event.target.value))}><option value="7">7 days before</option><option value="14">14 days before</option><option value="30">30 days before</option></select></label>}
+            </div>
+            {cadenceKey !== "one-time" && cadenceKey !== "custom" && (() => { const suggestion = cadenceSuggestions.find((item) => item.key === cadenceKey); return suggestion ? <aside className="cadence-guidance" aria-label="Cadence guidance"><strong>{suggestion.rationale}</strong><span>{suggestion.qualification}</span><a href={suggestion.source_url} target="_blank" rel="noreferrer">Source: {suggestion.source_label}</a></aside> : null; })()}
+            <p className="form-note">Watchtower records the signer, exact version and SHA-256 fingerprint, attestation, timestamp, and request metadata in an immutable receipt.</p>
+            <button type="submit" disabled={saving}>{saving ? "Creating…" : "Create acknowledgement link"}</button>
+          </form> : <p className="approval-required">Approve the current draft before requesting acknowledgement.</p>}
+          {agreementLink && <div className="agreement-link-result" role="status"><h4>One-time link ready</h4><p>Copy this link now. Watchtower stores only its hash and cannot display the secret again.</p><div className="copy-row"><input aria-label="End-user acknowledgement link" value={agreementLink} readOnly /><button type="button" onClick={() => void copyAgreementLink()}>Copy link</button></div></div>}
+          {agreements.length ? <div className="table-scroll" role="region" aria-label="Policy acknowledgement requests" tabIndex={0}><table><caption className="sr-only">Policy acknowledgement requests and receipts</caption><thead><tr><th scope="col">Recipient</th><th scope="col">Version</th><th scope="col">Status</th><th scope="col">Activity</th><th scope="col">Next review</th><th scope="col">Action</th></tr></thead><tbody>{agreements.map((agreement) => <tr key={agreement.id}><td><strong>{agreement.recipient_display_name ?? agreement.recipient_email}</strong><small>{agreement.recipient_email}</small></td><td>{agreement.policy_version}</td><td><PolicyStatus value={agreement.status} /></td><td>{agreement.acknowledged_at ? <><time dateTime={agreement.acknowledged_at}>{new Date(agreement.acknowledged_at).toLocaleString()}</time><small>Signed by {agreement.signer_display_name ?? "recipient"}</small></> : <><time dateTime={agreement.expires_at}>Expires {new Date(agreement.expires_at).toLocaleDateString()}</time><small>Requested {new Date(agreement.created_at).toLocaleDateString()}</small></>}</td><td>{agreement.next_review_at ? <><time dateTime={agreement.next_review_at}>{new Date(agreement.next_review_at).toLocaleDateString()}</time><small>{agreement.prompt_before_days} day prompt · every {agreement.recurrence_days} days</small></> : agreement.recurrence_days ? <span>Starts after signing</span> : <span>One time</span>}</td><td>{agreement.status === "pending" ? <button type="button" className="danger-action" disabled={saving} onClick={() => void revokeAgreement(agreement.id)}>Revoke</button> : agreement.renewal_available ? <button type="button" className="table-action" disabled={saving} onClick={() => void renewAgreement(agreement)}>Create review link</button> : <span>—</span>}</td></tr>)}</tbody></table></div> : <p className="empty">No acknowledgement requests for this document.</p>}
+        </section>}
         {editors.has(role) && <form className="revision-form" onSubmit={createRevision}><h3>Create a new revision</h3><label>Document body<textarea rows={9} value={revisionContent} onChange={(event) => setRevisionContent(event.target.value)} required /></label><label>Change summary<input value={changeSummary} onChange={(event) => setChangeSummary(event.target.value)} required maxLength={1000} /></label><button type="submit" disabled={saving}>{saving ? "Saving…" : "Save new version"}</button></form>}
       </div>
     </section>}

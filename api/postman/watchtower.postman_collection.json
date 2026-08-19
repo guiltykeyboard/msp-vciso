@@ -1281,6 +1281,255 @@
       ]
     },
     {
+      "name": "policy agreements",
+      "item": [
+        {
+          "name": "Suggest policy acknowledgement review cadences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/agreement-cadence-suggestions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                "agreement-cadence-suggestions"
+              ]
+            },
+            "description": "Return source-labeled advisory cadences for assessed tenant frameworks."
+          }
+        },
+        {
+          "name": "List policy acknowledgement requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/:document_id/agreements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                ":document_id",
+                "agreements"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "<document_id>"
+                }
+              ]
+            },
+            "description": "List redacted recipient status for one tenant document."
+          }
+        },
+        {
+          "name": "Request a policy acknowledgement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policies/:document_id/agreements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policies",
+                ":document_id",
+                "agreements"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "<document_id>"
+                }
+              ]
+            },
+            "description": "Pin an approved version to one recipient and return its secret once.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expires_in_days\": 0,\n  \"prompt_before_days\": 0,\n  \"recipient_display_name\": \"<value>\",\n  \"recipient_email\": \"<value>\",\n  \"recurrence_days\": \"<value>\",\n  \"schedule_basis\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Revoke a policy acknowledgement request",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policy-agreements/:agreement_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policy-agreements",
+                ":agreement_id"
+              ],
+              "variable": [
+                {
+                  "key": "agreement_id",
+                  "value": "<agreement_id>"
+                }
+              ]
+            },
+            "description": "Revoke a still-pending recipient link under tenant RLS."
+          }
+        },
+        {
+          "name": "Create the next scheduled policy review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policy-agreements/:agreement_id/renew",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policy-agreements",
+                ":agreement_id",
+                "renew"
+              ],
+              "variable": [
+                {
+                  "key": "agreement_id",
+                  "value": "<agreement_id>"
+                }
+              ]
+            },
+            "description": "Create one due successor pinned to the document's current approved version."
+          }
+        },
+        {
+          "name": "Electronically acknowledge a policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policy-agreements:acknowledge",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policy-agreements:acknowledge"
+              ]
+            },
+            "description": "Atomically consume the link and create an immutable signed receipt.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agreed\": false,\n  \"signer_display_name\": \"<value>\",\n  \"token\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Inspect a recipient policy agreement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/policy-agreements:inspect",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "policy-agreements:inspect"
+              ]
+            },
+            "description": "Resolve only the exact version authorized by a recipient-specific link.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "profile",
       "item": [
         {
