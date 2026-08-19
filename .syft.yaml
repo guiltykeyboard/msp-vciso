@@ -1,5 +1,12 @@
 check-for-app-update: false
 
+# The Go source cataloger shells out to a host Go toolchain and emits
+# host-specific architecture/CGO metadata. Dependency lockfiles remain covered
+# by the other language catalogers; exclude this cataloger so a clean checkout
+# produces the same committed SBOM on developer machines and GitHub runners.
+select-catalogers:
+  - "-go-module-file-cataloger"
+
 source:
   name: watchtower-grc
   version: development

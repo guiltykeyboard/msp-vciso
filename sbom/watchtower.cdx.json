@@ -67,11 +67,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "b24812fe5c129dc5835d7d50fee069f0b5cf7248"
+          "content": "dc53248b95669ddd4bf6d4a8e0aaf57c6eccfe3a"
         },
         {
           "alg": "SHA-256",
-          "content": "3c8da87ae6deb8620c0a2e50401fce1cfa5575f2a62f8fd1357857c1192b2348"
+          "content": "30bfcffdb25b8d89b928f39d5487b17e6ab67a625f714916467972773c804025"
         }
       ],
       "name": ".github/workflows/repository-metadata.yml",
