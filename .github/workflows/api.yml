@@ -25,3 +25,24 @@ jobs:
       - name: Show service logs after a failure
         if: failure()
         run: docker compose logs db migrate
+
+  web-build:
+    name: web-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Build the MSP dashboard
+        run: docker build --tag watchtower-web-ci ./apps/web
+
+  endpoint-collector:
+    name: endpoint-collector
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Test and cross-compile the collector
+        run: |
+          docker run --rm -v "$PWD/agent:/src" -w /src \
+            golang:1.25-alpine@sha256:1e0126852075c9c60731c8ba49088448b91f63e2aed97ca9d1a9791622a05946 \
+            sh -c 'go test ./... && for target in windows/amd64 darwin/amd64 darwin/arm64 linux/amd64 linux/arm64; do GOOS=${target%/*} GOARCH=${target#*/} go build -o /tmp/watchtower-agent ./cmd/watchtower-agent || exit 1; done'

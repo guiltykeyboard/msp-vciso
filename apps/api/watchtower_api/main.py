@@ -13,6 +13,7 @@ from fastapi import FastAPI, HTTPException, status
 from psycopg.types.json import Jsonb
 
 from watchtower_api import __version__
+from watchtower_api.automation import router as automation_router
 from watchtower_api.config import Settings
 from watchtower_api.database import TenantDatabaseSession, create_pool
 from watchtower_api.models import (
@@ -211,8 +212,11 @@ app = FastAPI(
             "name": "evidence",
             "description": "Immutable evidence provenance and human review operations.",
         },
+        {"name": "integrations", "description": "Tenant-mapped read-only vendor connections."},
+        {"name": "endpoints", "description": "Endpoint collector enrollment and posture ingestion."},
     ],
 )
+app.include_router(automation_router)
 
 
 @app.get(

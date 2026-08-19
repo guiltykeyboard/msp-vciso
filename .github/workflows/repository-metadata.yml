@@ -33,6 +33,7 @@ jobs:
           output-file: sbom/watchtower.cdx.json
           syft-version: v1.50.0
           artifact-name: watchtower-cyclonedx-sbom
+          config: .syft.yaml
           upload-artifact: true
           upload-release-assets: false
       - name: Normalize CycloneDX SBOM
