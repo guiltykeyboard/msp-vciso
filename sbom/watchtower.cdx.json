@@ -22,11 +22,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "b6a59857a0c036e66637adefc4ca2f189d6c5b15"
+          "content": "da7eb8b214bf3564d6f40e776b304943eaa9042c"
         },
         {
           "alg": "SHA-256",
-          "content": "f1c5fd3c7e54033c09a06b93286411a3a52c0bfb45ff3304949a709e1eb19e8b"
+          "content": "786b0587cca2107a99faf9136cc846a808ec67cf9152449407606ea5bd188b82"
         }
       ],
       "name": ".github/workflows/api.yml",
@@ -97,11 +97,11 @@
       "hashes": [
         {
           "alg": "SHA-1",
-          "content": "d0d9cf100b3477d19c7871895db5694e4463846c"
+          "content": "10a28491abc6fa72a20e020ad27c046b16ae1159"
         },
         {
           "alg": "SHA-256",
-          "content": "257717fd734457175c8ea20ab7ad3f169b3fc7cb6d3c48397ab5cb1a978062a4"
+          "content": "c652ab409f67410363cc78712a6dec6404d876d5d84b268e6e24c43fb9ba1694"
         }
       ],
       "name": "apps/web/package-lock.json",

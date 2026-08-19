@@ -34,6 +34,8 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Build the MSP dashboard
         run: docker build --tag watchtower-web-ci ./apps/web
+      - name: Run dashboard accessibility regression tests
+        run: docker run --rm watchtower-web-ci npm run test:a11y
 
   endpoint-collector:
     name: endpoint-collector
