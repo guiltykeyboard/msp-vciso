@@ -1067,6 +1067,55 @@
         "title": "SiteResponse",
         "type": "object"
       },
+      "UserPreferencesResponse": {
+        "description": "Current server-backed preferences for the authenticated user.",
+        "properties": {
+          "theme": {
+            "enum": [
+              "light",
+              "dark"
+            ],
+            "title": "Theme",
+            "type": "string"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "theme",
+          "updated_at"
+        ],
+        "title": "UserPreferencesResponse",
+        "type": "object"
+      },
+      "UserPreferencesUpdate": {
+        "description": "Mutable preferences stored with the authenticated user profile.",
+        "properties": {
+          "theme": {
+            "enum": [
+              "light",
+              "dark"
+            ],
+            "title": "Theme",
+            "type": "string"
+          }
+        },
+        "required": [
+          "theme"
+        ],
+        "title": "UserPreferencesUpdate",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -2438,6 +2487,122 @@
         ]
       }
     },
+    "/v1/profile/preferences": {
+      "get": {
+        "description": "Return global preferences for the authenticated user, independent of tenant.",
+        "operationId": "getCurrentUserPreferences",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPreferencesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get the current user's preferences",
+        "tags": [
+          "profile"
+        ]
+      },
+      "put": {
+        "description": "Upsert the authenticated user's server-backed profile preferences.",
+        "operationId": "updateCurrentUserPreferences",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPreferencesUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPreferencesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update the current user's preferences",
+        "tags": [
+          "profile"
+        ]
+      }
+    },
     "/v1/sites": {
       "post": {
         "description": "Create a tenant site for endpoint enrollment.",
@@ -2511,6 +2676,10 @@
     {
       "description": "The organization authorized for the current request.",
       "name": "tenancy"
+    },
+    {
+      "description": "Server-backed preferences for the authenticated user.",
+      "name": "profile"
     },
     {
       "description": "Tenant-isolated compliance assessment operations.",

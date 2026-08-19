@@ -5,8 +5,8 @@
 [![Framework packs](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/frameworks.yml)
 [![Repository metadata](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/repository-metadata.yml)
 [![API documentation](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml/badge.svg?branch=main&event=push)](https://github.com/guiltykeyboard/msp-vciso/actions/workflows/api-docs.yml)
-![Languages](badges/languages.svg?v=d72ad04fa164)
-![Lines of code](badges/lines-of-code.svg?v=9c338ba36635)
+![Languages](badges/languages.svg?v=393f32dd08db)
+![Lines of code](badges/lines-of-code.svg?v=8a5d57cbf06c)
 
 Watchtower is an open-source, self-hosted compliance and evidence platform for managed service providers and the customers they support across commercial, nonprofit, and public-sector environments. It is MSP-first and framework-neutral. CJIS Security Policy 6.1 and Ohio Revised Code 9.64 are initial reference packs that prove the platform can accommodate law enforcement and other uncommon requirements without making them the product boundary.
 
@@ -64,6 +64,8 @@ The first useful release should support:
 See [the product decision](docs/product-decision.md), [the architecture](docs/design.md), [evidence object storage](docs/object-storage.md), [the integration roadmap](docs/integrations.md), [the endpoint collector design](docs/endpoint-collector.md), [framework authoring](docs/framework-authoring.md), and [the upstream source/reuse policy](docs/upstream-projects.md).
 
 The development stack now includes the React MSP operations dashboard at `http://localhost:5173`. It reads tenant-scoped assessment, evidence, integration, endpoint, and audit data from the API. The current identity form is deliberately labeled as development-only until the production OIDC adapter is implemented.
+
+Light and dark themes are available from the dashboard header. The selected theme is stored in the authenticated user's server-side profile through `/v1/profile/preferences`, so it follows the user across browsers and computers instead of relying on a cookie, session, or browser theme cache.
 
 ## API reference
 

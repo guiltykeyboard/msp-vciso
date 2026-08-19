@@ -40,6 +40,7 @@ from watchtower_api.object_storage import (
     StoredObject,
     create_object_store,
 )
+from watchtower_api.profile import router as profile_router
 
 
 ASSESSMENT_CREATORS = frozenset(
@@ -205,6 +206,10 @@ app = FastAPI(
             "description": "The organization authorized for the current request.",
         },
         {
+            "name": "profile",
+            "description": "Server-backed preferences for the authenticated user.",
+        },
+        {
             "name": "assessments",
             "description": "Tenant-isolated compliance assessment operations.",
         },
@@ -217,6 +222,7 @@ app = FastAPI(
     ],
 )
 app.include_router(automation_router)
+app.include_router(profile_router)
 
 
 @app.get(
