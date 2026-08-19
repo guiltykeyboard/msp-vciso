@@ -168,3 +168,33 @@ def test_evidence_and_reviews_are_append_only(admin_url, seed_data) -> None:
                 "update evidence_reviews set rationale = 'Rewritten' where id = %s",
                 (review_id,),
             )
+
+
+def test_upload_session_provenance_cannot_be_rewritten(admin_url, seed_data) -> None:
+    """Only completion fields can change after an upload is authorized."""
+    with psycopg.connect(admin_url) as connection:
+        assessment_id = connection.execute(
+            "select id from assessments where public_id = %s",
+            (seed_data.assessment_a,),
+        ).fetchone()[0]
+        upload_id = connection.execute(
+            """
+            insert into evidence_upload_sessions (
+                organization_id, assessment_id, provider, object_key, title,
+                collection_method, source_type, observed_at, artifact_name,
+                media_type, byte_size, sha256, sensitivity, created_by, expires_at
+            ) values (
+                %s, %s, 's3', 'staging/immutable', 'Immutable upload',
+                'manual', 'test', now(), 'immutable.json', 'application/json',
+                2, %s, 'internal', %s, now() + interval '15 minutes'
+            ) returning id
+            """,
+            (seed_data.organization_a, assessment_id, "f" * 64, seed_data.user_a),
+        ).fetchone()[0]
+        connection.commit()
+
+        with pytest.raises(psycopg.errors.ObjectNotInPrerequisiteState):
+            connection.execute(
+                "update evidence_upload_sessions set title = 'Rewritten' where id = %s",
+                (upload_id,),
+            )
