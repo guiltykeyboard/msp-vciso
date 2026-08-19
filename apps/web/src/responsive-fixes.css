@@ -248,6 +248,277 @@ input,
   padding: 20px;
 }
 
+.policy-library {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.72fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.policy-index,
+.policy-detail {
+  grid-column: 1 / -1;
+}
+
+.policy-index table {
+  min-width: 760px;
+}
+
+.policy-index td:first-child strong,
+.policy-index td:first-child small,
+.policy-links small {
+  display: block;
+}
+
+.policy-index td:first-child small,
+.policy-links small {
+  margin-top: 3px;
+  color: #596579;
+}
+
+.table-action {
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  color: #0755b8;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.policy-editor {
+  grid-column: 1 / -1;
+}
+
+.policy-form,
+.revision-form {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.policy-form-grid,
+.reference-grid,
+.policy-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.policy-form label,
+.revision-form label {
+  display: grid;
+  gap: 6px;
+  color: #253248;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.policy-form input,
+.policy-form select,
+.policy-form textarea,
+.revision-form input,
+.revision-form textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #6b778c;
+  border-radius: 3px;
+  background: #fff;
+  color: #172033;
+  padding: 9px 10px;
+  resize: vertical;
+}
+
+.policy-form button,
+.revision-form button {
+  justify-self: start;
+  min-height: 44px;
+  border: 0;
+  border-radius: 3px;
+  background: #0755b8;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 16px;
+}
+
+.policy-form fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid #ccd3de;
+  padding: 12px;
+}
+
+.policy-form legend {
+  padding: 0 5px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.policy-form fieldset > p {
+  color: #596579;
+  font-size: 13px;
+}
+
+.policy-form .check-row {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 9px;
+  align-items: start;
+  border-bottom: 1px solid #e0e4eb;
+  padding: 10px 4px;
+  font-weight: 400;
+}
+
+.policy-form .check-row:last-child {
+  border-bottom: 0;
+}
+
+.check-row input {
+  width: 18px;
+  min-height: 18px;
+  margin: 2px 0 0;
+}
+
+.check-row span,
+.check-row strong,
+.check-row small {
+  display: block;
+}
+
+.check-row strong {
+  margin-bottom: 2px;
+}
+
+.check-row small {
+  margin-top: 3px;
+  color: #596579;
+}
+
+.policy-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.policy-detail-body {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+}
+
+.policy-metadata {
+  margin: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid #d6dce5;
+  gap: 0;
+}
+
+.policy-metadata div {
+  min-width: 0;
+  padding: 12px 14px;
+  border-right: 1px solid #d6dce5;
+}
+
+.policy-metadata div:last-child {
+  border-right: 0;
+}
+
+.policy-metadata dt {
+  color: #596579;
+  font-size: 12px;
+}
+
+.policy-metadata dd {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 650;
+  text-transform: capitalize;
+}
+
+.document-content h3,
+.policy-links h3,
+.version-history h3,
+.revision-form h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.document-content pre {
+  max-height: 420px;
+  overflow: auto;
+  margin: 0;
+  border-left: 3px solid #0755b8;
+  background: #f7faff;
+  color: #253248;
+  font: inherit;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 16px;
+}
+
+.policy-links section {
+  border: 1px solid #d6dce5;
+  padding: 16px;
+}
+
+.policy-links ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.policy-links li {
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.policy-links p {
+  margin: 0;
+  color: #596579;
+  font-size: 13px;
+}
+
+.version-history ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #d6dce5;
+}
+
+.version-history li {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 12px;
+  border-bottom: 1px solid #e0e4eb;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+
+.version-history li:last-child {
+  border-bottom: 0;
+}
+
+.version-history time {
+  color: #596579;
+  font-size: 12px;
+}
+
+.revision-form {
+  border: 1px solid #d6dce5;
+  padding: 16px;
+}
+
+.status-approved {
+  border-color: #75c594;
+  background: #f3fcf6;
+  color: #14763c;
+}
+
+.status-retired {
+  border-color: #aab4c3;
+  background: #f4f6f9;
+  color: #596579;
+}
+
 .auditor-summary {
   grid-template-columns: repeat(2, 1fr);
 }
@@ -358,7 +629,12 @@ html[data-theme="dark"] .panel,
 html[data-theme="dark"] .connect,
 html[data-theme="dark"] .access-form input,
 html[data-theme="dark"] .access-form select,
-html[data-theme="dark"] .copy-row input {
+html[data-theme="dark"] .copy-row input,
+html[data-theme="dark"] .policy-form input,
+html[data-theme="dark"] .policy-form select,
+html[data-theme="dark"] .policy-form textarea,
+html[data-theme="dark"] .revision-form input,
+html[data-theme="dark"] .revision-form textarea {
   border-color: #2b3b52;
   background: #101b2d;
 }
@@ -372,6 +648,17 @@ html[data-theme="dark"] .audit-line,
 html[data-theme="dark"] .summary,
 html[data-theme="dark"] .summary div,
 html[data-theme="dark"] .access-profiles article {
+  border-color: #2b3b52;
+}
+
+html[data-theme="dark"] .policy-form fieldset,
+html[data-theme="dark"] .policy-form .check-row,
+html[data-theme="dark"] .policy-metadata,
+html[data-theme="dark"] .policy-metadata div,
+html[data-theme="dark"] .policy-links section,
+html[data-theme="dark"] .version-history ol,
+html[data-theme="dark"] .version-history li,
+html[data-theme="dark"] .revision-form {
   border-color: #2b3b52;
 }
 
@@ -390,6 +677,36 @@ html[data-theme="dark"] .access-notice p,
 html[data-theme="dark"] .optional,
 html[data-theme="dark"] .form-note {
   color: #9daac0;
+}
+
+html[data-theme="dark"] .policy-index small,
+html[data-theme="dark"] .policy-form fieldset > p,
+html[data-theme="dark"] .check-row small,
+html[data-theme="dark"] .policy-metadata dt,
+html[data-theme="dark"] .policy-links small,
+html[data-theme="dark"] .policy-links p,
+html[data-theme="dark"] .version-history time {
+  color: #9daac0;
+}
+
+html[data-theme="dark"] .policy-form label,
+html[data-theme="dark"] .revision-form label,
+html[data-theme="dark"] .policy-form input,
+html[data-theme="dark"] .policy-form select,
+html[data-theme="dark"] .policy-form textarea,
+html[data-theme="dark"] .revision-form input,
+html[data-theme="dark"] .revision-form textarea {
+  color: #e7edf7;
+}
+
+html[data-theme="dark"] .document-content pre {
+  border-color: #67a9f5;
+  background: #0a1525;
+  color: #d9e3f1;
+}
+
+html[data-theme="dark"] .table-action {
+  color: #8bc0ff;
 }
 
 html[data-theme="dark"] .summary strong {
@@ -447,7 +764,8 @@ html[data-theme="dark"] .auditor-note {
 html[data-theme="dark"] .status-clean,
 html[data-theme="dark"] .status-healthy,
 html[data-theme="dark"] .status-active,
-html[data-theme="dark"] .status-complete {
+html[data-theme="dark"] .status-complete,
+html[data-theme="dark"] .status-approved {
   border-color: #397a55;
   background: #102b20;
   color: #8be0aa;
@@ -502,6 +820,58 @@ html[data-theme="dark"] .danger-action {
 
   .invitations-panel {
     grid-column: auto;
+  }
+
+  .policy-library,
+  .policy-form-grid,
+  .reference-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .policy-metadata {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .policy-metadata div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .policy-metadata div:nth-child(-n + 2) {
+    border-bottom: 1px solid #d6dce5;
+  }
+
+  .version-history li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 520px) {
+  .policy-metadata {
+    grid-template-columns: 1fr;
+  }
+
+  .policy-metadata div,
+  .policy-metadata div:nth-child(2) {
+    border-right: 0;
+    border-bottom: 1px solid #d6dce5;
+  }
+
+  .policy-metadata div:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  html[data-theme="dark"] .policy-metadata div:nth-child(-n + 2) {
+    border-bottom-color: #2b3b52;
+  }
+}
+
+@media (max-width: 520px) {
+  html[data-theme="dark"] .policy-metadata div,
+  html[data-theme="dark"] .policy-metadata div:nth-child(2) {
+    border-bottom-color: #2b3b52;
   }
 }
 

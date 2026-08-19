@@ -156,6 +156,8 @@ describe("Watchtower accessibility baseline", () => {
         { id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "auditor" },
         { id: "organization-b", name: "Second Customer", slug: "second-customer", role: "auditor" },
       ]);
+      if (url.endsWith("/v1/policies/reference-options")) return jsonResponse({ controls: [], evidence: [] });
+      if (url.endsWith("/v1/policies")) return jsonResponse([]);
       return jsonResponse({ theme: "light" });
     });
     const { container } = render(<App />);
@@ -165,8 +167,61 @@ describe("Watchtower accessibility baseline", () => {
     expect(screen.queryByRole("button", { name: "Customers" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Integrations" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Endpoints" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Policies" })).toBeVisible();
     expect(screen.queryByRole("heading", { name: "Integration health" })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Recent audit activity" })).toBeVisible();
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("creates an accessible controlled document with compliance links", async () => {
+    window.localStorage.setItem("watchtower.organization", "organization-a");
+    window.localStorage.setItem("watchtower.actor", "actor-a");
+    const createdPolicy = {
+      id: "policy-a",
+      title: "Incident Response Policy",
+      document_type: "policy",
+      status: "draft",
+      owner_display_name: "Security Officer",
+      review_due_at: "2027-08-19",
+      current_version: 1,
+      control_count: 1,
+      evidence_count: 1,
+      updated_at: "2026-08-19T12:00:00Z",
+      versions: [{ id: "version-a", version_number: 1, content: "Purpose and scope", change_summary: "Initial version", created_at: "2026-08-19T12:00:00Z" }],
+      controls: [{ framework_pack_version_id: 1, framework: "CJIS 2024", control_reference: "CJIS-5.10.1", control_title: "Incident response" }],
+      evidence: [{ evidence_id: "evidence-a", evidence_title: "Approved response plan", relationship: "supports", notes: null }],
+    };
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
+      const url = input.toString();
+      if (url.endsWith("/v1/dashboard")) return jsonResponse(dashboard);
+      if (url.endsWith("/v1/me/organizations")) return jsonResponse([{ id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "msp_admin" }]);
+      if (url.endsWith("/v1/policies/reference-options")) return jsonResponse({
+        controls: [{ framework_pack_version_id: 1, framework: "CJIS 2024", reference: "CJIS-5.10.1", title: "Incident response" }],
+        evidence: [{ id: "evidence-a", title: "Approved response plan", assessment_name: "CJIS assessment", sensitivity: "confidential" }],
+      });
+      if (url.endsWith("/v1/policies") && init?.method === "POST") return jsonResponse(createdPolicy);
+      if (url.endsWith("/v1/policies")) return jsonResponse([]);
+      return jsonResponse({ theme: "light" });
+    });
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await screen.findByText("Test Public Safety");
+    await user.click(screen.getByRole("button", { name: "Policies" }));
+    await screen.findByRole("heading", { name: "Create a controlled document" });
+    await user.type(screen.getByLabelText("Title"), "Incident Response Policy");
+    await user.type(screen.getByLabelText("Owner Optional"), "Security Officer");
+    await user.type(screen.getByLabelText("Document body"), "Purpose and scope");
+    await user.click(screen.getByRole("checkbox", { name: /CJIS-5.10.1/ }));
+    await user.click(screen.getByRole("checkbox", { name: /Approved response plan/ }));
+    await user.click(screen.getByRole("button", { name: "Create draft" }));
+
+    expect(await screen.findByRole("heading", { name: "Incident Response Policy" })).toBeVisible();
+    expect(screen.getAllByText("CJIS-5.10.1")).toHaveLength(2);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
+      "/v1/policies",
+      expect.objectContaining({ method: "POST" }),
+    ));
     expect((await axe(container)).violations).toEqual([]);
   });
 

@@ -41,6 +41,7 @@ from watchtower_api.object_storage import (
     StoredObject,
     create_object_store,
 )
+from watchtower_api.policies import router as policies_router
 from watchtower_api.profile import router as profile_router
 
 
@@ -222,12 +223,19 @@ app = FastAPI(
             "name": "evidence",
             "description": "Immutable evidence provenance and human review operations.",
         },
+        {
+            "name": "policies",
+            "description": (
+                "Versioned tenant policies and procedures with control and evidence links."
+            ),
+        },
         {"name": "integrations", "description": "Tenant-mapped read-only vendor connections."},
         {"name": "endpoints", "description": "Endpoint collector enrollment and posture ingestion."},
     ],
 )
 app.include_router(access_router)
 app.include_router(automation_router)
+app.include_router(policies_router)
 app.include_router(profile_router)
 
 

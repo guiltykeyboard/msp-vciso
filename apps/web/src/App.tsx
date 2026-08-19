@@ -1,5 +1,7 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 
+import { PolicyLibrary } from "./PolicyLibrary";
+
 type Row = Record<string, string | null>;
 type Theme = "light" | "dark";
 type Dashboard = {
@@ -35,8 +37,8 @@ type AuthorizedOrganization = {
   role: string;
 };
 
-const navigation = ["Overview", "Customers", "Assessments", "Evidence", "Integrations", "Endpoints", "Audit"];
-const auditorNavigation = ["Overview", "Assessments", "Evidence", "Audit"];
+const navigation = ["Overview", "Customers", "Policies", "Assessments", "Evidence", "Integrations", "Endpoints", "Audit"];
+const auditorNavigation = ["Overview", "Policies", "Assessments", "Evidence", "Audit"];
 
 function Status({ value }: { value: string | null }) {
   const label = value ?? "Not available";
@@ -348,7 +350,7 @@ export function App() {
         <div className="avatar" aria-hidden="true">MS</div>
       </header>
       <section className="content" aria-labelledby="operations-heading">
-        <div className="heading"><div><h1 id="operations-heading">{active === "Customers" ? "Client access" : "Compliance operations"}</h1><p>{active === "Customers" ? "Invite client personnel and external auditors with auditable tenant access profiles." : data?.identity.role === "auditor" ? "Read-only assessment, evidence, and audit activity for the selected tenant." : "Current evidence, assessment, integration, and endpoint activity."}</p></div></div>
+        <div className="heading"><div><h1 id="operations-heading">{active === "Customers" ? "Client access" : active === "Policies" ? "Policies & procedures" : "Compliance operations"}</h1><p>{active === "Customers" ? "Invite client personnel and external auditors with auditable tenant access profiles." : active === "Policies" ? "Versioned internal documents cross-referenced to controls and supporting evidence." : data?.identity.role === "auditor" ? "Read-only assessment, evidence, and audit activity for the selected tenant." : "Current evidence, assessment, integration, and endpoint activity."}</p></div></div>
         {!data && <form className="connect" aria-labelledby="connect-heading" aria-describedby="connect-help" onSubmit={connect}><h2 id="connect-heading">Connect this browser</h2><p id="connect-help">Development identity headers are stored only in this browser. Production authentication will replace this form.</p><label>Organization ID<input value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><label>Actor ID<input value={actorId} onChange={(event) => setActorId(event.target.value)} autoComplete="off" spellCheck={false} required /></label><button type="submit">Load operations</button>{error && <p className="error" role="alert">{error}</p>}</form>}
         {data && (active === "Customers" ? <>
           {error && <div className="error banner" role="alert">{error}</div>}
@@ -375,7 +377,12 @@ export function App() {
               {invitations.length ? <div className="table-scroll" role="region" aria-label="Client invitation history" tabIndex={0}><table><caption className="sr-only">Client invitation history</caption><thead><tr><th scope="col">Person</th><th scope="col">Profile</th><th scope="col">Status</th><th scope="col">Expires</th><th scope="col">Action</th></tr></thead><tbody>{invitations.map((invitation) => <tr key={invitation.id}><td><strong>{invitation.display_name || invitation.email}</strong>{invitation.display_name && <small>{invitation.email}</small>}</td><td>{accessProfiles.find((profile) => profile.id === invitation.role)?.name ?? invitation.role.replaceAll("_", " ")}</td><td><Status value={invitation.status} /></td><td><time dateTime={invitation.expires_at}>{new Date(invitation.expires_at).toLocaleDateString()}</time></td><td>{invitation.status === "pending" ? <button type="button" className="danger-action" onClick={() => void revokeInvitation(invitation.id)} disabled={accessLoading}>Revoke</button> : "—"}</td></tr>)}</tbody></table></div> : <Empty>No client invitations have been created.</Empty>}
             </section>
           </div>}
-        </> : <>
+        </> : active === "Policies" ? <PolicyLibrary
+          identityHeaders={identityHeaders}
+          role={data.identity.role}
+          tenantKey={organizationId}
+          announce={setAnnouncement}
+        /> : <>
           {error && <div className="error banner" role="alert">{error}</div>}
           <div className={`summary${data.identity.role === "auditor" ? " auditor-summary" : ""}`} aria-label="Operations summary" role="list">
             <div role="listitem"><span>Assessments</span><strong>{data.assessments.length}</strong><small>recent records</small></div>
