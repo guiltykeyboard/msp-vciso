@@ -12,7 +12,9 @@ from psycopg.types.json import Jsonb
 
 from watchtower_api.database import TenantDatabaseSession
 from watchtower_api.models import (
+    AuthorizedOrganizationResponse,
     ClientAccessRoleResponse,
+    ExternalAuditorInvitationCreate,
     OrganizationInvitationAccept,
     OrganizationInvitationAcceptedResponse,
     OrganizationInvitationCreate,
@@ -51,8 +53,11 @@ CLIENT_ACCESS_PROFILES = (
     },
     {
         "id": "auditor",
-        "name": "Read-only auditor",
-        "description": "Views tenant compliance records and accepted evidence without changes.",
+        "name": "External auditor",
+        "description": (
+            "Views tenant compliance records, evidence, and audit activity without "
+            "changes. One auditor identity may hold this role in several invited tenants."
+        ),
         "permissions": ["read_assessments", "read_evidence", "read_audit_activity"],
     },
 )
@@ -87,6 +92,29 @@ async def list_client_access_profiles(
 
 
 @router.get(
+    "/v1/me/organizations",
+    response_model=list[AuthorizedOrganizationResponse],
+    tags=["client access"],
+    summary="List my authorized organizations",
+    operation_id="listCurrentUserOrganizations",
+)
+async def list_current_user_organizations(
+    session: TenantDatabaseSession,
+) -> list[dict[str, Any]]:
+    """List active tenant memberships for only the current authenticated identity."""
+    cursor = await session.connection.execute(
+        """
+        select organization_id as id,
+               organization_name as name,
+               organization_slug as slug,
+               membership_role as role
+        from watchtower_private.current_actor_organizations()
+        """
+    )
+    return await cursor.fetchall()
+
+
+@router.get(
     "/v1/invitations",
     response_model=list[OrganizationInvitationResponse],
     tags=["client access"],
@@ -111,19 +139,11 @@ async def list_organization_invitations(
     return await cursor.fetchall()
 
 
-@router.post(
-    "/v1/invitations",
-    response_model=OrganizationInvitationCreatedResponse,
-    status_code=status.HTTP_201_CREATED,
-    tags=["client access"],
-    summary="Invite client personnel",
-    operation_id="createOrganizationInvitation",
-)
-async def create_organization_invitation(
+async def _create_organization_invitation(
     payload: OrganizationInvitationCreate,
     session: TenantDatabaseSession,
 ) -> dict[str, Any]:
-    """Create a one-time tenant invitation and return its bearer token once."""
+    """Create a one-time tenant invitation after applying shared controls."""
     _require_invitation_admin(session)
     email = payload.email.strip().lower()
     member_cursor = await session.connection.execute(
@@ -180,6 +200,44 @@ async def create_organization_invitation(
         ),
     )
     return {**invitation, "token": f"{token_id}.{secret}"}
+
+
+@router.post(
+    "/v1/invitations",
+    response_model=OrganizationInvitationCreatedResponse,
+    status_code=status.HTTP_201_CREATED,
+    tags=["client access"],
+    summary="Invite client personnel",
+    operation_id="createOrganizationInvitation",
+)
+async def create_organization_invitation(
+    payload: OrganizationInvitationCreate,
+    session: TenantDatabaseSession,
+) -> dict[str, Any]:
+    """Create a one-time tenant invitation and return its bearer token once."""
+    return await _create_organization_invitation(payload, session)
+
+
+@router.post(
+    "/v1/invitations/external-auditor",
+    response_model=OrganizationInvitationCreatedResponse,
+    status_code=status.HTTP_201_CREATED,
+    tags=["client access"],
+    summary="Invite an external auditor",
+    operation_id="createExternalAuditorInvitation",
+)
+async def create_external_auditor_invitation(
+    payload: ExternalAuditorInvitationCreate,
+    session: TenantDatabaseSession,
+) -> dict[str, Any]:
+    """Invite an external auditor with a non-configurable read-only tenant role."""
+    invitation = OrganizationInvitationCreate(
+        email=payload.email,
+        display_name=payload.display_name,
+        role="auditor",
+        expires_in_days=payload.expires_in_days,
+    )
+    return await _create_organization_invitation(invitation, session)
 
 
 @router.delete(

@@ -72,6 +72,25 @@ class OrganizationInvitationCreate(BaseModel):
     expires_in_days: int = Field(default=7, ge=1, le=30)
 
 
+class ExternalAuditorInvitationCreate(BaseModel):
+    """External auditor invited with a fixed read-only tenant role."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    email: str = Field(
+        min_length=3,
+        max_length=320,
+        pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+    )
+    display_name: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+        pattern=r".*\S.*",
+    )
+    expires_in_days: int = Field(default=7, ge=1, le=30)
+
+
 class OrganizationInvitationResponse(BaseModel):
     """Redacted tenant invitation lifecycle state."""
 
@@ -106,6 +125,15 @@ class OrganizationInvitationAcceptedResponse(BaseModel):
     organization_name: str
     actor_id: UUID
     role: ClientAccessRole
+
+
+class AuthorizedOrganizationResponse(BaseModel):
+    """One active tenant membership available to the current identity."""
+
+    id: UUID
+    name: str
+    slug: str
+    role: str
 
 
 class UserPreferencesUpdate(BaseModel):

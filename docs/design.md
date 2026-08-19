@@ -55,6 +55,8 @@ An `organization_id` supplied in a URL or body never establishes authority. Back
 
 Client personnel are onboarded through expiring, one-time tenant invitations. Invitation secrets are stored only as hashes, cannot grant MSP roles, and atomically create a named membership profile when accepted. Create, accept, and revoke transitions are appended to the tenant audit ledger. Production acceptance must bind the invitation email to a verified identity-provider claim; the invitation bearer secret is never a replacement for an authenticated session.
 
+External auditors use the same global identity across customer tenants but receive an independent `auditor` membership from each tenant that invites them. A security-definer membership-discovery function is bound to `current_actor_id()` and returns only that identity's active organizations, allowing safe tenant switching without relaxing tenant-table RLS. The selected organization still establishes a new tenant-scoped transaction for every request.
+
 ## Compliance domain
 
 ```text

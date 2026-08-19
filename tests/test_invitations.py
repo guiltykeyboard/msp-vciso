@@ -200,3 +200,97 @@ def test_existing_member_and_msp_roles_cannot_be_invited(seed_data, admin_url) -
 
     assert member.status_code == 409
     assert msp_role.status_code == 422
+
+
+def test_external_auditor_reuses_one_identity_across_invited_tenants(
+    seed_data, admin_url
+) -> None:
+    """A paid-hosting auditor can switch only among tenants that invited them."""
+    auditor_email = "shared.auditor@example.com"
+    with psycopg.connect(admin_url) as connection:
+        connection.execute(
+            "update app_users set email = %s where id = %s",
+            (auditor_email, seed_data.user_auditor),
+        )
+        connection.commit()
+
+    with TestClient(app) as client:
+        created = client.post(
+            "/v1/invitations/external-auditor",
+            headers=_headers(seed_data.organization_b, seed_data.user_b),
+            json={
+                "email": auditor_email,
+                "display_name": "Shared Auditor",
+                "expires_in_days": 14,
+            },
+        )
+        accepted = client.post(
+            "/v1/invitations:accept",
+            json={
+                "token": created.json()["token"],
+                "display_name": "Shared Auditor",
+            },
+        )
+        organizations = client.get(
+            "/v1/me/organizations",
+            headers=_headers(seed_data.organization_b, seed_data.user_auditor),
+        )
+        tenant_a_dashboard = client.get(
+            "/v1/dashboard",
+            headers=_headers(seed_data.organization_a, seed_data.user_auditor),
+        )
+        tenant_b_dashboard = client.get(
+            "/v1/dashboard",
+            headers=_headers(seed_data.organization_b, seed_data.user_auditor),
+        )
+        unrelated_user_organizations = client.get(
+            "/v1/me/organizations",
+            headers=_headers(seed_data.organization_b, seed_data.user_b),
+        )
+
+    assert created.status_code == 201
+    assert created.json()["role"] == "auditor"
+    assert accepted.status_code == 200
+    assert accepted.json()["actor_id"] == str(seed_data.user_auditor)
+    assert accepted.json()["role"] == "auditor"
+    assert organizations.status_code == 200
+    assert organizations.json() == [
+        {
+            "id": str(seed_data.organization_a),
+            "name": "Tenant A",
+            "slug": "tenant-a",
+            "role": "auditor",
+        },
+        {
+            "id": str(seed_data.organization_b),
+            "name": "Tenant B",
+            "slug": "tenant-b",
+            "role": "auditor",
+        },
+    ]
+    assert [item["name"] for item in tenant_a_dashboard.json()["assessments"]] == [
+        "Tenant A Assessment"
+    ]
+    assert [item["name"] for item in tenant_b_dashboard.json()["assessments"]] == [
+        "Tenant B Assessment"
+    ]
+    assert tenant_a_dashboard.json()["integrations"] == []
+    assert tenant_a_dashboard.json()["endpoints"] == []
+    assert [item["name"] for item in unrelated_user_organizations.json()] == [
+        "Tenant B"
+    ]
+
+
+def test_external_auditor_endpoint_rejects_role_override(seed_data) -> None:
+    """The dedicated auditor function cannot be used to inject a stronger role."""
+    with TestClient(app) as client:
+        response = client.post(
+            "/v1/invitations/external-auditor",
+            headers=_headers(seed_data.organization_a, seed_data.user_a),
+            json={
+                "email": "auditor@example.com",
+                "role": "msp_admin",
+            },
+        )
+
+    assert response.status_code == 422

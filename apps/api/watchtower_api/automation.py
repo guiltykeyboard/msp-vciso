@@ -58,16 +58,22 @@ async def get_dashboard(session: TenantDatabaseSession) -> Any:
             """
         )
     ).fetchall()
-    integrations = await (
-        await session.connection.execute(
-            "select public_id as id, display_name, provider, status, last_success_at from integration_connections order by created_at desc limit 8"
-        )
-    ).fetchall()
-    endpoints = await (
-        await session.connection.execute(
-            "select public_id as id, hostname, platform, status, last_check_in_at from agents order by enrolled_at desc limit 8"
-        )
-    ).fetchall()
+    integrations: list[dict[str, Any]] = []
+    endpoints: list[dict[str, Any]] = []
+    if session.identity.role != "auditor":
+        integrations = await (
+            await session.connection.execute(
+                "select public_id as id, display_name, provider, status, "
+                "last_success_at from integration_connections "
+                "order by created_at desc limit 8"
+            )
+        ).fetchall()
+        endpoints = await (
+            await session.connection.execute(
+                "select public_id as id, hostname, platform, status, "
+                "last_check_in_at from agents order by enrolled_at desc limit 8"
+            )
+        ).fetchall()
     audits = await (
         await session.connection.execute(
             "select event_type, target_type, target_id, occurred_at from audit_events order by occurred_at desc limit 8"

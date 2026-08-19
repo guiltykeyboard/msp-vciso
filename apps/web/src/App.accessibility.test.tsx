@@ -64,15 +64,20 @@ describe("Watchtower accessibility baseline", () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
       const url = input.toString();
       if (url.endsWith("/v1/dashboard")) return jsonResponse(dashboard);
+      if (url.endsWith("/v1/me/organizations")) return jsonResponse([
+        { id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "msp_admin" },
+        { id: "organization-b", name: "Second Customer", slug: "second-customer", role: "msp_admin" },
+      ]);
       if (url.endsWith("/v1/access/roles")) return jsonResponse([
         { id: "customer_admin", name: "Customer administrator", description: "Tenant administration", permissions: ["manage_client_access"] },
         { id: "control_owner", name: "Control owner", description: "Compliance work", permissions: ["submit_evidence"] },
+        { id: "auditor", name: "External auditor", description: "Read-only tenant access", permissions: ["read_evidence"] },
       ]);
-      if (url.endsWith("/v1/invitations") && init?.method === "POST") return jsonResponse({
+      if (url.endsWith("/v1/invitations/external-auditor") && init?.method === "POST") return jsonResponse({
         id: "invitation-a",
         email: "client@example.gov",
         display_name: "Client Person",
-        role: "control_owner",
+        role: "auditor",
         status: "pending",
         expires_at: "2026-08-26T12:00:00Z",
         created_at: "2026-08-19T12:00:00Z",
@@ -88,6 +93,15 @@ describe("Watchtower accessibility baseline", () => {
     const { container } = render(<App />);
 
     await screen.findByText("Test Public Safety");
+    const tenantSelector = await screen.findByLabelText("Current tenant");
+    expect(tenantSelector).toHaveValue("organization-a");
+    await user.selectOptions(tenantSelector, "organization-b");
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
+      "/v1/dashboard",
+      expect.objectContaining({
+        headers: expect.objectContaining({ "X-Watchtower-Organization": "organization-b" }),
+      }),
+    ));
     expect(screen.getByRole("table", { name: "Recent compliance assessments" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Overview" })).toHaveAttribute(
       "aria-current",
@@ -112,12 +126,47 @@ describe("Watchtower accessibility baseline", () => {
     ));
 
     await user.click(screen.getByRole("button", { name: "Customers" }));
-    await screen.findByRole("heading", { name: "Invite client personnel" });
+    await screen.findByRole("heading", { name: "Invite client personnel or an external auditor" });
     expect(screen.getByLabelText("Email address")).toHaveAttribute("type", "email");
     expect(screen.getByLabelText("Access profile")).toBeVisible();
+    await user.selectOptions(screen.getByLabelText("Access profile"), "auditor");
+    expect(screen.getByText(/one identity while keeping each tenant membership separate/i)).toBeVisible();
     await user.type(screen.getByLabelText("Email address"), "client@example.gov");
     await user.click(screen.getByRole("button", { name: "Create invitation" }));
-    expect((await screen.findByLabelText("Client acceptance link") as HTMLInputElement).value).toContain("#invite=");
+    expect((await screen.findByLabelText("Tenant acceptance link") as HTMLInputElement).value).toContain("#invite=");
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
+      "/v1/invitations/external-auditor",
+      expect.objectContaining({ method: "POST" }),
+    ));
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("gives a multi-tenant auditor a read-only tenant switcher", async () => {
+    window.localStorage.setItem("watchtower.organization", "organization-a");
+    window.localStorage.setItem("watchtower.actor", "auditor-a");
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = input.toString();
+      if (url.endsWith("/v1/dashboard")) return jsonResponse({
+        ...dashboard,
+        identity: { actor_id: "auditor-a", role: "auditor" },
+        integrations: [],
+        endpoints: [],
+      });
+      if (url.endsWith("/v1/me/organizations")) return jsonResponse([
+        { id: "organization-a", name: "Test Public Safety", slug: "test-public-safety", role: "auditor" },
+        { id: "organization-b", name: "Second Customer", slug: "second-customer", role: "auditor" },
+      ]);
+      return jsonResponse({ theme: "light" });
+    });
+    const { container } = render(<App />);
+
+    expect(await screen.findByLabelText("Current tenant")).toHaveValue("organization-a");
+    expect(screen.getByRole("button", { name: "View evidence" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Customers" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Integrations" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Endpoints" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Integration health" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Recent audit activity" })).toBeVisible();
     expect((await axe(container)).violations).toEqual([]);
   });
 
