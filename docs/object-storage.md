@@ -4,6 +4,8 @@ Watchtower keeps artifact bytes out of the API request path. An authorized user 
 
 Completion does not trust client-supplied metadata as proof of integrity. The active storage adapter reads and hashes the staged bytes, verifies the authorized size, media type, and SHA-256 value, and copies the verified object to a new evidence key that was never included in the client's upload authorization. Evidence is committed only after that process succeeds.
 
+Committed artifacts begin in `pending` scan state and cannot receive a download URL until an authorized malware-scanning worker records a `clean` result. Quarantined and failed artifacts remain unavailable. Every scan transition, legal-hold change, retention-policy change, and download authorization is written to the append-only tenant audit ledger.
+
 The initial atomic-copy workflow limits individual artifacts to 5 GiB. Larger evidence packages should be split or represented by a signed manifest until multipart preservation is implemented.
 
 Configure a lifecycle rule to delete incomplete objects under the `staging/` prefix after an operationally appropriate period. Keep the `evidence/` prefix private, encrypted, versioned where supported, and subject to the retention or immutability policy applicable to the tenant. Watchtower never returns an unrestricted bucket or container credential.
@@ -28,6 +30,8 @@ WATCHTOWER_S3_KMS_KEY_ID=<customer-managed-key-id>
 ```
 
 Bucket policy should deny plaintext transport, public access, and requests that do not meet the deployment's encryption requirements.
+
+When a tenant selects `governance` or `compliance` retention mode, Watchtower applies S3 Object Lock to each newly committed artifact. The bucket must have Object Lock and versioning enabled and the workload identity needs `s3:PutObjectRetention`. Retention is disabled by default so an unsupported provider configuration cannot be mistaken for protected storage.
 
 ## S3-compatible storage
 
@@ -62,6 +66,8 @@ WATCHTOWER_AZURE_STORAGE_CONTAINER=evidence
 ```
 
 Azure Government deployments can use the corresponding `blob.core.usgovcloudapi.net` account URL. Watchtower uses `DefaultAzureCredential`; a managed identity is recommended. The identity needs blob data access and permission to request a user-delegation key. Upload access is granted with a short-lived, write-only user-delegation SAS rather than an account key.
+
+Azure retention uses version-level blob immutability. The account and container must have the required versioning and immutable-storage features enabled, and the managed identity needs permission to set the policy. `governance` maps to an unlocked Azure policy and `compliance` maps to a locked policy.
 
 ## Common settings
 

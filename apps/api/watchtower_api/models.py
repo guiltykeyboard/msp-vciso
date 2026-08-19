@@ -38,6 +38,8 @@ CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]
 EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cji"]
 ReviewDecision = Literal["accepted", "rejected"]
 StorageProvider = Literal["azure", "s3"]
+ScanStatus = Literal["pending", "clean", "quarantined", "error"]
+ObjectLockMode = Literal["none", "governance", "compliance"]
 MAX_ARTIFACT_BYTES = 5 * 1024 * 1024 * 1024
 
 
@@ -96,6 +98,7 @@ class EvidenceObservationResponse(BaseModel):
     submitted_by: UUID
     storage_provider: StorageProvider | None = None
     latest_review: EvidenceReviewResponse | None = None
+    lifecycle: "EvidenceLifecycleResponse | None" = None
 
 
 class EvidenceUploadResponse(BaseModel):
@@ -107,3 +110,52 @@ class EvidenceUploadResponse(BaseModel):
     url: str
     headers: dict[str, str]
     expires_at: datetime
+
+
+class EvidenceDownloadResponse(BaseModel):
+    """Short-lived read authorization for a clean evidence artifact."""
+
+    url: str
+    expires_at: datetime
+
+
+class EvidenceLifecycleResponse(BaseModel):
+    """Operational scan, retention, and legal-hold state."""
+
+    scan_status: ScanStatus
+    scan_engine: str | None
+    scan_detail: str | None
+    scanned_at: datetime | None
+    retention_until: datetime
+    object_lock_mode: ObjectLockMode
+    legal_hold: bool
+    legal_hold_reason: str | None
+    updated_at: datetime
+
+
+class EvidenceScanResult(BaseModel):
+    """Result submitted by an authorized malware-scanning worker."""
+
+    status: Literal["clean", "quarantined", "error"]
+    engine: str = Field(min_length=1, max_length=128)
+    detail: str | None = Field(default=None, max_length=2000)
+
+
+class EvidenceLegalHoldUpdate(BaseModel):
+    """Explicit legal-hold transition and its required justification."""
+
+    enabled: bool
+    reason: str | None = Field(default=None, min_length=1, max_length=2000)
+
+
+class EvidenceRetentionPolicyUpdate(BaseModel):
+    """Tenant-wide defaults for newly committed evidence artifacts."""
+
+    retention_days: int = Field(ge=1, le=36500)
+    object_lock_mode: ObjectLockMode = "none"
+
+
+class EvidenceRetentionPolicyResponse(EvidenceRetentionPolicyUpdate):
+    """Current tenant retention defaults."""
+
+    updated_at: datetime

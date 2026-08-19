@@ -59,6 +59,149 @@
         "title": "AssessmentResponse",
         "type": "object"
       },
+      "EvidenceDownloadResponse": {
+        "description": "Short-lived read authorization for a clean evidence artifact.",
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expires_at"
+        ],
+        "title": "EvidenceDownloadResponse",
+        "type": "object"
+      },
+      "EvidenceLegalHoldUpdate": {
+        "description": "Explicit legal-hold transition and its required justification.",
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "title": "EvidenceLegalHoldUpdate",
+        "type": "object"
+      },
+      "EvidenceLifecycleResponse": {
+        "description": "Operational scan, retention, and legal-hold state.",
+        "properties": {
+          "legal_hold": {
+            "title": "Legal Hold",
+            "type": "boolean"
+          },
+          "legal_hold_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Hold Reason"
+          },
+          "object_lock_mode": {
+            "enum": [
+              "none",
+              "governance",
+              "compliance"
+            ],
+            "title": "Object Lock Mode",
+            "type": "string"
+          },
+          "retention_until": {
+            "format": "date-time",
+            "title": "Retention Until",
+            "type": "string"
+          },
+          "scan_detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Detail"
+          },
+          "scan_engine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Engine"
+          },
+          "scan_status": {
+            "enum": [
+              "pending",
+              "clean",
+              "quarantined",
+              "error"
+            ],
+            "title": "Scan Status",
+            "type": "string"
+          },
+          "scanned_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scanned At"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scan_status",
+          "scan_engine",
+          "scan_detail",
+          "scanned_at",
+          "retention_until",
+          "object_lock_mode",
+          "legal_hold",
+          "legal_hold_reason",
+          "updated_at"
+        ],
+        "title": "EvidenceLifecycleResponse",
+        "type": "object"
+      },
       "EvidenceObservationCreate": {
         "description": "Provenance and integrity metadata for a newly received artifact.",
         "properties": {
@@ -220,6 +363,16 @@
               }
             ]
           },
+          "lifecycle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceLifecycleResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "media_type": {
             "title": "Media Type",
             "type": "string"
@@ -314,6 +467,64 @@
         "title": "EvidenceObservationResponse",
         "type": "object"
       },
+      "EvidenceRetentionPolicyResponse": {
+        "description": "Current tenant retention defaults.",
+        "properties": {
+          "object_lock_mode": {
+            "default": "none",
+            "enum": [
+              "none",
+              "governance",
+              "compliance"
+            ],
+            "title": "Object Lock Mode",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 36500.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "retention_days",
+          "updated_at"
+        ],
+        "title": "EvidenceRetentionPolicyResponse",
+        "type": "object"
+      },
+      "EvidenceRetentionPolicyUpdate": {
+        "description": "Tenant-wide defaults for newly committed evidence artifacts.",
+        "properties": {
+          "object_lock_mode": {
+            "default": "none",
+            "enum": [
+              "none",
+              "governance",
+              "compliance"
+            ],
+            "title": "Object Lock Mode",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 36500.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "retention_days"
+        ],
+        "title": "EvidenceRetentionPolicyUpdate",
+        "type": "object"
+      },
       "EvidenceReviewCreate": {
         "description": "A human review decision appended to an evidence observation.",
         "properties": {
@@ -378,6 +589,44 @@
           "reviewed_at"
         ],
         "title": "EvidenceReviewResponse",
+        "type": "object"
+      },
+      "EvidenceScanResult": {
+        "description": "Result submitted by an authorized malware-scanning worker.",
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "engine": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Engine",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "clean",
+              "quarantined",
+              "error"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "engine"
+        ],
+        "title": "EvidenceScanResult",
         "type": "object"
       },
       "EvidenceUploadResponse": {
@@ -911,6 +1160,122 @@
         ]
       }
     },
+    "/v1/evidence-retention-policy": {
+      "get": {
+        "description": "Return tenant defaults, including safe no-lock behavior when unset.",
+        "operationId": "getEvidenceRetentionPolicy",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceRetentionPolicyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get evidence retention defaults",
+        "tags": [
+          "evidence"
+        ]
+      },
+      "put": {
+        "description": "Set retention defaults for future artifacts; existing holds remain unchanged.",
+        "operationId": "setEvidenceRetentionPolicy",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceRetentionPolicyUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceRetentionPolicyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set evidence retention defaults",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
     "/v1/evidence/uploads/{upload_id}/complete": {
       "post": {
         "description": "Verify object integrity before committing an immutable observation.",
@@ -970,6 +1335,144 @@
           }
         },
         "summary": "Verify and complete an evidence upload",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/evidence/{evidence_id}/artifact/download": {
+      "get": {
+        "description": "Issue a short-lived read URL only after a clean malware scan.",
+        "operationId": "createEvidenceDownload",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evidence_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Evidence Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceDownloadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Authorize an evidence artifact download",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/evidence/{evidence_id}/legal-hold": {
+      "put": {
+        "description": "Set or release a legal hold without deleting or rewriting evidence.",
+        "operationId": "setEvidenceLegalHold",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evidence_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Evidence Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceLegalHoldUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceLifecycleResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set an evidence legal hold",
         "tags": [
           "evidence"
         ]
@@ -1044,6 +1547,80 @@
           }
         },
         "summary": "Review an evidence observation",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/v1/evidence/{evidence_id}/scan-result": {
+      "post": {
+        "description": "Record a scanner result while retaining every transition in the audit ledger.",
+        "operationId": "recordEvidenceScanResult",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evidence_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Evidence Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceScanResult"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceLifecycleResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record an evidence malware-scan result",
         "tags": [
           "evidence"
         ]
