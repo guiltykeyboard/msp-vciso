@@ -84,6 +84,172 @@
       ]
     },
     {
+      "name": "client access",
+      "item": [
+        {
+          "name": "List client access profiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/access/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "access",
+                "roles"
+              ]
+            },
+            "description": "Return the auditable role profiles that may be granted to client personnel."
+          }
+        },
+        {
+          "name": "List client invitations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/invitations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "invitations"
+              ]
+            },
+            "description": "List redacted invitation state for the active tenant."
+          }
+        },
+        {
+          "name": "Invite client personnel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/invitations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "invitations"
+              ]
+            },
+            "description": "Create a one-time tenant invitation and return its bearer token once.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<value>\",\n  \"email\": \"<value>\",\n  \"expires_in_days\": 0,\n  \"role\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Revoke a client invitation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/invitations/:invitation_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "invitations",
+                ":invitation_id"
+              ],
+              "variable": [
+                {
+                  "key": "invitation_id",
+                  "value": "<invitation_id>"
+                }
+              ]
+            },
+            "description": "Revoke an unconsumed invitation in the active tenant."
+          }
+        },
+        {
+          "name": "Accept a client invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/invitations:accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "invitations:accept"
+              ]
+            },
+            "description": "Atomically consume a bearer invitation and establish development access.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<value>\",\n  \"token\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "endpoints",
       "item": [
         {

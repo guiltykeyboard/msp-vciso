@@ -75,6 +75,10 @@ async def get_dashboard(session: TenantDatabaseSession) -> Any:
     ).fetchall()
     return {
         "organization": organization,
+        "identity": {
+            "actor_id": session.identity.actor_id,
+            "role": session.identity.role,
+        },
         "assessments": assessments,
         "evidence": evidence,
         "integrations": integrations,
