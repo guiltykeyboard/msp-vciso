@@ -161,6 +161,103 @@ class PolicyDocumentResponse(PolicyDocumentSummaryResponse):
     evidence: list[PolicyEvidenceLinkResponse]
 
 
+class PolicyAgreementCreate(BaseModel):
+    """Recipient and validity selected for an approved document version."""
+
+    recipient_email: str = Field(
+        min_length=3,
+        max_length=320,
+        pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+    )
+    recipient_display_name: str | None = Field(default=None, max_length=200)
+    expires_in_days: int = Field(default=7, ge=1, le=30)
+    recurrence_days: int | None = Field(default=None, ge=30, le=1095)
+    prompt_before_days: int = Field(default=14, ge=0, le=90)
+    schedule_basis: str | None = Field(default=None, max_length=120)
+
+
+class PolicyAgreementResponse(BaseModel):
+    """Redacted administrator view of one acknowledgement request."""
+
+    id: UUID
+    policy_document_id: UUID
+    policy_version: int
+    recipient_email: str
+    recipient_display_name: str | None
+    document_sha256: str
+    status: Literal["pending", "acknowledged", "revoked", "expired"]
+    expires_at: datetime
+    created_at: datetime
+    acknowledged_at: datetime | None
+    revoked_at: datetime | None
+    signer_display_name: str | None
+    identity_assurance: Literal["email_link", "oidc"] | None
+    recurrence_days: int | None
+    prompt_before_days: int
+    next_review_at: datetime | None
+    schedule_basis: str | None
+    renewal_available: bool
+
+
+class PolicyAgreementCreatedResponse(PolicyAgreementResponse):
+    """New acknowledgement request including its one-time-delivered bearer token."""
+
+    token: str
+
+
+class PolicyAgreementCadenceSuggestion(BaseModel):
+    """Advisory recurrence derived from a tenant's assessed frameworks."""
+
+    key: str
+    label: str
+    recurrence_days: int
+    prompt_before_days: int
+    rationale: str
+    source_label: str
+    source_url: str
+    qualification: str
+
+
+class PolicyAgreementTokenRequest(BaseModel):
+    """Recipient-specific acknowledgement link credential."""
+
+    token: str = Field(min_length=40, max_length=500)
+
+
+class PolicyAgreementInspectionResponse(BaseModel):
+    """Exact document and attestation visible to the intended recipient."""
+
+    request_id: UUID
+    organization_name: str
+    document_title: str
+    document_type: PolicyDocumentType
+    version_number: int
+    document_content: str
+    document_sha256: str
+    recipient_email: str
+    recipient_display_name: str | None
+    attestation_text: str
+    agreement_status: Literal["pending"]
+    expires_at: datetime
+    acknowledged_at: datetime | None
+
+
+class PolicyAgreementAcknowledge(PolicyAgreementTokenRequest):
+    """Typed electronic signature and explicit affirmative consent."""
+
+    signer_display_name: str = Field(min_length=2, max_length=200)
+    agreed: Literal[True]
+
+
+class PolicyAcknowledgementReceiptResponse(BaseModel):
+    """Immutable receipt returned after successful acknowledgement."""
+
+    acknowledgement_id: UUID
+    signed_at: datetime
+    signed_document_sha256: str
+    signed_version: int
+
+
 CollectionMethod = Literal["manual", "api", "endpoint", "browser", "import"]
 EvidenceSensitivity = Literal["internal", "confidential", "security_record", "cji"]
 ReviewDecision = Literal["accepted", "rejected"]

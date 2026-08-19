@@ -519,6 +519,309 @@ input,
   color: #596579;
 }
 
+.status-expired {
+  border-color: #aab4c3;
+  background: #f4f6f9;
+  color: #596579;
+}
+
+.policy-agreements {
+  display: grid;
+  gap: 16px;
+  border: 1px solid #d6dce5;
+  padding: 16px;
+}
+
+.policy-agreements-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.policy-agreements-heading h3,
+.policy-agreements-heading p,
+.agreement-link-result h4,
+.agreement-link-result p {
+  margin: 0;
+}
+
+.policy-agreements-heading p,
+.agreement-link-result p,
+.approval-required {
+  margin-top: 5px;
+  color: #596579;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.policy-agreements-heading > span {
+  flex: none;
+  border-radius: 999px;
+  background: #edf3fb;
+  color: #17375f;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 9px;
+}
+
+.agreement-request-form {
+  display: grid;
+  gap: 14px;
+  border-left: 3px solid #0755b8;
+  background: #f7faff;
+  padding: 16px;
+}
+
+.agreement-request-form label,
+.agreement-signature label {
+  display: grid;
+  gap: 6px;
+  color: #253248;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.agreement-request-form input,
+.agreement-request-form select,
+.agreement-signature input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #6b778c;
+  border-radius: 3px;
+  background: #fff;
+  color: #172033;
+  padding: 9px 10px;
+}
+
+.agreement-request-form button,
+.agreement-signature button {
+  justify-self: start;
+  min-height: 44px;
+  border: 0;
+  border-radius: 3px;
+  background: #0755b8;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 16px;
+}
+
+.agreement-request-form button:disabled,
+.agreement-signature button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.agreement-link-result {
+  border: 1px solid #75c594;
+  background: #f3fcf6;
+  padding: 14px;
+}
+
+.cadence-guidance {
+  display: grid;
+  gap: 5px;
+  border: 1px solid #9bbbe2;
+  background: #eef5fe;
+  color: #253248;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 12px 14px;
+}
+
+.cadence-guidance span {
+  color: #596579;
+}
+
+.cadence-guidance a {
+  color: #0755b8;
+  font-weight: 650;
+}
+
+.agreement-link-result .copy-row {
+  margin-top: 10px;
+}
+
+.policy-agreements table {
+  min-width: 760px;
+}
+
+.policy-agreements td strong,
+.policy-agreements td small {
+  display: block;
+}
+
+.policy-agreements td small {
+  margin-top: 3px;
+  color: #596579;
+}
+
+.agreement-page {
+  min-height: 100vh;
+  background: #eef3f9;
+  padding: 38px 20px;
+}
+
+.agreement-shell {
+  width: min(100%, 900px);
+  margin: 0 auto;
+  border: 1px solid #ccd3de;
+  background: #fff;
+  box-shadow: 0 10px 32px rgb(17 39 68 / 8%);
+}
+
+.agreement-shell > p,
+.agreement-error {
+  padding: 26px;
+}
+
+.agreement-header {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: stretch;
+  border-bottom: 1px solid #d6dce5;
+}
+
+.agreement-header .invitation-brand {
+  height: auto;
+  min-height: 104px;
+  margin: 0;
+}
+
+.agreement-header > div:last-child {
+  padding: 20px 24px;
+}
+
+.agreement-header span,
+.agreement-header p {
+  color: #596579;
+  font-size: 13px;
+}
+
+.agreement-header h1 {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+  font-size: 25px;
+}
+
+.agreement-header p {
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.identity-notice,
+.agreement-document,
+.agreement-signature,
+.agreement-complete {
+  margin: 20px 24px;
+}
+
+.identity-notice {
+  border-left: 3px solid #0755b8;
+  background: #f2f7ff;
+  padding: 14px 16px;
+}
+
+.identity-notice h2,
+.agreement-document h2,
+.agreement-signature h2,
+.agreement-complete h2 {
+  margin: 0 0 7px;
+  font-size: 16px;
+}
+
+.identity-notice p,
+.agreement-signature p,
+.agreement-complete p {
+  margin: 0;
+  color: #4d5b70;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.agreement-document {
+  border: 1px solid #ccd3de;
+}
+
+.agreement-document-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #d6dce5;
+  padding: 12px 16px;
+}
+
+.agreement-document-heading h2 {
+  margin: 0;
+}
+
+.agreement-document-heading span {
+  max-width: 52%;
+  overflow-wrap: anywhere;
+  color: #596579;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+}
+
+.agreement-document pre {
+  max-height: 440px;
+  overflow: auto;
+  margin: 0;
+  color: #253248;
+  font: inherit;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 20px;
+}
+
+.agreement-signature {
+  display: grid;
+  gap: 15px;
+  border-top: 1px solid #d6dce5;
+  padding-top: 20px;
+}
+
+.agreement-checkbox {
+  grid-template-columns: 22px 1fr !important;
+  align-items: start;
+  gap: 10px !important;
+  font-weight: 500 !important;
+  line-height: 1.5;
+}
+
+.agreement-checkbox input {
+  width: 20px;
+  min-height: 20px;
+  margin: 1px 0 0;
+}
+
+.agreement-complete {
+  border: 1px solid #75c594;
+  background: #f3fcf6;
+  padding: 18px;
+}
+
+.agreement-complete dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.agreement-complete dt {
+  color: #596579;
+  font-size: 11px;
+}
+
+.agreement-complete dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  font-weight: 650;
+}
+
 .auditor-summary {
   grid-template-columns: repeat(2, 1fr);
 }
@@ -658,7 +961,11 @@ html[data-theme="dark"] .policy-metadata div,
 html[data-theme="dark"] .policy-links section,
 html[data-theme="dark"] .version-history ol,
 html[data-theme="dark"] .version-history li,
-html[data-theme="dark"] .revision-form {
+html[data-theme="dark"] .revision-form,
+html[data-theme="dark"] .policy-agreements,
+html[data-theme="dark"] .agreement-document,
+html[data-theme="dark"] .agreement-document-heading,
+html[data-theme="dark"] .agreement-signature {
   border-color: #2b3b52;
 }
 
@@ -689,6 +996,19 @@ html[data-theme="dark"] .version-history time {
   color: #9daac0;
 }
 
+html[data-theme="dark"] .policy-agreements-heading p,
+html[data-theme="dark"] .policy-agreements td small,
+html[data-theme="dark"] .approval-required,
+html[data-theme="dark"] .agreement-header span,
+html[data-theme="dark"] .agreement-header p,
+html[data-theme="dark"] .agreement-document-heading span,
+html[data-theme="dark"] .identity-notice p,
+html[data-theme="dark"] .agreement-signature p,
+html[data-theme="dark"] .agreement-complete p,
+html[data-theme="dark"] .agreement-complete dt {
+  color: #9daac0;
+}
+
 html[data-theme="dark"] .policy-form label,
 html[data-theme="dark"] .revision-form label,
 html[data-theme="dark"] .policy-form input,
@@ -703,6 +1023,63 @@ html[data-theme="dark"] .document-content pre {
   border-color: #67a9f5;
   background: #0a1525;
   color: #d9e3f1;
+}
+
+html[data-theme="dark"] .agreement-page {
+  background: #08111f;
+}
+
+html[data-theme="dark"] .agreement-shell,
+html[data-theme="dark"] .agreement-request-form,
+html[data-theme="dark"] .agreement-signature input,
+html[data-theme="dark"] .agreement-request-form input,
+html[data-theme="dark"] .agreement-request-form select {
+  border-color: #2b3b52;
+  background: #101b2d;
+  color: #e7edf7;
+}
+
+html[data-theme="dark"] .agreement-request-form,
+html[data-theme="dark"] .identity-notice {
+  border-left-color: #67a9f5;
+  background: #14253d;
+}
+
+html[data-theme="dark"] .agreement-request-form label,
+html[data-theme="dark"] .agreement-signature label,
+html[data-theme="dark"] .agreement-document pre {
+  color: #e7edf7;
+}
+
+html[data-theme="dark"] .policy-agreements-heading > span {
+  background: #172a45;
+  color: #cfe2fb;
+}
+
+html[data-theme="dark"] .agreement-link-result,
+html[data-theme="dark"] .agreement-complete {
+  border-color: #28734a;
+  background: #102b20;
+}
+
+html[data-theme="dark"] .cadence-guidance {
+  border-color: #3b5e89;
+  background: #14253d;
+  color: #e7edf7;
+}
+
+html[data-theme="dark"] .cadence-guidance span {
+  color: #9daac0;
+}
+
+html[data-theme="dark"] .cadence-guidance a {
+  color: #8bc0ff;
+}
+
+html[data-theme="dark"] .status-expired {
+  border-color: #596579;
+  background: #202c3e;
+  color: #b8c3d3;
 }
 
 html[data-theme="dark"] .table-action {
@@ -844,6 +1221,37 @@ html[data-theme="dark"] .danger-action {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+
+  .agreement-page {
+    padding: 0;
+  }
+
+  .agreement-shell {
+    border-width: 0;
+    box-shadow: none;
+  }
+
+  .agreement-header {
+    grid-template-columns: 1fr;
+  }
+
+  .agreement-header .invitation-brand {
+    min-height: 64px;
+  }
+
+  .agreement-document-heading,
+  .policy-agreements-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .agreement-document-heading span {
+    max-width: 100%;
+  }
+
+  .agreement-complete dl {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 520px) {
@@ -859,6 +1267,18 @@ html[data-theme="dark"] .danger-action {
 
   .policy-metadata div:last-child {
     border-bottom: 0;
+  }
+
+  .identity-notice,
+  .agreement-document,
+  .agreement-signature,
+  .agreement-complete {
+    margin-right: 14px;
+    margin-left: 14px;
+  }
+
+  .copy-row {
+    grid-template-columns: 1fr;
   }
 }
 

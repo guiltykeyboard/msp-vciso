@@ -14,6 +14,7 @@ from psycopg.types.json import Jsonb
 
 from watchtower_api import __version__
 from watchtower_api.access import router as access_router
+from watchtower_api.agreements import router as agreements_router
 from watchtower_api.automation import router as automation_router
 from watchtower_api.config import Settings
 from watchtower_api.database import TenantDatabaseSession, create_pool
@@ -229,11 +230,18 @@ app = FastAPI(
                 "Versioned tenant policies and procedures with control and evidence links."
             ),
         },
+        {
+            "name": "policy agreements",
+            "description": (
+                "Recipient-scoped electronic acknowledgements pinned to approved policy versions."
+            ),
+        },
         {"name": "integrations", "description": "Tenant-mapped read-only vendor connections."},
         {"name": "endpoints", "description": "Endpoint collector enrollment and posture ingestion."},
     ],
 )
 app.include_router(access_router)
+app.include_router(agreements_router)
 app.include_router(automation_router)
 app.include_router(policies_router)
 app.include_router(profile_router)

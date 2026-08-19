@@ -1431,6 +1431,646 @@
         "title": "OrganizationResponse",
         "type": "object"
       },
+      "PolicyAcknowledgementReceiptResponse": {
+        "description": "Immutable receipt returned after successful acknowledgement.",
+        "properties": {
+          "acknowledgement_id": {
+            "format": "uuid",
+            "title": "Acknowledgement Id",
+            "type": "string"
+          },
+          "signed_at": {
+            "format": "date-time",
+            "title": "Signed At",
+            "type": "string"
+          },
+          "signed_document_sha256": {
+            "title": "Signed Document Sha256",
+            "type": "string"
+          },
+          "signed_version": {
+            "title": "Signed Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "acknowledgement_id",
+          "signed_at",
+          "signed_document_sha256",
+          "signed_version"
+        ],
+        "title": "PolicyAcknowledgementReceiptResponse",
+        "type": "object"
+      },
+      "PolicyAgreementAcknowledge": {
+        "description": "Typed electronic signature and explicit affirmative consent.",
+        "properties": {
+          "agreed": {
+            "const": true,
+            "title": "Agreed",
+            "type": "boolean"
+          },
+          "signer_display_name": {
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "Signer Display Name",
+            "type": "string"
+          },
+          "token": {
+            "maxLength": 500,
+            "minLength": 40,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "signer_display_name",
+          "agreed"
+        ],
+        "title": "PolicyAgreementAcknowledge",
+        "type": "object"
+      },
+      "PolicyAgreementCadenceSuggestion": {
+        "description": "Advisory recurrence derived from a tenant's assessed frameworks.",
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "prompt_before_days": {
+            "title": "Prompt Before Days",
+            "type": "integer"
+          },
+          "qualification": {
+            "title": "Qualification",
+            "type": "string"
+          },
+          "rationale": {
+            "title": "Rationale",
+            "type": "string"
+          },
+          "recurrence_days": {
+            "title": "Recurrence Days",
+            "type": "integer"
+          },
+          "source_label": {
+            "title": "Source Label",
+            "type": "string"
+          },
+          "source_url": {
+            "title": "Source Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "recurrence_days",
+          "prompt_before_days",
+          "rationale",
+          "source_label",
+          "source_url",
+          "qualification"
+        ],
+        "title": "PolicyAgreementCadenceSuggestion",
+        "type": "object"
+      },
+      "PolicyAgreementCreate": {
+        "description": "Recipient and validity selected for an approved document version.",
+        "properties": {
+          "expires_in_days": {
+            "default": 7,
+            "maximum": 30.0,
+            "minimum": 1.0,
+            "title": "Expires In Days",
+            "type": "integer"
+          },
+          "prompt_before_days": {
+            "default": 14,
+            "maximum": 90.0,
+            "minimum": 0.0,
+            "title": "Prompt Before Days",
+            "type": "integer"
+          },
+          "recipient_display_name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Display Name"
+          },
+          "recipient_email": {
+            "maxLength": 320,
+            "minLength": 3,
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+            "title": "Recipient Email",
+            "type": "string"
+          },
+          "recurrence_days": {
+            "anyOf": [
+              {
+                "maximum": 1095.0,
+                "minimum": 30.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recurrence Days"
+          },
+          "schedule_basis": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Basis"
+          }
+        },
+        "required": [
+          "recipient_email"
+        ],
+        "title": "PolicyAgreementCreate",
+        "type": "object"
+      },
+      "PolicyAgreementCreatedResponse": {
+        "description": "New acknowledgement request including its one-time-delivered bearer token.",
+        "properties": {
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "document_sha256": {
+            "title": "Document Sha256",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "identity_assurance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "email_link",
+                  "oidc"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Identity Assurance"
+          },
+          "next_review_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Review At"
+          },
+          "policy_document_id": {
+            "format": "uuid",
+            "title": "Policy Document Id",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "integer"
+          },
+          "prompt_before_days": {
+            "title": "Prompt Before Days",
+            "type": "integer"
+          },
+          "recipient_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Display Name"
+          },
+          "recipient_email": {
+            "title": "Recipient Email",
+            "type": "string"
+          },
+          "recurrence_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recurrence Days"
+          },
+          "renewal_available": {
+            "title": "Renewal Available",
+            "type": "boolean"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          },
+          "schedule_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Basis"
+          },
+          "signer_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signer Display Name"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "acknowledged",
+              "revoked",
+              "expired"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "policy_document_id",
+          "policy_version",
+          "recipient_email",
+          "recipient_display_name",
+          "document_sha256",
+          "status",
+          "expires_at",
+          "created_at",
+          "acknowledged_at",
+          "revoked_at",
+          "signer_display_name",
+          "identity_assurance",
+          "recurrence_days",
+          "prompt_before_days",
+          "next_review_at",
+          "schedule_basis",
+          "renewal_available",
+          "token"
+        ],
+        "title": "PolicyAgreementCreatedResponse",
+        "type": "object"
+      },
+      "PolicyAgreementInspectionResponse": {
+        "description": "Exact document and attestation visible to the intended recipient.",
+        "properties": {
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged At"
+          },
+          "agreement_status": {
+            "const": "pending",
+            "title": "Agreement Status",
+            "type": "string"
+          },
+          "attestation_text": {
+            "title": "Attestation Text",
+            "type": "string"
+          },
+          "document_content": {
+            "title": "Document Content",
+            "type": "string"
+          },
+          "document_sha256": {
+            "title": "Document Sha256",
+            "type": "string"
+          },
+          "document_title": {
+            "title": "Document Title",
+            "type": "string"
+          },
+          "document_type": {
+            "enum": [
+              "policy",
+              "procedure",
+              "standard",
+              "guideline"
+            ],
+            "title": "Document Type",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "organization_name": {
+            "title": "Organization Name",
+            "type": "string"
+          },
+          "recipient_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Display Name"
+          },
+          "recipient_email": {
+            "title": "Recipient Email",
+            "type": "string"
+          },
+          "request_id": {
+            "format": "uuid",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "version_number": {
+            "title": "Version Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "request_id",
+          "organization_name",
+          "document_title",
+          "document_type",
+          "version_number",
+          "document_content",
+          "document_sha256",
+          "recipient_email",
+          "recipient_display_name",
+          "attestation_text",
+          "agreement_status",
+          "expires_at",
+          "acknowledged_at"
+        ],
+        "title": "PolicyAgreementInspectionResponse",
+        "type": "object"
+      },
+      "PolicyAgreementResponse": {
+        "description": "Redacted administrator view of one acknowledgement request.",
+        "properties": {
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "document_sha256": {
+            "title": "Document Sha256",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "identity_assurance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "email_link",
+                  "oidc"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Identity Assurance"
+          },
+          "next_review_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Review At"
+          },
+          "policy_document_id": {
+            "format": "uuid",
+            "title": "Policy Document Id",
+            "type": "string"
+          },
+          "policy_version": {
+            "title": "Policy Version",
+            "type": "integer"
+          },
+          "prompt_before_days": {
+            "title": "Prompt Before Days",
+            "type": "integer"
+          },
+          "recipient_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Display Name"
+          },
+          "recipient_email": {
+            "title": "Recipient Email",
+            "type": "string"
+          },
+          "recurrence_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recurrence Days"
+          },
+          "renewal_available": {
+            "title": "Renewal Available",
+            "type": "boolean"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          },
+          "schedule_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Basis"
+          },
+          "signer_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signer Display Name"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "acknowledged",
+              "revoked",
+              "expired"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "policy_document_id",
+          "policy_version",
+          "recipient_email",
+          "recipient_display_name",
+          "document_sha256",
+          "status",
+          "expires_at",
+          "created_at",
+          "acknowledged_at",
+          "revoked_at",
+          "signer_display_name",
+          "identity_assurance",
+          "recurrence_days",
+          "prompt_before_days",
+          "next_review_at",
+          "schedule_basis",
+          "renewal_available"
+        ],
+        "title": "PolicyAgreementResponse",
+        "type": "object"
+      },
+      "PolicyAgreementTokenRequest": {
+        "description": "Recipient-specific acknowledgement link credential.",
+        "properties": {
+          "token": {
+            "maxLength": 500,
+            "minLength": 40,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "PolicyAgreementTokenRequest",
+        "type": "object"
+      },
       "PolicyControlLinkCreate": {
         "description": "Framework control selected for a tenant document.",
         "properties": {
@@ -4019,6 +4659,64 @@
         ]
       }
     },
+    "/v1/policies/agreement-cadence-suggestions": {
+      "get": {
+        "description": "Return source-labeled advisory cadences for assessed tenant frameworks.",
+        "operationId": "listPolicyAgreementCadenceSuggestions",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyAgreementCadenceSuggestion"
+                  },
+                  "title": "Response Listpolicyagreementcadencesuggestions",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Suggest policy acknowledgement review cadences",
+        "tags": [
+          "policy agreements"
+        ]
+      }
+    },
     "/v1/policies/reference-options": {
       "get": {
         "description": "Return only controls and evidence already visible in the active tenant.",
@@ -4134,6 +4832,146 @@
         "summary": "Get a policy or procedure",
         "tags": [
           "policies"
+        ]
+      }
+    },
+    "/v1/policies/{document_id}/agreements": {
+      "get": {
+        "description": "List redacted recipient status for one tenant document.",
+        "operationId": "listPolicyAgreements",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyAgreementResponse"
+                  },
+                  "title": "Response Listpolicyagreements",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List policy acknowledgement requests",
+        "tags": [
+          "policy agreements"
+        ]
+      },
+      "post": {
+        "description": "Pin an approved version to one recipient and return its secret once.",
+        "operationId": "createPolicyAgreement",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyAgreementCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyAgreementCreatedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Request a policy acknowledgement",
+        "tags": [
+          "policy agreements"
         ]
       }
     },
@@ -4282,6 +5120,211 @@
         "summary": "Create a policy revision",
         "tags": [
           "policies"
+        ]
+      }
+    },
+    "/v1/policy-agreements/{agreement_id}": {
+      "delete": {
+        "description": "Revoke a still-pending recipient link under tenant RLS.",
+        "operationId": "revokePolicyAgreement",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agreement_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Agreement Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Revoke a policy acknowledgement request",
+        "tags": [
+          "policy agreements"
+        ]
+      }
+    },
+    "/v1/policy-agreements/{agreement_id}/renew": {
+      "post": {
+        "description": "Create one due successor pinned to the document's current approved version.",
+        "operationId": "renewPolicyAgreement",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agreement_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Agreement Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyAgreementCreatedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create the next scheduled policy review",
+        "tags": [
+          "policy agreements"
+        ]
+      }
+    },
+    "/v1/policy-agreements:acknowledge": {
+      "post": {
+        "description": "Atomically consume the link and create an immutable signed receipt.",
+        "operationId": "acknowledgePolicyAgreement",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyAgreementAcknowledge"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyAcknowledgementReceiptResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Electronically acknowledge a policy",
+        "tags": [
+          "policy agreements"
+        ]
+      }
+    },
+    "/v1/policy-agreements:inspect": {
+      "post": {
+        "description": "Resolve only the exact version authorized by a recipient-specific link.",
+        "operationId": "inspectPolicyAgreement",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyAgreementTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyAgreementInspectionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Inspect a recipient policy agreement",
+        "tags": [
+          "policy agreements"
         ]
       }
     },
@@ -4494,6 +5537,10 @@
     {
       "description": "Versioned tenant policies and procedures with control and evidence links.",
       "name": "policies"
+    },
+    {
+      "description": "Recipient-scoped electronic acknowledgements pinned to approved policy versions.",
+      "name": "policy agreements"
     },
     {
       "description": "Tenant-mapped read-only vendor connections.",

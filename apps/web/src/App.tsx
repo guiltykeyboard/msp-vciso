@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 
+import { AgreementAcceptance } from "./AgreementAcceptance";
 import { PolicyLibrary } from "./PolicyLibrary";
 
 type Row = Record<string, string | null>;
@@ -51,6 +52,7 @@ function Empty({ children }: { children: string }) {
 
 export function App() {
   const [invitationToken, setInvitationToken] = useState(new URLSearchParams(window.location.hash.slice(1)).get("invite") ?? "");
+  const [agreementToken] = useState(new URLSearchParams(window.location.hash.slice(1)).get("agreement") ?? "");
   const [active, setActive] = useState("Overview");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [organizationId, setOrganizationId] = useState(window.localStorage.getItem("watchtower.organization") ?? "");
@@ -60,7 +62,7 @@ export function App() {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
   const [themeSaving, setThemeSaving] = useState(false);
-  const [themeReady, setThemeReady] = useState(Boolean(invitationToken) || !organizationId || !actorId);
+  const [themeReady, setThemeReady] = useState(Boolean(invitationToken || agreementToken) || !organizationId || !actorId);
   const [announcement, setAnnouncement] = useState("");
   const [inviteeName, setInviteeName] = useState("");
   const [acceptingInvitation, setAcceptingInvitation] = useState(false);
@@ -80,7 +82,7 @@ export function App() {
   }), [actorId, organizationId]);
 
   const loadPreferences = useCallback(async () => {
-    if (invitationToken || !organizationId || !actorId) return;
+    if (invitationToken || agreementToken || !organizationId || !actorId) return;
     setThemeReady(false);
     try {
       const response = await fetch("/v1/profile/preferences", { headers: identityHeaders() });
@@ -92,10 +94,10 @@ export function App() {
     } finally {
       setThemeReady(true);
     }
-  }, [actorId, identityHeaders, invitationToken, organizationId]);
+  }, [actorId, agreementToken, identityHeaders, invitationToken, organizationId]);
 
   const load = useCallback(async () => {
-    if (invitationToken || !organizationId || !actorId) return;
+    if (invitationToken || agreementToken || !organizationId || !actorId) return;
     setLoading(true);
     setError("");
     try {
@@ -106,10 +108,10 @@ export function App() {
     } catch (problem) {
       setError(problem instanceof Error ? problem.message : "Dashboard request failed");
     } finally { setLoading(false); }
-  }, [actorId, identityHeaders, invitationToken, organizationId]);
+  }, [actorId, agreementToken, identityHeaders, invitationToken, organizationId]);
 
   const loadAuthorizedOrganizations = useCallback(async () => {
-    if (invitationToken || !organizationId || !actorId) return;
+    if (invitationToken || agreementToken || !organizationId || !actorId) return;
     try {
       const response = await fetch("/v1/me/organizations", { headers: identityHeaders() });
       if (!response.ok) throw new Error(`Tenant access request failed (${response.status})`);
@@ -117,7 +119,7 @@ export function App() {
     } catch (problem) {
       setError(problem instanceof Error ? problem.message : "Tenant access request failed");
     }
-  }, [actorId, identityHeaders, invitationToken, organizationId]);
+  }, [actorId, agreementToken, identityHeaders, invitationToken, organizationId]);
 
   const loadClientAccess = useCallback(async () => {
     if (!data || !["customer_admin", "msp_admin"].includes(data.identity.role)) return;
@@ -293,6 +295,8 @@ export function App() {
       setAccessLoading(false);
     }
   }
+
+  if (agreementToken) return <AgreementAcceptance token={agreementToken} />;
 
   if (invitationToken) {
     return <main className="invitation-acceptance" id="main-content">

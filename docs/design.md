@@ -57,6 +57,8 @@ Client personnel are onboarded through expiring, one-time tenant invitations. In
 
 External auditors use the same global identity across customer tenants but receive an independent `auditor` membership from each tenant that invites them. A security-definer membership-discovery function is bound to `current_actor_id()` and returns only that identity's active organizations, allowing safe tenant switching without relaxing tenant-table RLS. The selected organization still establishes a new tenant-scoped transaction for every request.
 
+End-user policy recipients also use a global user identity, but an acknowledgement request is not a tenant membership. It authorizes inspection and acknowledgement of one exact approved document version only. Production recipient routes must bind the hashed request secret to a verified OIDC email claim before exposing the document or recording consent. The receipt records the resulting identity-assurance level; development link-only acknowledgement is fail-closed in production.
+
 ## Compliance domain
 
 ```text
