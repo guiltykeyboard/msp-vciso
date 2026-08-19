@@ -1,6 +1,199 @@
 {
   "components": {
     "schemas": {
+      "AgentEnrollmentExchange": {
+        "description": "Initial machine enrollment request.",
+        "properties": {
+          "agent_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Agent Version",
+            "type": "string"
+          },
+          "hostname": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Hostname",
+            "type": "string"
+          },
+          "platform": {
+            "enum": [
+              "windows",
+              "macos",
+              "linux"
+            ],
+            "title": "Platform",
+            "type": "string"
+          },
+          "public_key": {
+            "maxLength": 8192,
+            "minLength": 32,
+            "title": "Public Key",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "platform",
+          "hostname",
+          "public_key",
+          "agent_version"
+        ],
+        "title": "AgentEnrollmentExchange",
+        "type": "object"
+      },
+      "AgentEnrollmentResponse": {
+        "description": "New device identity and secret credential returned once.",
+        "properties": {
+          "credential": {
+            "title": "Credential",
+            "type": "string"
+          },
+          "device_id": {
+            "format": "uuid",
+            "title": "Device Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "device_id",
+          "credential"
+        ],
+        "title": "AgentEnrollmentResponse",
+        "type": "object"
+      },
+      "AgentEnrollmentTokenCreate": {
+        "description": "Bounded one-time or deployment enrollment authorization.",
+        "properties": {
+          "allowed_platforms": {
+            "items": {
+              "enum": [
+                "windows",
+                "macos",
+                "linux"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Platforms",
+            "type": "array"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "max_uses": {
+            "default": 1,
+            "maximum": 10000.0,
+            "minimum": 1.0,
+            "title": "Max Uses",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "site_id",
+          "allowed_platforms",
+          "expires_at"
+        ],
+        "title": "AgentEnrollmentTokenCreate",
+        "type": "object"
+      },
+      "AgentEnrollmentTokenResponse": {
+        "description": "Enrollment secret returned exactly once.",
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "token",
+          "expires_at"
+        ],
+        "title": "AgentEnrollmentTokenResponse",
+        "type": "object"
+      },
+      "AgentObservationCreate": {
+        "description": "Versioned allow-listed posture facts from an enrolled endpoint.",
+        "properties": {
+          "facts": {
+            "additionalProperties": true,
+            "title": "Facts",
+            "type": "object"
+          },
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          },
+          "schema_version": {
+            "pattern": "^v[0-9]+$",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "schema_version",
+          "observed_at",
+          "facts"
+        ],
+        "title": "AgentObservationCreate",
+        "type": "object"
+      },
+      "AgentObservationResponse": {
+        "description": "Accepted endpoint observation.",
+        "properties": {
+          "device_id": {
+            "format": "uuid",
+            "title": "Device Id",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "received_at": {
+            "format": "date-time",
+            "title": "Received At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "device_id",
+          "idempotency_key",
+          "received_at"
+        ],
+        "title": "AgentObservationResponse",
+        "type": "object"
+      },
       "AssessmentCreate": {
         "description": "Fields accepted when opening an assessment.",
         "properties": {
@@ -691,6 +884,122 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "MicrosoftConnectionCreate": {
+        "description": "Microsoft Graph application connection for one mapped customer tenant.",
+        "properties": {
+          "client_id": {
+            "format": "uuid",
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "maxLength": 4096,
+            "minLength": 16,
+            "title": "Client Secret",
+            "type": "string"
+          },
+          "cloud": {
+            "default": "commercial",
+            "enum": [
+              "commercial",
+              "gcc_high",
+              "dod"
+            ],
+            "title": "Cloud",
+            "type": "string"
+          },
+          "display_name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "external_tenant_id": {
+            "format": "uuid",
+            "title": "External Tenant Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "display_name",
+          "external_tenant_id",
+          "client_id",
+          "client_secret"
+        ],
+        "title": "MicrosoftConnectionCreate",
+        "type": "object"
+      },
+      "MicrosoftConnectionResponse": {
+        "description": "Redacted Microsoft Graph connection metadata.",
+        "properties": {
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "cloud": {
+            "title": "Cloud",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "external_tenant_id": {
+            "title": "External Tenant Id",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "last_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Error"
+          },
+          "last_success_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Success At"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "display_name",
+          "external_tenant_id",
+          "cloud",
+          "client_id",
+          "status",
+          "last_success_at",
+          "last_error",
+          "created_at"
+        ],
+        "title": "MicrosoftConnectionResponse",
+        "type": "object"
+      },
       "OrganizationResponse": {
         "description": "Tenant organization visible in the active request context.",
         "properties": {
@@ -714,6 +1023,48 @@
           "slug"
         ],
         "title": "OrganizationResponse",
+        "type": "object"
+      },
+      "SiteCreate": {
+        "description": "Tenant site used to scope endpoint enrollment.",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SiteCreate",
+        "type": "object"
+      },
+      "SiteResponse": {
+        "description": "Endpoint collector site.",
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "title": "SiteResponse",
         "type": "object"
       },
       "ValidationError": {
@@ -823,6 +1174,175 @@
         "summary": "Check database readiness",
         "tags": [
           "health"
+        ]
+      }
+    },
+    "/v1/agent-enrollment-tokens": {
+      "post": {
+        "description": "Issue a site-bound enrollment token and store only its hash.",
+        "operationId": "create_agent_enrollment_token_v1_agent_enrollment_tokens_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentEnrollmentTokenCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentEnrollmentTokenResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Agent Enrollment Token",
+        "tags": [
+          "endpoints"
+        ]
+      }
+    },
+    "/v1/agent-enrollments:exchange": {
+      "post": {
+        "description": "Atomically consume an enrollment use and return a per-device credential once.",
+        "operationId": "exchange_agent_enrollment_v1_agent_enrollments_exchange_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentEnrollmentExchange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentEnrollmentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Exchange Agent Enrollment",
+        "tags": [
+          "endpoints"
+        ]
+      }
+    },
+    "/v1/agents/{device_id}/check-ins": {
+      "post": {
+        "description": "Accept an idempotent posture observation authenticated by device credential.",
+        "operationId": "agent_check_in_v1_agents__device_id__check_ins_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "device_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Device Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "schema": {
+              "title": "Authorization",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentObservationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentObservationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Agent Check In",
+        "tags": [
+          "endpoints"
         ]
       }
     },
@@ -1157,6 +1677,60 @@
         "summary": "Create a direct evidence upload",
         "tags": [
           "evidence"
+        ]
+      }
+    },
+    "/v1/dashboard": {
+      "get": {
+        "description": "Return tenant-scoped operational queues and health without synthetic metrics.",
+        "operationId": "get_dashboard_v1_dashboard_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Dashboard V1 Dashboard Get"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Dashboard",
+        "tags": [
+          "tenancy"
         ]
       }
     },
@@ -1626,6 +2200,190 @@
         ]
       }
     },
+    "/v1/integrations/microsoft": {
+      "get": {
+        "description": "List redacted tenant-visible Microsoft connections.",
+        "operationId": "list_microsoft_connections_v1_integrations_microsoft_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MicrosoftConnectionResponse"
+                  },
+                  "title": "Response List Microsoft Connections V1 Integrations Microsoft Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Microsoft Connections",
+        "tags": [
+          "integrations"
+        ]
+      },
+      "post": {
+        "description": "Store a tenant-mapped Graph connection with an encrypted secret.",
+        "operationId": "create_microsoft_connection_v1_integrations_microsoft_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MicrosoftConnectionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MicrosoftConnectionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Microsoft Connection",
+        "tags": [
+          "integrations"
+        ]
+      }
+    },
+    "/v1/integrations/microsoft/{connection_id}/discover": {
+      "post": {
+        "description": "Collect read-only organization, domain, and conditional-access facts.",
+        "operationId": "discover_microsoft_scope_v1_integrations_microsoft__connection_id__discover_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connection_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Connection Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Discover Microsoft Scope V1 Integrations Microsoft  Connection Id  Discover Post"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Discover Microsoft Scope",
+        "tags": [
+          "integrations"
+        ]
+      }
+    },
     "/v1/organization": {
       "get": {
         "description": "Return the organization selected by the authorized tenant context.",
@@ -1679,6 +2437,70 @@
           "tenancy"
         ]
       }
+    },
+    "/v1/sites": {
+      "post": {
+        "description": "Create a tenant site for endpoint enrollment.",
+        "operationId": "create_site_v1_sites_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Watchtower-Organization",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Organization",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Watchtower-Actor",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "X-Watchtower-Actor",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SiteCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Site",
+        "tags": [
+          "endpoints"
+        ]
+      }
     }
   },
   "tags": [
@@ -1697,6 +2519,14 @@
     {
       "description": "Immutable evidence provenance and human review operations.",
       "name": "evidence"
+    },
+    {
+      "description": "Tenant-mapped read-only vendor connections.",
+      "name": "integrations"
+    },
+    {
+      "description": "Endpoint collector enrollment and posture ingestion.",
+      "name": "endpoints"
     }
   ]
 }

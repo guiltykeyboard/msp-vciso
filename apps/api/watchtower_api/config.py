@@ -56,6 +56,7 @@ class Settings:
     pool_min_size: int
     pool_max_size: int
     object_storage: ObjectStorageSettings
+    credential_encryption_key: str | None
 
     @classmethod
     def from_environment(cls) -> "Settings":
@@ -88,6 +89,7 @@ class Settings:
             pool_min_size=int(os.getenv("WATCHTOWER_DB_POOL_MIN_SIZE", "1")),
             pool_max_size=int(os.getenv("WATCHTOWER_DB_POOL_MAX_SIZE", "10")),
             object_storage=storage,
+            credential_encryption_key=os.getenv("WATCHTOWER_CREDENTIAL_ENCRYPTION_KEY"),
         )
         if settings.environment == "production" and settings.allow_insecure_dev_auth:
             raise ValueError("Insecure development authentication cannot run in production")

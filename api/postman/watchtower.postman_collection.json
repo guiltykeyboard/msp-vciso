@@ -84,6 +84,167 @@
       ]
     },
     {
+      "name": "endpoints",
+      "item": [
+        {
+          "name": "Create Agent Enrollment Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/agent-enrollment-tokens",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "agent-enrollment-tokens"
+              ]
+            },
+            "description": "Issue a site-bound enrollment token and store only its hash.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowed_platforms\": [\n    \"<value>\"\n  ],\n  \"expires_at\": \"<date-time>\",\n  \"max_uses\": 0,\n  \"site_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Exchange Agent Enrollment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/agent-enrollments:exchange",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "agent-enrollments:exchange"
+              ]
+            },
+            "description": "Atomically consume an enrollment use and return a per-device credential once.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_version\": \"<value>\",\n  \"hostname\": \"<value>\",\n  \"platform\": \"<value>\",\n  \"public_key\": \"<value>\",\n  \"token\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Agent Check In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "<authorization>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/agents/:device_id/check-ins",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                ":device_id",
+                "check-ins"
+              ],
+              "variable": [
+                {
+                  "key": "device_id",
+                  "value": "<device_id>"
+                }
+              ]
+            },
+            "description": "Accept an idempotent posture observation authenticated by device credential.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"facts\": {},\n  \"idempotency_key\": \"<uuid>\",\n  \"observed_at\": \"<date-time>\",\n  \"schema_version\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/sites",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "sites"
+              ]
+            },
+            "description": "Create a tenant site for endpoint enrollment.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<value>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "evidence",
       "item": [
         {
@@ -545,8 +706,145 @@
       ]
     },
     {
+      "name": "integrations",
+      "item": [
+        {
+          "name": "List Microsoft Connections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/integrations/microsoft",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "integrations",
+                "microsoft"
+              ]
+            },
+            "description": "List redacted tenant-visible Microsoft connections."
+          }
+        },
+        {
+          "name": "Create Microsoft Connection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/integrations/microsoft",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "integrations",
+                "microsoft"
+              ]
+            },
+            "description": "Store a tenant-mapped Graph connection with an encrypted secret.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": \"<uuid>\",\n  \"client_secret\": \"<value>\",\n  \"cloud\": \"<value>\",\n  \"display_name\": \"<value>\",\n  \"external_tenant_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Discover Microsoft Scope",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/integrations/microsoft/:connection_id/discover",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "integrations",
+                "microsoft",
+                ":connection_id",
+                "discover"
+              ],
+              "variable": [
+                {
+                  "key": "connection_id",
+                  "value": "<connection_id>"
+                }
+              ]
+            },
+            "description": "Collect read-only organization, domain, and conditional-access facts."
+          }
+        }
+      ]
+    },
+    {
       "name": "tenancy",
       "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Watchtower-Organization",
+                "value": "<X-Watchtower-Organization>"
+              },
+              {
+                "key": "X-Watchtower-Actor",
+                "value": "<X-Watchtower-Actor>"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "dashboard"
+              ]
+            },
+            "description": "Return tenant-scoped operational queues and health without synthetic metrics."
+          }
+        },
         {
           "name": "Get the current organization",
           "request": {

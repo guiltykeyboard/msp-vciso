@@ -124,6 +124,12 @@ A connector is production-ready only when it has:
 7. a vendor contract/spec version and change-detection test;
 8. documented data classes, retention, and whether regulated or customer content can be returned.
 
+## Microsoft Graph implementation status
+
+The first read-only connector foundation is implemented. A tenant administrator can create a connection for one explicitly mapped Microsoft tenant; the client secret is encrypted with `WATCHTOWER_CREDENTIAL_ENCRYPTION_KEY` and is never returned by the API. Generate the value as a Fernet key and inject it through the deployment secret store rather than committing it.
+
+Discovery collects the organization identity, verified domains, and conditional-access policy metadata. Commercial Microsoft 365 and GCC use the worldwide Graph root, while GCC High and DoD use their national-cloud Graph and token endpoints. Connection health and discovery runs are tenant-scoped and audited. The next connector increment will preserve the raw Graph responses as stored evidence and add pagination/delta handling for users, MFA registration, privileged roles, and Secure Score.
+
 ## Primary references
 
 - [WatchGuard Cloud APIs](https://www.watchguard.com/help/docs/API/)

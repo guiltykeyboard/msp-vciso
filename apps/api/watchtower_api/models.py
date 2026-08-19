@@ -159,3 +159,92 @@ class EvidenceRetentionPolicyResponse(EvidenceRetentionPolicyUpdate):
     """Current tenant retention defaults."""
 
     updated_at: datetime
+
+
+class MicrosoftConnectionCreate(BaseModel):
+    """Microsoft Graph application connection for one mapped customer tenant."""
+
+    display_name: str = Field(min_length=1, max_length=255)
+    external_tenant_id: UUID
+    cloud: Literal["commercial", "gcc_high", "dod"] = "commercial"
+    client_id: UUID
+    client_secret: str = Field(min_length=16, max_length=4096, repr=False)
+
+
+class MicrosoftConnectionResponse(BaseModel):
+    """Redacted Microsoft Graph connection metadata."""
+
+    id: UUID
+    display_name: str
+    external_tenant_id: str
+    cloud: str
+    client_id: str
+    status: str
+    last_success_at: datetime | None
+    last_error: str | None
+    created_at: datetime
+
+
+class SiteCreate(BaseModel):
+    """Tenant site used to scope endpoint enrollment."""
+
+    name: str = Field(min_length=1, max_length=255)
+
+
+class SiteResponse(BaseModel):
+    """Endpoint collector site."""
+
+    id: UUID
+    name: str
+    created_at: datetime
+
+
+class AgentEnrollmentTokenCreate(BaseModel):
+    """Bounded one-time or deployment enrollment authorization."""
+
+    site_id: UUID
+    allowed_platforms: list[Literal["windows", "macos", "linux"]] = Field(min_length=1)
+    expires_at: AwareDatetime
+    max_uses: int = Field(default=1, ge=1, le=10000)
+
+
+class AgentEnrollmentTokenResponse(BaseModel):
+    """Enrollment secret returned exactly once."""
+
+    id: UUID
+    token: str
+    expires_at: datetime
+
+
+class AgentEnrollmentExchange(BaseModel):
+    """Initial machine enrollment request."""
+
+    token: str
+    platform: Literal["windows", "macos", "linux"]
+    hostname: str = Field(min_length=1, max_length=255)
+    public_key: str = Field(min_length=32, max_length=8192)
+    agent_version: str = Field(min_length=1, max_length=64)
+
+
+class AgentEnrollmentResponse(BaseModel):
+    """New device identity and secret credential returned once."""
+
+    device_id: UUID
+    credential: str
+
+
+class AgentObservationCreate(BaseModel):
+    """Versioned allow-listed posture facts from an enrolled endpoint."""
+
+    idempotency_key: UUID
+    schema_version: str = Field(pattern=r"^v[0-9]+$")
+    observed_at: AwareDatetime
+    facts: dict[str, Any]
+
+
+class AgentObservationResponse(BaseModel):
+    """Accepted endpoint observation."""
+
+    device_id: UUID
+    idempotency_key: UUID
+    received_at: datetime
